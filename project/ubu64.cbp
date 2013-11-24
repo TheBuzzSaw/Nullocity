@@ -44,6 +44,10 @@
 			<Add library="SDL2" />
 			<Add library="GL" />
 		</Linker>
+		<Unit filename="../SimpleProgram.cpp" />
+		<Unit filename="../SimpleProgram.hpp" />
+		<Unit filename="../source/GameModule.cpp" />
+		<Unit filename="../source/GameModule.hpp" />
 		<Unit filename="../source/main.cpp" />
 		<Extensions>
 			<code_completion />
