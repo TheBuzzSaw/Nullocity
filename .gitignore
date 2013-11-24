@@ -11,3 +11,23 @@
 *.lai
 *.la
 *.a
+
+# VCS nonsense
+.svn/
+CVS/
+
+# Codeblocks nonsense
+obj/
+bin/
+*.[oa]
+*.depend
+*.layout
+*.cbTemp
+
+# SDL nonsense
+stdout.txt
+stderr.txt
+
+# SCons nonsense
+.sconsign.dblite
+
