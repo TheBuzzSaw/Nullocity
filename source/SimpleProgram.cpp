@@ -30,11 +30,29 @@ SimpleProgram::SimpleProgram()
     }
     else
     {
-        _vertexAttribute = _program.GetAttributeLocation("vertex");
+        _positionAttribute = _program.GetAttributeLocation("position");
         _colorAttribute = _program.GetAttributeLocation("color");
     }
 }
 
 SimpleProgram::~SimpleProgram()
 {
+}
+
+void SimpleProgram::Open()
+{
+    _program.Use();
+    glEnableVertexAttribArray(_positionAttribute);
+    glEnableVertexAttribArray(_colorAttribute);
+}
+
+void SimpleProgram::Close()
+{
+    glDisableVertexAttribArray(_colorAttribute);
+    glDisableVertexAttribArray(_positionAttribute);
+}
+
+void SimpleProgram::Draw(const SimpleBufferObject& object) const
+{
+    object.Draw(_positionAttribute, _colorAttribute);
 }

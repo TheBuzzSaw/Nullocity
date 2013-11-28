@@ -3,6 +3,7 @@
 
 #include "SimpleProgram.hpp"
 #include <SDL2TK/Module.hpp>
+#include <SDL2TK/Rotation.hpp>
 
 class GameModule : public SDL2TK::Module
 {
@@ -21,6 +22,8 @@ class GameModule : public SDL2TK::Module
     protected:
     private:
         SimpleProgram _program;
+        SimpleBufferObject _object;
+        SDL2TK::Rotation<GLfloat> _rotation;
 };
 
 #endif
