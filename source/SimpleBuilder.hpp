@@ -17,8 +17,8 @@ class SimpleBuilder
 
         SimpleBuilder& operator=(SimpleBuilder&& other);
 
-        void Add(const SDL2TK::Vector3<GLfloat>& position,
-            const SDL2TK::Vector4<GLfloat>& color);
+        void Add(const SDL2TK::Vector3F& position,
+            const SDL2TK::Vector4F& color);
 
         void Reserve(int vertexCount);
 

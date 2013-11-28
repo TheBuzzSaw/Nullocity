@@ -1,17 +1,35 @@
 #include "GameModule.hpp"
 #include <SDL2TK/Matrix4x4.hpp>
-
-int puts(const char* text);
+using namespace std;
+using namespace SDL2TK;
 
 GameModule::GameModule()
 {
     SimpleBuilder builder;
-    builder.Add(SDL2TK::Vector3<GLfloat>(-1.0f, -1.0f, 0.0f),
-        SDL2TK::Vector4<GLfloat>(1.0f, 0.0f, 0.0f, 1.0f));
-    builder.Add(SDL2TK::Vector3<GLfloat>(0.0f, 1.0f, 0.0f),
-        SDL2TK::Vector4<GLfloat>(0.0f, 1.0f, 0.0f, 1.0f));
-    builder.Add(SDL2TK::Vector3<GLfloat>(1.0f, -1.0f, 0.0f),
-        SDL2TK::Vector4<GLfloat>(0.0f, 0.0f, 1.0f, 1.0f));
+
+    Vector3F top(0.0f, 1.0f, 0.0f);
+    RotationF rotation = RotationF::FromDegrees(-120.0f);
+
+    Vector3F left;
+    {
+        Matrix4x4F matrix;
+        matrix.RotateZ(-rotation);
+        matrix.Transform(top, left);
+    }
+
+    Vector3F right;
+    {
+        Matrix4x4F matrix;
+        matrix.RotateZ(rotation);
+        matrix.Transform(top, right);
+    }
+
+    cout << rotation.ToDegrees() << endl;
+    cout << top << '\n' << right << '\n' << left << endl;
+
+    builder.Add(top, Vector4F(1.0f, 0.0f, 0.0f, 1.0f));
+    builder.Add(right, Vector4F(0.0f, 1.0f, 0.0f, 1.0f));
+    builder.Add(left, Vector4F(0.0f, 0.0f, 1.0f, 1.0f));
 
     _object = SimpleBufferObject(builder);
 }
@@ -41,9 +59,9 @@ void GameModule::OnLoop()
 
 void GameModule::OnPulse()
 {
-    _rotation += SDL2TK::Rotation<GLfloat>::FromDegrees(2.0f);
+    _rotation += Rotation<GLfloat>::FromDegrees(2.0f);
 
-    SDL2TK::Matrix4x4<GLfloat> matrix;
+    Matrix4x4F matrix;
     matrix.Scale(4.0f);
     matrix.RotateZ(_rotation);
     glLoadMatrixf(matrix);
@@ -59,7 +77,7 @@ void GameModule::OnResize(int width, int height)
 
     glViewport(0, 0, width, height);
 
-    SDL2TK::Matrix4x4<float> matrix;
+    Matrix4x4F matrix;
     matrix.Orthographic(8.0f, aspectRatio);
 
     glMatrixMode(GL_PROJECTION);

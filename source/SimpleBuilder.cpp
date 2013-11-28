@@ -25,8 +25,8 @@ SimpleBuilder& SimpleBuilder::operator=(SimpleBuilder&& other)
     return *this;
 }
 
-void SimpleBuilder::Add(const SDL2TK::Vector3<GLfloat>& position,
-    const SDL2TK::Vector4<GLfloat>& color)
+void SimpleBuilder::Add(const SDL2TK::Vector3F& position,
+    const SDL2TK::Vector4F& color)
 {
     _array.push_back(position.X());
     _array.push_back(position.Y());
