@@ -10,19 +10,8 @@ GameModule::GameModule()
     Vector3F top(0.0f, 1.0f, 0.0f);
     RotationF rotation = RotationF::FromDegrees(-120.0f);
 
-    Vector3F left;
-    {
-        Matrix4x4F matrix;
-        matrix.RotateZ(-rotation);
-        matrix.Transform(top, left);
-    }
-
-    Vector3F right;
-    {
-        Matrix4x4F matrix;
-        matrix.RotateZ(rotation);
-        matrix.Transform(top, right);
-    }
+    Vector3F left = Matrix4x4F().RotateZ(-rotation).Transform(top);
+    Vector3F right = Matrix4x4F().RotateZ(rotation).Transform(top);
 
     cout << rotation.ToDegrees() << endl;
     cout << top << '\n' << right << '\n' << left << endl;
@@ -62,8 +51,7 @@ void GameModule::OnPulse()
     _rotation += Rotation<GLfloat>::FromDegrees(2.0f);
 
     Matrix4x4F matrix;
-    matrix.Scale(4.0f);
-    matrix.RotateZ(_rotation);
+    matrix.Scale(7.75f).RotateZ(_rotation);
     glLoadMatrixf(matrix);
 }
 
