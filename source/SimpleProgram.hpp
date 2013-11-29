@@ -13,7 +13,7 @@ class SimpleProgram
         void Open();
         void Close();
 
-        void Draw(const SimpleBufferObject& object) const;
+        void Draw(const SimpleBufferObject& object, GLenum mode) const;
 
     protected:
     private:

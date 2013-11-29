@@ -22,7 +22,7 @@ class GameModule : public SDL2TK::Module
     protected:
     private:
         SimpleProgram _program;
-        SimpleBufferObject _object;
+        SimpleBufferObject _object[2];
         SDL2TK::Rotation<GLfloat> _rotation;
 };
 

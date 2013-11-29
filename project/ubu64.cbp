@@ -44,6 +44,8 @@
 			<Add library="SDL2" />
 			<Add library="GL" />
 		</Linker>
+		<Unit filename="../source/Asteroid.cpp" />
+		<Unit filename="../source/Asteroid.hpp" />
 		<Unit filename="../source/GameModule.cpp" />
 		<Unit filename="../source/GameModule.hpp" />
 		<Unit filename="../source/SimpleBufferObject.cpp" />

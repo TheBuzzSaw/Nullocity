@@ -1,26 +1,62 @@
 #include "GameModule.hpp"
 #include <SDL2TK/Matrix4x4.hpp>
+#include <cmath>
 using namespace std;
 using namespace SDL2TK;
 
+static SimpleBufferObject BuildPyramid()
+{
+    const float RootTwo = 1.414213562f;
+    const float Z = 1.0f / RootTwo;
+
+    Vector3F positions[4];
+
+    positions[0] = Vector3F(1.0f, 0.0f, -Z);
+    positions[1] = Vector3F(-1.0f, 0.0f, -Z);
+    positions[2] = Vector3F(0.0f, 1.0f, Z);
+    positions[3] = Vector3F(0.0f, -1.0f, Z);
+
+    SimpleBuilder builder;
+    builder.Reserve(12);
+
+    const Vector4F Red(1.0f, 0.0f, 0.0f, 1.0f);
+    const Vector4F Green(0.0f, 1.0f, 0.0f, 1.0f);
+    const Vector4F Blue(0.0f, 0.0f, 1.0f, 1.0f);
+    const Vector4F Yellow(1.0f, 1.0f, 0.0f, 1.0f);
+
+    builder.Add(positions[0], Red);
+    builder.Add(positions[2], Red);
+    builder.Add(positions[1], Red);
+
+    builder.Add(positions[0], Green);
+    builder.Add(positions[1], Green);
+    builder.Add(positions[3], Green);
+
+    builder.Add(positions[1], Blue);
+    builder.Add(positions[2], Blue);
+    builder.Add(positions[3], Blue);
+
+    builder.Add(positions[0], Yellow);
+    builder.Add(positions[3], Yellow);
+    builder.Add(positions[2], Yellow);
+
+    return SimpleBufferObject(builder);
+}
+
 GameModule::GameModule()
 {
+    _object[0] = BuildPyramid();
+
     SimpleBuilder builder;
 
-    Vector3F top(0.0f, 1.0f, 0.0f);
-    RotationF rotation = RotationF::FromDegrees(-120.0f);
+    Vector4F black;
 
-    Vector3F left = Matrix4x4F().RotateZ(-rotation).Transform(top);
-    Vector3F right = Matrix4x4F().RotateZ(rotation).Transform(top);
+    builder.Add(Vector3F(-7.0f, 0.0f, 0.0f), black);
+    builder.Add(Vector3F(7.0f, 0.0f, 0.0f), black);
+    builder.Add(Vector3F(0.0f, -7.0f, 0.0f), black);
+    builder.Add(Vector3F(0.0f, 7.0f, 0.0f), black);
 
-    cout << rotation.ToDegrees() << endl;
-    cout << top << '\n' << right << '\n' << left << endl;
-
-    builder.Add(top, Vector4F(1.0f, 0.0f, 0.0f, 1.0f));
-    builder.Add(right, Vector4F(0.0f, 1.0f, 0.0f, 1.0f));
-    builder.Add(left, Vector4F(0.0f, 0.0f, 1.0f, 1.0f));
-
-    _object = SimpleBufferObject(builder);
+    _object[1] = SimpleBufferObject(builder);
 }
 
 GameModule::~GameModule()
@@ -30,29 +66,46 @@ GameModule::~GameModule()
 void GameModule::OnOpen()
 {
     glMatrixMode(GL_MODELVIEW);
+
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+
+    glFrontFace(GL_CW);
+    glCullFace(GL_BACK);
+
     glClearColor(0.0f, 0.5f, 1.0f, 1.0f);
 }
 
 void GameModule::OnClose()
 {
+    glDisable(GL_CULL_FACE);
+    glDisable(GL_DEPTH_TEST);
 }
 
 void GameModule::OnLoop()
 {
-    glClear(GL_COLOR_BUFFER_BIT);
+    Matrix4x4F matrix;
+    matrix
+        .Translate(0.0f, 0.0f, -30.0f)
+        ;//.RotateX(RotationF::FromDegrees(-45.0f))
+        //.RotateZ(RotationF::FromDegrees(-45.0f));
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     _program.Open();
-    _program.Draw(_object);
+
+    glLoadMatrixf(Matrix4x4F(matrix).Scale(4.0f).RotateX(_rotation).RotateZ(_rotation));
+    _program.Draw(_object[0], GL_TRIANGLES);
+
+    glLoadMatrixf(matrix);
+    _program.Draw(_object[1], GL_LINES);
+
     _program.Close();
 }
 
 void GameModule::OnPulse()
 {
-    _rotation += Rotation<GLfloat>::FromDegrees(2.0f);
-
-    Matrix4x4F matrix;
-    matrix.Scale(7.75f).RotateZ(_rotation);
-    glLoadMatrixf(matrix);
+    _rotation += RotationF::FromDegrees(2.0f);
 }
 
 void GameModule::OnSecond(Uint32 framesPerSecond)
@@ -66,7 +119,9 @@ void GameModule::OnResize(int width, int height)
     glViewport(0, 0, width, height);
 
     Matrix4x4F matrix;
-    matrix.Orthographic(8.0f, aspectRatio);
+    matrix.Perspective(RotationF::FromDegrees(30.0f), aspectRatio, 1.0f,
+        100.0f);
+    //matrix.Orthographic(8.0f, aspectRatio);
 
     glMatrixMode(GL_PROJECTION);
     glLoadMatrixf(matrix);

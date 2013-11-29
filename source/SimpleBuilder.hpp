@@ -21,6 +21,7 @@ class SimpleBuilder
             const SDL2TK::Vector4F& color);
 
         void Reserve(int vertexCount);
+        void Clear();
 
         void BufferData(GLenum target, GLenum usage) const;
 

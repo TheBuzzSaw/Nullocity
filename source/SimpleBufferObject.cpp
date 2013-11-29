@@ -50,8 +50,8 @@ SimpleBufferObject& SimpleBufferObject::operator=(SimpleBufferObject&& other)
     return *this;
 }
 
-void SimpleBufferObject::Draw(GLint positionAttribute, GLint colorAttribute)
-    const
+void SimpleBufferObject::Draw(GLenum mode, GLint positionAttribute,
+    GLint colorAttribute) const
 {
     const GLsizei stride = sizeof(GLfloat) * SimpleBuilder::FloatsPerVertex;
 
@@ -61,5 +61,5 @@ void SimpleBufferObject::Draw(GLint positionAttribute, GLint colorAttribute)
     glVertexAttribPointer(colorAttribute, 4, GL_FLOAT, GL_FALSE, stride,
         Offset(3));
 
-    glDrawArrays(GL_TRIANGLES, 0, _count);
+    glDrawArrays(mode, 0, _count);
 }

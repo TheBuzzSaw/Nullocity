@@ -52,7 +52,7 @@ void SimpleProgram::Close()
     glDisableVertexAttribArray(_positionAttribute);
 }
 
-void SimpleProgram::Draw(const SimpleBufferObject& object) const
+void SimpleProgram::Draw(const SimpleBufferObject& object, GLenum mode) const
 {
-    object.Draw(_positionAttribute, _colorAttribute);
+    object.Draw(mode, _positionAttribute, _colorAttribute);
 }

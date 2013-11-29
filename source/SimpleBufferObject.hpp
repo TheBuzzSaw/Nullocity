@@ -13,7 +13,8 @@ class SimpleBufferObject
 
         SimpleBufferObject& operator=(SimpleBufferObject&& other);
 
-        void Draw(GLint positionAttribute, GLint colorAttribute) const;
+        void Draw(GLenum mode, GLint positionAttribute, GLint colorAttribute)
+            const;
 
     protected:
     private:

@@ -5,7 +5,10 @@ int main(int argc, char** argv)
 {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
     {
-        SDL2TK::Window window;
+        SDL2TK::WindowSettings settings;
+        settings.Title("Nullocity");
+
+        SDL2TK::Window window(std::move(settings));
         GameModule module;
         window.Run(module);
     }

@@ -44,6 +44,11 @@ void SimpleBuilder::Reserve(int vertexCount)
         _array.reserve(vertexCount * FloatsPerVertex);
 }
 
+void SimpleBuilder::Clear()
+{
+    _array.clear();
+}
+
 void SimpleBuilder::BufferData(GLenum target, GLenum usage) const
 {
     glBufferData(target, _array.size() * sizeof(GLfloat), _array.data(), usage);
