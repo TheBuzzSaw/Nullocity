@@ -94,8 +94,22 @@ void GameModule::OnLoop()
 
     _program.Open();
 
-    glLoadMatrixf(Matrix4x4F(matrix).Scale(4.0f).RotateX(_rotation).RotateZ(_rotation));
-    _program.Draw(_object[0], GL_TRIANGLES);
+    //glLoadMatrixf(Matrix4x4F(matrix).Scale(4.0f).RotateX(_rotation).RotateZ(_rotation));
+    //_program.Draw(_object[0], GL_TRIANGLES);
+
+    for (int i = 0; i < AsteroidCount; ++i)
+    {
+        Asteroid& asteroid = _asteroids[i];
+        Vector2F position = asteroid.Position();
+        Vector2F rotation = asteroid.Rotation();
+        glLoadMatrixf(
+            Matrix4x4F(matrix)
+                .Translate(position.X(), position.Y(), 0.0f)
+                .RotateX(RotationF::FromRadians(rotation.X()))
+                .RotateY(RotationF::FromRadians(rotation.Y()))
+                );
+        _program.Draw(_object[0], GL_TRIANGLES);
+    }
 
     glLoadMatrixf(matrix);
     _program.Draw(_object[1], GL_LINES);
@@ -106,6 +120,9 @@ void GameModule::OnLoop()
 void GameModule::OnPulse()
 {
     _rotation += RotationF::FromDegrees(2.0f);
+
+    for (int i = 0; i < AsteroidCount; ++i)
+        _asteroids[i].Update();
 }
 
 void GameModule::OnSecond(Uint32 framesPerSecond)
