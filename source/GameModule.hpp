@@ -4,9 +4,9 @@
 #include "SimpleProgram.hpp"
 #include "Asteroid.hpp"
 #include <SDL2TK/Module.hpp>
-#include <SDL2TK/Rotation.hpp>
+#include <SDL2TK/Camera.hpp>
 
-const int AsteroidCount = 128;
+const int AsteroidCount = 64;
 
 class GameModule : public SDL2TK::Module
 {
@@ -26,8 +26,8 @@ class GameModule : public SDL2TK::Module
     private:
         SimpleProgram _program;
         SimpleBufferObject _object[2];
-        SDL2TK::Rotation<GLfloat> _rotation;
         Asteroid _asteroids[AsteroidCount];
+        SDL2TK::Camera<GLfloat> _camera;
 };
 
 #endif

@@ -4,6 +4,7 @@
 using namespace std;
 using namespace SDL2TK;
 
+static const Vector4F Black(0.0f, 0.0f, 0.0f, 1.0f);
 static const Vector4F Red(1.0f, 0.0f, 0.0f, 1.0f);
 static const Vector4F Green(0.0f, 1.0f, 0.0f, 1.0f);
 static const Vector4F Blue(0.0f, 0.0f, 1.0f, 1.0f);
@@ -110,14 +111,15 @@ GameModule::GameModule()
 
     SimpleBuilder builder;
 
-    Vector4F black;
-
-    builder.Add(Vector3F(-7.0f, 0.0f, 0.0f), black);
-    builder.Add(Vector3F(7.0f, 0.0f, 0.0f), black);
-    builder.Add(Vector3F(0.0f, -7.0f, 0.0f), black);
-    builder.Add(Vector3F(0.0f, 7.0f, 0.0f), black);
+    builder.Add(Vector3F(-7.0f, 0.0f, 0.0f), Black);
+    builder.Add(Vector3F(7.0f, 0.0f, 0.0f), Black);
+    builder.Add(Vector3F(0.0f, -7.0f, 0.0f), Black);
+    builder.Add(Vector3F(0.0f, 7.0f, 0.0f), Black);
 
     _object[1] = SimpleBufferObject(builder);
+
+    _camera.Distance(32.0f);
+    _camera.Vertical(RotationF::FromDegrees(-45.0f));
 }
 
 GameModule::~GameModule()
@@ -134,6 +136,8 @@ void GameModule::OnOpen()
     glFrontFace(GL_CW);
     glCullFace(GL_BACK);
 
+    glLineWidth(8.0f);
+
     glClearColor(0.0f, 0.5f, 1.0f, 1.0f);
 }
 
@@ -146,10 +150,7 @@ void GameModule::OnClose()
 void GameModule::OnLoop()
 {
     Matrix4x4F matrix;
-    matrix
-        .Translate(0.0f, 0.0f, -30.0f)
-        ;//.RotateX(RotationF::FromDegrees(-45.0f))
-        //.RotateZ(RotationF::FromDegrees(-45.0f));
+    _camera.Apply(matrix);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -182,7 +183,8 @@ void GameModule::OnLoop()
 
 void GameModule::OnPulse()
 {
-    _rotation += RotationF::FromDegrees(2.0f);
+    auto horizontal = _camera.Horizontal();
+    _camera.Horizontal(horizontal + RotationF::FromDegrees(1.0f));
 
     for (int i = 0; i < AsteroidCount; ++i)
         _asteroids[i].Update();
