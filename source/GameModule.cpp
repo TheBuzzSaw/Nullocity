@@ -4,6 +4,71 @@
 using namespace std;
 using namespace SDL2TK;
 
+static const Vector4F Red(1.0f, 0.0f, 0.0f, 1.0f);
+static const Vector4F Green(0.0f, 1.0f, 0.0f, 1.0f);
+static const Vector4F Blue(0.0f, 0.0f, 1.0f, 1.0f);
+static const Vector4F Yellow(1.0f, 1.0f, 0.0f, 1.0f);
+static const Vector4F Magenta(1.0f, 0.0f, 1.0f, 1.0f);
+static const Vector4F Cyan(0.0f, 1.0f, 1.0f, 1.0f);
+
+static SimpleBufferObject BuildCube()
+{
+    const float N = 1.0f;
+
+    SimpleBuilder builder;
+    builder.Reserve(36);
+
+    builder.Add(Vector3F(N, N, N), Red);
+    builder.Add(Vector3F(N, N, -N), Red);
+    builder.Add(Vector3F(N, -N, -N), Red);
+
+    builder.Add(Vector3F(N, N, N), Red);
+    builder.Add(Vector3F(N, -N, -N), Red);
+    builder.Add(Vector3F(N, -N, N), Red);
+
+    builder.Add(Vector3F(N, N, N), Green);
+    builder.Add(Vector3F(N, -N, N), Green);
+    builder.Add(Vector3F(-N, -N, N), Green);
+
+    builder.Add(Vector3F(N, N, N), Green);
+    builder.Add(Vector3F(-N, -N, N), Green);
+    builder.Add(Vector3F(-N, N, N), Green);
+
+    builder.Add(Vector3F(N, N, N), Blue);
+    builder.Add(Vector3F(-N, N, N), Blue);
+    builder.Add(Vector3F(-N, N, -N), Blue);
+
+    builder.Add(Vector3F(N, N, N), Blue);
+    builder.Add(Vector3F(-N, N, -N), Blue);
+    builder.Add(Vector3F(N, N, -N), Blue);
+
+    builder.Add(Vector3F(-N, -N, -N), Cyan);
+    builder.Add(Vector3F(-N, N, -N), Cyan);
+    builder.Add(Vector3F(-N, N, N), Cyan);
+
+    builder.Add(Vector3F(-N, -N, -N), Cyan);
+    builder.Add(Vector3F(-N, N, N), Cyan);
+    builder.Add(Vector3F(-N, -N, N), Cyan);
+
+    builder.Add(Vector3F(-N, -N, -N), Magenta);
+    builder.Add(Vector3F(N, -N, -N), Magenta);
+    builder.Add(Vector3F(N, N, -N), Magenta);
+
+    builder.Add(Vector3F(-N, -N, -N), Magenta);
+    builder.Add(Vector3F(N, N, -N), Magenta);
+    builder.Add(Vector3F(-N, N, -N), Magenta);
+
+    builder.Add(Vector3F(-N, -N, -N), Yellow);
+    builder.Add(Vector3F(-N, -N, N), Yellow);
+    builder.Add(Vector3F(N, -N, N), Yellow);
+
+    builder.Add(Vector3F(-N, -N, -N), Yellow);
+    builder.Add(Vector3F(N, -N, N), Yellow);
+    builder.Add(Vector3F(N, -N, -N), Yellow);
+
+    return SimpleBufferObject(builder);
+}
+
 static SimpleBufferObject BuildPyramid()
 {
     const float RootTwo = 1.414213562f;
@@ -18,11 +83,6 @@ static SimpleBufferObject BuildPyramid()
 
     SimpleBuilder builder;
     builder.Reserve(12);
-
-    const Vector4F Red(1.0f, 0.0f, 0.0f, 1.0f);
-    const Vector4F Green(0.0f, 1.0f, 0.0f, 1.0f);
-    const Vector4F Blue(0.0f, 0.0f, 1.0f, 1.0f);
-    const Vector4F Yellow(1.0f, 1.0f, 0.0f, 1.0f);
 
     builder.Add(positions[0], Red);
     builder.Add(positions[2], Red);
@@ -45,7 +105,8 @@ static SimpleBufferObject BuildPyramid()
 
 GameModule::GameModule()
 {
-    _object[0] = BuildPyramid();
+    //_object[0] = BuildPyramid();
+    _object[0] = BuildCube();
 
     SimpleBuilder builder;
 
@@ -107,6 +168,8 @@ void GameModule::OnLoop()
                 .Translate(position.X(), position.Y(), 0.0f)
                 .RotateX(RotationF::FromRadians(rotation.X()))
                 .RotateY(RotationF::FromRadians(rotation.Y()))
+                //.Scale(0.125f, 1.0f, 0.5f)
+                //.RotateX(RotationF::FromDegrees(45.0f))
                 );
         _program.Draw(_object[0], GL_TRIANGLES);
     }

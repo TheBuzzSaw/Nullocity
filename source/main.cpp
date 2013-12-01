@@ -7,6 +7,8 @@ int main(int argc, char** argv)
     {
         SDL2TK::WindowSettings settings;
         settings.Title("Nullocity");
+        settings.Width(800);
+        settings.Height(600);
 
         SDL2TK::Window window(std::move(settings));
         GameModule module;
