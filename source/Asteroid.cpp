@@ -18,11 +18,11 @@ Asteroid::Asteroid()
     distribution = std::uniform_real_distribution<float>(-RotationF::Pi,
         RotationF::Pi);
 
-    _rotation.X(distribution(generator));
-    _rotation.Y(distribution(generator));
+    _rotationX = RotationF::FromRadians(distribution(generator));
+    _rotationY = RotationF::FromRadians(distribution(generator));
 
-    _torque.X(distribution(generator) / 40.0f);
-    _torque.Y(distribution(generator) / 40.0f);
+    _torqueX = RotationF::FromRadians(distribution(generator) / 40.0f);
+    _torqueY = RotationF::FromRadians(distribution(generator) / 40.0f);
 }
 
 Asteroid::~Asteroid()
@@ -45,11 +45,6 @@ void Asteroid::Update()
     else if (_velocity.Y() < 0.0f && y < -Max)
         _position.X(y + Max + Max);
 
-    RotationF rx = RotationF::FromRadians(_rotation.X());
-    rx += RotationF::FromRadians(_torque.X());
-    _rotation.X(rx.ToRadians());
-
-    RotationF ry = RotationF::FromRadians(_rotation.Y());
-    ry += RotationF::FromRadians(_torque.Y());
-    _rotation.Y(ry.ToRadians());
+    _rotationX += _torqueX;
+    _rotationY += _torqueY;
 }

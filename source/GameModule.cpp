@@ -6,7 +6,7 @@ using namespace SDL2TK;
 
 GameModule::GameModule()
 {
-    (void)BuildPyramid;
+    //(void)BuildPyramid;
     _cubeObject = BuildCube();
     _linesObject = BuildLines();
 
@@ -48,21 +48,15 @@ void GameModule::OnLoop()
 
     _program.Open();
 
-    //glLoadMatrixf(Matrix4x4F(matrix).Scale(4.0f).RotateX(_rotation).RotateZ(_rotation));
-    //_program.Draw(_object[0], GL_TRIANGLES);
-
     for (int i = 0; i < AsteroidCount; ++i)
     {
         Asteroid& asteroid = _asteroids[i];
         Vector2F position = asteroid.Position();
-        Vector2F rotation = asteroid.Rotation();
         glLoadMatrixf(
             Matrix4x4F(matrix)
                 .Translate(position.X(), position.Y(), 0.0f)
-                .RotateX(RotationF::FromRadians(rotation.X()))
-                .RotateY(RotationF::FromRadians(rotation.Y()))
-                //.Scale(0.125f, 1.0f, 0.5f)
-                //.RotateX(RotationF::FromDegrees(45.0f))
+                .RotateX(asteroid.RotationX())
+                .RotateY(asteroid.RotationY())
                 );
         _program.Draw(_cubeObject, GL_TRIANGLES);
     }

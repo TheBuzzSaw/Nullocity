@@ -2,6 +2,8 @@
 #include <SDL2TK/Vector.hpp>
 using namespace SDL2TK;
 
+static const float RootTwo = 1.414213562f;
+
 static const Vector4F Black(0.0f, 0.0f, 0.0f, 1.0f);
 static const Vector4F Red(1.0f, 0.0f, 0.0f, 1.0f);
 static const Vector4F Green(0.0f, 1.0f, 0.0f, 1.0f);
@@ -70,7 +72,6 @@ SimpleBufferObject BuildCube()
 
 SimpleBufferObject BuildPyramid()
 {
-    const float RootTwo = 1.414213562f;
     const float Z = 1.0f / RootTwo;
 
     Vector3F positions[4];
