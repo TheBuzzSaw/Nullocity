@@ -25,7 +25,8 @@ class GameModule : public SDL2TK::Module
     protected:
     private:
         SimpleProgram _program;
-        SimpleBufferObject _object[2];
+        SimpleBufferObject _linesObject;
+        SimpleBufferObject _cubeObject;
         Asteroid _asteroids[AsteroidCount];
         SDL2TK::Camera<GLfloat> _camera;
 };

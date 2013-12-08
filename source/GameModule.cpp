@@ -106,8 +106,8 @@ static SimpleBufferObject BuildPyramid()
 
 GameModule::GameModule()
 {
-    //_object[0] = BuildPyramid();
-    _object[0] = BuildCube();
+    (void)BuildPyramid;
+    _cubeObject = BuildCube();
 
     SimpleBuilder builder;
 
@@ -116,7 +116,7 @@ GameModule::GameModule()
     builder.Add(Vector3F(0.0f, -7.0f, 0.0f), Black);
     builder.Add(Vector3F(0.0f, 7.0f, 0.0f), Black);
 
-    _object[1] = SimpleBufferObject(builder);
+    _linesObject = SimpleBufferObject(builder);
 
     _camera.Distance(32.0f);
     _camera.Vertical(RotationF::FromDegrees(-45.0f));
@@ -172,11 +172,11 @@ void GameModule::OnLoop()
                 //.Scale(0.125f, 1.0f, 0.5f)
                 //.RotateX(RotationF::FromDegrees(45.0f))
                 );
-        _program.Draw(_object[0], GL_TRIANGLES);
+        _program.Draw(_cubeObject, GL_TRIANGLES);
     }
 
     glLoadMatrixf(matrix);
-    _program.Draw(_object[1], GL_LINES);
+    _program.Draw(_linesObject, GL_LINES);
 
     _program.Close();
 }
