@@ -43,6 +43,8 @@
 		</Linker>
 		<Unit filename="../source/Asteroid.cpp" />
 		<Unit filename="../source/Asteroid.hpp" />
+		<Unit filename="../source/Builders.cpp" />
+		<Unit filename="../source/Builders.hpp" />
 		<Unit filename="../source/GameModule.cpp" />
 		<Unit filename="../source/GameModule.hpp" />
 		<Unit filename="../source/SimpleBufferObject.cpp" />
