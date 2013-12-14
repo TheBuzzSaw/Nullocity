@@ -18,7 +18,7 @@ class GameModule : public SDL2TK::Module
         virtual void OnClose();
         virtual void OnLoop();
         virtual void OnPulse();
-        virtual void OnSecond(Uint32 framesPerSecond);
+        virtual void OnSecond(int framesPerSecond);
 
         virtual void OnResize(int width, int height);
 
@@ -27,6 +27,7 @@ class GameModule : public SDL2TK::Module
         SimpleProgram _program;
         SimpleBufferObject _linesObject;
         SimpleBufferObject _cubeObject;
+        SimpleBufferObject _squarePyramidObject;
         Asteroid _asteroids[AsteroidCount];
         SDL2TK::Camera<GLfloat> _camera;
 };

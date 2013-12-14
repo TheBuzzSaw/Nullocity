@@ -8,10 +8,12 @@ GameModule::GameModule()
 {
     //(void)BuildPyramid;
     _cubeObject = BuildCube();
+    _squarePyramidObject = BuildSquarePyramid();
     _linesObject = BuildLines();
 
     _camera.Distance(32.0f);
     _camera.Vertical(RotationF::FromDegrees(-45.0f));
+    //PulseInterval(SDL2TK::TimeSpan::FromSeconds(1) / 60);
 }
 
 GameModule::~GameModule()
@@ -30,7 +32,8 @@ void GameModule::OnOpen()
 
     glLineWidth(8.0f);
 
-    glClearColor(0.0f, 0.5f, 1.0f, 1.0f);
+    const float N = 1.0f / 8.0f;
+    glClearColor(N, N, N, 1.0f);
 }
 
 void GameModule::OnClose()
@@ -48,6 +51,13 @@ void GameModule::OnLoop()
 
     _program.Open();
 
+    glLoadMatrixf(
+        Matrix4x4F(matrix)
+            .RotateX(RotationF::FromDegrees(-90.0f))
+            .Scale(1.0f, 0.5f, 2.0f));
+
+    _program.Draw(_squarePyramidObject, GL_TRIANGLES);
+
     for (int i = 0; i < AsteroidCount; ++i)
     {
         Asteroid& asteroid = _asteroids[i];
@@ -58,11 +68,12 @@ void GameModule::OnLoop()
                 .RotateX(asteroid.RotationX())
                 .RotateY(asteroid.RotationY())
                 );
+
         _program.Draw(_cubeObject, GL_TRIANGLES);
     }
 
-    glLoadMatrixf(matrix);
-    _program.Draw(_linesObject, GL_LINES);
+    //glLoadMatrixf(matrix);
+    //_program.Draw(_linesObject, GL_LINES);
 
     _program.Close();
 }
@@ -70,13 +81,13 @@ void GameModule::OnLoop()
 void GameModule::OnPulse()
 {
     auto horizontal = _camera.Horizontal();
-    _camera.Horizontal(horizontal + RotationF::FromDegrees(1.0f));
+    //_camera.Horizontal(horizontal + RotationF::FromDegrees(1.0f));
 
     for (int i = 0; i < AsteroidCount; ++i)
         _asteroids[i].Update();
 }
 
-void GameModule::OnSecond(Uint32 framesPerSecond)
+void GameModule::OnSecond(int framesPerSecond)
 {
 }
 

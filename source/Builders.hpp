@@ -5,6 +5,7 @@
 
 SimpleBufferObject BuildCube();
 SimpleBufferObject BuildPyramid();
+SimpleBufferObject BuildSquarePyramid();
 SimpleBufferObject BuildLines();
 
 #endif
