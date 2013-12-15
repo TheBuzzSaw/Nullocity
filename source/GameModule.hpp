@@ -20,6 +20,9 @@ class GameModule : public SDL2TK::Module
         virtual void OnPulse();
         virtual void OnSecond(int framesPerSecond);
 
+        virtual void OnKeyDown(const SDL_Keysym& keysym);
+        virtual void OnKeyUp(const SDL_Keysym& keysym);
+
         virtual void OnResize(int width, int height);
 
     protected:
@@ -30,6 +33,9 @@ class GameModule : public SDL2TK::Module
         SimpleBufferObject _squarePyramidObject;
         Asteroid _asteroids[AsteroidCount];
         SDL2TK::Camera<GLfloat> _camera;
+
+        SDL2TK::RotationF _playerRotation;
+        SDL2TK::RotationF _playerTorque;
 };
 
 #endif

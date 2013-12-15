@@ -4,6 +4,8 @@
 using namespace std;
 using namespace SDL2TK;
 
+const RotationF TurnSpeed = RotationF::FromDegrees(4.0f);
+
 GameModule::GameModule()
 {
     //(void)BuildPyramid;
@@ -53,6 +55,7 @@ void GameModule::OnLoop()
 
     glLoadMatrixf(
         Matrix4x4F(matrix)
+            .RotateZ(_playerRotation)
             .RotateX(RotationF::FromDegrees(-90.0f))
             .Scale(1.0f, 0.5f, 2.0f));
 
@@ -80,8 +83,8 @@ void GameModule::OnLoop()
 
 void GameModule::OnPulse()
 {
-    auto horizontal = _camera.Horizontal();
-    //_camera.Horizontal(horizontal + RotationF::FromDegrees(1.0f));
+    _playerRotation += _playerTorque;
+    _camera.Horizontal(-_playerRotation);
 
     for (int i = 0; i < AsteroidCount; ++i)
         _asteroids[i].Update();
@@ -89,6 +92,58 @@ void GameModule::OnPulse()
 
 void GameModule::OnSecond(int framesPerSecond)
 {
+}
+
+void GameModule::OnKeyDown(const SDL_Keysym& keysym)
+{
+    switch (keysym.sym)
+    {
+        case SDLK_ESCAPE:
+            Stop();
+            break;
+
+        case SDLK_LEFT:
+            _playerTorque = TurnSpeed;
+            break;
+
+        case SDLK_RIGHT:
+            _playerTorque = -TurnSpeed;
+            break;
+
+        case SDLK_w:
+            break;
+
+        case SDLK_a:
+            break;
+
+        default:
+            break;
+    }
+}
+
+void GameModule::OnKeyUp(const SDL_Keysym& keysym)
+{
+    switch (keysym.sym)
+    {
+        case SDLK_LEFT:
+            if (_playerTorque.ToRadians() > 0.0f)
+                _playerTorque = RotationF();
+            break;
+
+        case SDLK_RIGHT:
+            if (_playerTorque.ToRadians() < 0.0f)
+                _playerTorque = RotationF();
+            break;
+
+        case SDLK_w:
+            break;
+
+        case SDLK_a:
+            break;
+
+        default:
+            break;
+    }
 }
 
 void GameModule::OnResize(int width, int height)
