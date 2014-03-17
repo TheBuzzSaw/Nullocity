@@ -6,7 +6,7 @@ static const float Max = 16.0f;
 
 Asteroid::Asteroid()
 {
-    static std::mt19937 generator;
+    static std::mt19937_64 generator;
     std::uniform_real_distribution<float> distribution(-Max, Max);
 
     _position.X(distribution(generator));

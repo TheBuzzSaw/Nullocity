@@ -75,8 +75,8 @@ void GameModule::OnLoop()
         _program.Draw(_cubeObject, GL_TRIANGLES);
     }
 
-    //glLoadMatrixf(matrix);
-    //_program.Draw(_linesObject, GL_LINES);
+    glLoadMatrixf(matrix);
+    _program.Draw(_linesObject, GL_LINES);
 
     _program.Close();
 }

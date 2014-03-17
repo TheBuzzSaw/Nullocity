@@ -39,14 +39,17 @@
 			<Add library="sdl2tk-win32" />
 			<Add library="mingw32" />
 			<Add library="SDL2main" />
+			<Add library="SDL2_image" />
 			<Add library="SDL2" />
 			<Add library="opengl32" />
+			<Add library="lua52" />
 			<Add directory="../../SDL2TK/project/win32" />
 		</Linker>
 		<Unit filename="../source/Asteroid.cpp" />
 		<Unit filename="../source/Asteroid.hpp" />
 		<Unit filename="../source/Builders.cpp" />
 		<Unit filename="../source/Builders.hpp" />
+		<Unit filename="../source/CollisionRadius.hpp" />
 		<Unit filename="../source/GameModule.cpp" />
 		<Unit filename="../source/GameModule.hpp" />
 		<Unit filename="../source/SimpleBufferObject.cpp" />
