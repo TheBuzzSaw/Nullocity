@@ -1,11 +1,27 @@
 #include "Entity.hpp"
 
-Entity::Entity()
+Entity::Entity(SimpleBufferObject& mObject)
 {
-    //ctor
+    _object = &mObject;
 }
 
 Entity::~Entity()
 {
-    //dtor
+}
+
+void Entity::Update()
+{
+    updatePosition();
+}
+
+void Entity::Draw(SimpleProgram& program)
+{
+    program.Draw(*_object, GL_TRIANGLES);
+}
+
+void Entity::updatePosition()
+{
+    _position += _velocity;
+    _rotationX += _torqueX;
+    _rotationY += _torqueY;
 }

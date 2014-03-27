@@ -3,8 +3,10 @@
 
 #include "SimpleProgram.hpp"
 #include "Asteroid.hpp"
+#include "Entity.hpp"
 #include <SDL2TK/Module.hpp>
 #include <SDL2TK/Camera.hpp>
+#include <vector>
 
 const int AsteroidCount = 64;
 
@@ -31,7 +33,7 @@ class GameModule : public SDL2TK::Module
         SimpleBufferObject _linesObject;
         SimpleBufferObject _cubeObject;
         SimpleBufferObject _squarePyramidObject;
-        Asteroid _asteroids[AsteroidCount];
+        std::vector<Entity> _asteroids;
         SDL2TK::Camera<GLfloat> _camera;
 
         SDL2TK::RotationF _playerRotation;

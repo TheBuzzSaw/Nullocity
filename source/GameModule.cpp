@@ -1,10 +1,16 @@
 #include "GameModule.hpp"
 #include "Builders.hpp"
 #include <SDL2TK/Matrix4x4.hpp>
+#include <SDL2TK/Rotation.hpp>
+#include <SDL2TK/Vector.hpp>
+#include <random>
+
 using namespace std;
 using namespace SDL2TK;
 
 const RotationF TurnSpeed = RotationF::FromDegrees(4.0f);
+
+static const float Max = 16.0f;
 
 GameModule::GameModule()
 {
@@ -15,6 +21,30 @@ GameModule::GameModule()
 
     _camera.Distance(32.0f);
     _camera.Vertical(RotationF::FromDegrees(-45.0f));
+
+    static std::mt19937_64 generator;
+    std::uniform_real_distribution<float> distribution(-Max, Max);
+
+    for (int i = 0; i < AsteroidCount; i++)
+    {
+        _asteroids.emplace_back(_cubeObject);
+
+        _asteroids[i].SetPositon(SDL2TK::Vector2F(distribution(generator),
+                                                  distribution(generator)));
+
+        _asteroids[i].SetVelocity(SDL2TK::Vector2F(distribution(generator) / 64.0f,
+                                                   distribution(generator) / 64.0f));
+
+        distribution = std::uniform_real_distribution<float>(-RotationF::Pi,
+                                                             RotationF::Pi);
+
+        _asteroids[i].SetRotation(RotationF::FromRadians(distribution(generator)),
+                                  RotationF::FromRadians(distribution(generator)));
+
+        _asteroids[i].SetTorque(RotationF::FromRadians(distribution(generator) / 40.0f),
+                                RotationF::FromRadians(distribution(generator) / 40.0f));
+    }
+
     //PulseInterval(SDL2TK::TimeSpan::FromSeconds(1) / 60);
 }
 
@@ -63,7 +93,7 @@ void GameModule::OnLoop()
 
     for (int i = 0; i < AsteroidCount; ++i)
     {
-        Asteroid& asteroid = _asteroids[i];
+        Entity& asteroid = _asteroids[i];
         Vector2F position = asteroid.Position();
         glLoadMatrixf(
             Matrix4x4F(matrix)
