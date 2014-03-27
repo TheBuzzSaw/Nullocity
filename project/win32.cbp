@@ -36,6 +36,8 @@
 		</Compiler>
 		<Linker>
 			<Add option="-m64" />
+			<Add option="-static-libgcc" />
+			<Add option="-static-libstdc++" />
 			<Add library="sdl2tk-win32" />
 			<Add library="mingw32" />
 			<Add library="SDL2main" />
@@ -50,6 +52,8 @@
 		<Unit filename="../source/Builders.cpp" />
 		<Unit filename="../source/Builders.hpp" />
 		<Unit filename="../source/CollisionRadius.hpp" />
+		<Unit filename="../source/Entity.cpp" />
+		<Unit filename="../source/Entity.hpp" />
 		<Unit filename="../source/GameModule.cpp" />
 		<Unit filename="../source/GameModule.hpp" />
 		<Unit filename="../source/SimpleBufferObject.cpp" />
