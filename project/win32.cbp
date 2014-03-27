@@ -46,7 +46,7 @@
 			<Add library="SDL2_image" />
 			<Add library="SDL2" />
 			<Add library="opengl32" />
-			<Add library="lua52" />
+			<Add library="lua" />
 			<Add directory="../../SDL2TK/project/win32" />
 		</Linker>
 		<Unit filename="../source/Asteroid.cpp" />

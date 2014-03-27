@@ -10,8 +10,8 @@ void TestLua()
     LuaState lua;
     cout << "LUA\n";
     lua.Execute("io.write(777);");
-    lua.Execute("asdf();");
-    //lua.Execute("Nullocity()");
+    //lua.Execute("asdf();");
+    lua.Execute("Nullocity.Test()");
 }
 
 void Start()
