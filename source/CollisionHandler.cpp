@@ -8,10 +8,10 @@ CollisionHandler::~CollisionHandler()
 
 void CollisionHandler::CheckCollisions()
 {
-    int size = Collidables.size();
-    for (int i = 0; i < size; i++)
+    auto size = Collidables.size();
+    for (decltype(size) i = 0; i < size; i++)
     {
-        for (int j = i + 1; j < size; j++)
+        for (decltype(size) j = i + 1; j < size; j++)
         {
             SDL2TK::Vector2F object1Pos = Collidables[i]->Position();
             SDL2TK::Vector2F object2Pos = Collidables[j]->Position();
