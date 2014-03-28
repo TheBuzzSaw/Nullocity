@@ -45,9 +45,9 @@ GameModule::GameModule()
                                 RotationF::FromRadians(distribution(generator) / 40.0f));
 
         _asteroids[i].SetRadius(1);
-
-        LHC.AddEntity(_asteroids[i]);
     }
+
+    for (auto& asteroid : _asteroids) LHC.AddEntity(asteroid);
 
     //PulseInterval(SDL2TK::TimeSpan::FromSeconds(1) / 60);
 }
