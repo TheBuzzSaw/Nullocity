@@ -2,10 +2,23 @@
 #include <algorithm>
 #include <iostream>
 
+static const int KeyBase = 0xBADC0DE;
+static constexpr void* GetKey() { return (void*)&KeyBase; }
+
+static LuaState& GetThis(lua_State* state)
+{
+    lua_pushlightuserdata(state, GetKey());
+    lua_gettable(state, LUA_REGISTRYINDEX);
+    return *reinterpret_cast<LuaState*>(lua_touserdata(state, -1));
+}
+
 LuaState::LuaState()
 {
     _state = luaL_newstate();
     luaL_openlibs(_state);
+
+    lua_pushnil(_state);
+    lua_setglobal(_state, "io");
 
     lua_newtable(_state);
 
@@ -13,6 +26,10 @@ LuaState::LuaState()
     lua_setfield(_state, 1, "Test");
 
     lua_setglobal(_state, "Nullocity");
+
+    lua_pushlightuserdata(_state, GetKey());
+    lua_pushlightuserdata(_state, this);
+    lua_settable(_state, LUA_REGISTRYINDEX);
 }
 
 LuaState::LuaState(LuaState&& other)
@@ -60,9 +77,17 @@ void LuaState::ReportErrors()
     lua_pop(_state, 1);
 }
 
+void LuaState::InternalTest()
+{
+    std::cout << "Internal test FTW!" << std::endl;
+}
+
 int LuaState::Test(lua_State* state)
 {
     std::cerr << "Successful call!\n";
+
+    LuaState& object = GetThis(state);
+    object.InternalTest();
 
     return 0;
 }

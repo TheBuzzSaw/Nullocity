@@ -24,6 +24,7 @@ class LuaState
 
         lua_State* _state;
 
+        void InternalTest();
         static int Test(lua_State* state);
 };
 
