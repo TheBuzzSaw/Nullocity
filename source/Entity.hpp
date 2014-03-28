@@ -16,6 +16,7 @@ class Entity
         const SDL2TK::Vector2F Velocity() const { return _position; }
         const SDL2TK::RotationF RotationX() const { return _rotationX; }
         const SDL2TK::RotationF RotationY() const { return _rotationY; }
+        const float Radius() const { return _radius; }
 
         void Update();
 
@@ -23,6 +24,7 @@ class Entity
         void SetVelocity(SDL2TK::Vector2F velocity) { _velocity = velocity; }
         void SetRotation(SDL2TK::RotationF x, SDL2TK::RotationF y) { _rotationX = x; _rotationY = y; }
         void SetTorque(SDL2TK::RotationF x, SDL2TK::RotationF y) { _torqueX = x; _torqueY = y; }
+        void SetRadius(float radius) { _radius = radius; }
         void Draw (SimpleProgram& program);
 
     protected:
@@ -34,6 +36,8 @@ class Entity
         SDL2TK::Vector2F _velocity;
         SDL2TK::RotationF _torqueX;
         SDL2TK::RotationF _torqueY;
+
+        float _radius;
 
         SimpleBufferObject* _object;
 

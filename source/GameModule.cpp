@@ -1,5 +1,5 @@
-#include "GameModule.hpp"
 #include "Builders.hpp"
+#include "GameModule.hpp"
 #include <SDL2TK/Matrix4x4.hpp>
 #include <SDL2TK/Rotation.hpp>
 #include <SDL2TK/Vector.hpp>
@@ -43,6 +43,10 @@ GameModule::GameModule()
 
         _asteroids[i].SetTorque(RotationF::FromRadians(distribution(generator) / 40.0f),
                                 RotationF::FromRadians(distribution(generator) / 40.0f));
+
+        _asteroids[i].SetRadius(1);
+
+        LHC.AddEntity(_asteroids[i]);
     }
 
     //PulseInterval(SDL2TK::TimeSpan::FromSeconds(1) / 60);
@@ -121,6 +125,8 @@ void GameModule::OnPulse()
         _asteroids[i].Update();
         FixPosition(_asteroids[i]);
     }
+
+    LHC.CheckCollisions();
 
 }
 
