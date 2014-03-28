@@ -2,7 +2,7 @@
 
 Entity::Entity(SimpleBufferObject& mObject)
 {
-    _radius = 0;
+    _radius = 1;
     _object = &mObject;
 }
 
