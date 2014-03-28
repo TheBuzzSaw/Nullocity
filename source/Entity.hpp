@@ -13,6 +13,7 @@ class Entity
         virtual ~Entity();
 
         const SDL2TK::Vector2F Position() const { return _position; }
+        const SDL2TK::Vector2F Velocity() const { return _position; }
         const SDL2TK::RotationF RotationX() const { return _rotationX; }
         const SDL2TK::RotationF RotationY() const { return _rotationY; }
 

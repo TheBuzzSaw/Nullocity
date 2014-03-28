@@ -29,8 +29,8 @@ GameModule::GameModule()
     {
         _asteroids.emplace_back(_cubeObject);
 
-        _asteroids[i].SetPositon(SDL2TK::Vector2F(distribution(generator),
-                                                  distribution(generator)));
+        _asteroids[i].SetPositon(SDL2TK::Vector2F(4*distribution(generator),
+                                                  4*distribution(generator)));
 
         _asteroids[i].SetVelocity(SDL2TK::Vector2F(distribution(generator) / 64.0f,
                                                    distribution(generator) / 64.0f));
@@ -117,7 +117,11 @@ void GameModule::OnPulse()
     _camera.Horizontal(-_playerRotation);
 
     for (int i = 0; i < AsteroidCount; ++i)
+    {
         _asteroids[i].Update();
+        FixPosition(_asteroids[i]);
+    }
+
 }
 
 void GameModule::OnSecond(int framesPerSecond)
@@ -190,4 +194,39 @@ void GameModule::OnResize(int width, int height)
     glMatrixMode(GL_PROJECTION);
     glLoadMatrixf(matrix);
     glMatrixMode(GL_MODELVIEW);
+}
+
+void GameModule::FixPosition(Entity& entity)
+{
+    SDL2TK::Vector2F position = entity.Position();
+    SDL2TK::Vector2F velocity = entity.Velocity();
+    float x = position.X();
+    bool jumpPosition = false;
+    if (velocity.X() > 0.0f && x > Max)
+    {
+        position.X(x - Max - Max);
+        jumpPosition = true;
+    }
+    else if (velocity.X() < 0.0f && x < -Max)
+    {
+        position.X(x + Max + Max);
+        jumpPosition = true;
+    }
+
+    float y = position.Y();
+    if (velocity.Y() > 0.0f && y > Max)
+    {
+        position.Y(y - Max - Max);
+        jumpPosition = true;
+    }
+    else if (velocity.Y() < 0.0f && y < -Max)
+    {
+        position.X(y + Max + Max);
+        jumpPosition = true;
+    }
+
+    if (jumpPosition)
+    {
+        entity.SetPositon(position);
+    }
 }

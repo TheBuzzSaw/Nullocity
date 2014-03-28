@@ -38,6 +38,8 @@ class GameModule : public SDL2TK::Module
 
         SDL2TK::RotationF _playerRotation;
         SDL2TK::RotationF _playerTorque;
+
+        void FixPosition(Entity& entity);
 };
 
 #endif
