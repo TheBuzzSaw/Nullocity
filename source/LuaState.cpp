@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <iostream>
 
+static const char* const PackageName = "Nullocity";
+
 LuaState::LuaState()
 {
     _state = luaL_newstate();
@@ -12,7 +14,7 @@ LuaState::LuaState()
     //lua_setglobal(_state, "io");
 
     lua_newtable(_state);
-    lua_setglobal(_state, "Nullocity");
+    lua_setglobal(_state, PackageName);
 
     AddFunction(Test, "Test");
 }
@@ -42,7 +44,7 @@ LuaState& LuaState::operator=(LuaState&& other)
 
 void LuaState::AddFunction(lua_CFunction callback, const char* name)
 {
-    lua_getglobal(_state, "Nullocity");
+    lua_getglobal(_state, PackageName);
     lua_pushcfunction(_state, callback);
     lua_setfield(_state, -2, name);
     lua_pop(_state, -1);
@@ -56,6 +58,12 @@ void LuaState::Execute(const char* command)
         ReportErrors();
     else
         Execute();
+}
+
+void LuaState::ExecuteFile(const char* path)
+{
+    auto status = luaL_dofile(_state, path);
+    if (status) ReportErrors();
 }
 
 void LuaState::SetUserData(void* key, void* value)

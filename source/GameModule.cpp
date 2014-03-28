@@ -47,8 +47,7 @@ void GameModule::OnOpen()
     const float N = 1.0f / 8.0f;
     glClearColor(N, N, N, 1.0f);
 
-    for (int i = 0; i < 8; ++i)
-        _lua.Execute("Nullocity.AddEntity()");
+    _lua.ExecuteFile("main.lua");
 }
 
 void GameModule::OnClose()

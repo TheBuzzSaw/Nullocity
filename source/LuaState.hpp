@@ -14,6 +14,7 @@ class LuaState
 
         void AddFunction(lua_CFunction callback, const char* name);
         void Execute(const char* command);
+        void ExecuteFile(const char* path);
         void SetUserData(void* key, void* value);
 
         static void* GetUserData(lua_State* state, void* key);
