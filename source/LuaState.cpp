@@ -2,34 +2,19 @@
 #include <algorithm>
 #include <iostream>
 
-static const int KeyBase = 0xBADC0DE;
-static constexpr void* GetKey() { return (void*)&KeyBase; }
-
-static LuaState& GetThis(lua_State* state)
-{
-    lua_pushlightuserdata(state, GetKey());
-    lua_gettable(state, LUA_REGISTRYINDEX);
-    return *reinterpret_cast<LuaState*>(lua_touserdata(state, -1));
-}
-
 LuaState::LuaState()
 {
     _state = luaL_newstate();
     luaL_openlibs(_state);
 
-    lua_pushnil(_state);
-    lua_setglobal(_state, "io");
+    // Experimenting with disabling libraries.
+    //lua_pushnil(_state);
+    //lua_setglobal(_state, "io");
 
     lua_newtable(_state);
-
-    lua_pushcfunction(_state, Test);
-    lua_setfield(_state, 1, "Test");
-
     lua_setglobal(_state, "Nullocity");
 
-    lua_pushlightuserdata(_state, GetKey());
-    lua_pushlightuserdata(_state, this);
-    lua_settable(_state, LUA_REGISTRYINDEX);
+    AddFunction(Test, "Test");
 }
 
 LuaState::LuaState(LuaState&& other)
@@ -55,6 +40,14 @@ LuaState& LuaState::operator=(LuaState&& other)
     return *this;
 }
 
+void LuaState::AddFunction(lua_CFunction callback, const char* name)
+{
+    lua_getglobal(_state, "Nullocity");
+    lua_pushcfunction(_state, callback);
+    lua_setfield(_state, -2, name);
+    lua_pop(_state, -1);
+}
+
 void LuaState::Execute(const char* command)
 {
     auto status = luaL_loadstring(_state, command);
@@ -63,6 +56,13 @@ void LuaState::Execute(const char* command)
         ReportErrors();
     else
         Execute();
+}
+
+void LuaState::SetUserData(void* key, void* value)
+{
+    lua_pushlightuserdata(_state, key);
+    lua_pushlightuserdata(_state, value);
+    lua_settable(_state, LUA_REGISTRYINDEX);
 }
 
 void LuaState::Execute()
@@ -77,17 +77,16 @@ void LuaState::ReportErrors()
     lua_pop(_state, 1);
 }
 
-void LuaState::InternalTest()
+void* LuaState::GetUserData(lua_State* state, void* key)
 {
-    std::cout << "Internal test FTW!" << std::endl;
+    lua_pushlightuserdata(state, key);
+    lua_gettable(state, LUA_REGISTRYINDEX);
+    return lua_touserdata(state, -1);
 }
 
 int LuaState::Test(lua_State* state)
 {
     std::cerr << "Successful call!\n";
-
-    LuaState& object = GetThis(state);
-    object.InternalTest();
 
     return 0;
 }

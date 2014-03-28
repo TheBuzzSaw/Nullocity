@@ -8,9 +8,10 @@
 using namespace std;
 using namespace SDL2TK;
 
-const RotationF TurnSpeed = RotationF::FromDegrees(4.0f);
-
+static const RotationF TurnSpeed = RotationF::FromDegrees(4.0f);
 static const float Max = 16.0f;
+
+const int GameModule::KeyBase = 0xBADC0DE;
 
 GameModule::GameModule()
 {
@@ -22,28 +23,8 @@ GameModule::GameModule()
     _camera.Distance(32.0f);
     _camera.Vertical(RotationF::FromDegrees(-45.0f));
 
-    static std::mt19937_64 generator;
-    std::uniform_real_distribution<float> distribution(-Max, Max);
-
-    for (int i = 0; i < AsteroidCount; i++)
-    {
-        _asteroids.emplace_back(_cubeObject);
-
-        _asteroids[i].SetPositon(SDL2TK::Vector2F(4*distribution(generator),
-                                                  4*distribution(generator)));
-
-        _asteroids[i].SetVelocity(SDL2TK::Vector2F(distribution(generator) / 64.0f,
-                                                   distribution(generator) / 64.0f));
-
-        distribution = std::uniform_real_distribution<float>(-RotationF::Pi,
-                                                             RotationF::Pi);
-
-        _asteroids[i].SetRotation(RotationF::FromRadians(distribution(generator)),
-                                  RotationF::FromRadians(distribution(generator)));
-
-        _asteroids[i].SetTorque(RotationF::FromRadians(distribution(generator) / 40.0f),
-                                RotationF::FromRadians(distribution(generator) / 40.0f));
-    }
+    _lua.SetUserData((void*)&KeyBase, this);
+    _lua.AddFunction(AddEntity, "AddEntity");
 
     //PulseInterval(SDL2TK::TimeSpan::FromSeconds(1) / 60);
 }
@@ -66,6 +47,9 @@ void GameModule::OnOpen()
 
     const float N = 1.0f / 8.0f;
     glClearColor(N, N, N, 1.0f);
+
+    for (int i = 0; i < 8; ++i)
+        _lua.Execute("Nullocity.AddEntity()");
 }
 
 void GameModule::OnClose()
@@ -91,9 +75,8 @@ void GameModule::OnLoop()
 
     _program.Draw(_squarePyramidObject, GL_TRIANGLES);
 
-    for (int i = 0; i < AsteroidCount; ++i)
+    for (auto& asteroid : _asteroids)
     {
-        Entity& asteroid = _asteroids[i];
         Vector2F position = asteroid.Position();
         glLoadMatrixf(
             Matrix4x4F(matrix)
@@ -116,12 +99,11 @@ void GameModule::OnPulse()
     _playerRotation += _playerTorque;
     _camera.Horizontal(-_playerRotation);
 
-    for (int i = 0; i < AsteroidCount; ++i)
+    for (auto& asteroid : _asteroids)
     {
-        _asteroids[i].Update();
-        FixPosition(_asteroids[i]);
+        asteroid.Update();
+        FixPosition(asteroid);
     }
-
 }
 
 void GameModule::OnSecond(int framesPerSecond)
@@ -229,4 +211,37 @@ void GameModule::FixPosition(Entity& entity)
     {
         entity.SetPositon(position);
     }
+}
+
+GameModule& GameModule::FromLua(lua_State* state)
+{
+    void* raw = LuaState::GetUserData(state, (void*)&KeyBase);
+    return *reinterpret_cast<GameModule*>(raw);
+}
+
+int GameModule::AddEntity(lua_State* state)
+{
+    GameModule& gm = GameModule::FromLua(state);
+
+    static std::mt19937_64 generator;
+    std::uniform_real_distribution<float> distribution(-Max, Max);
+
+    auto i = gm._asteroids.size();
+    gm._asteroids.emplace_back(gm._cubeObject);
+    gm._asteroids[i].SetPositon(SDL2TK::Vector2F(4*distribution(generator),
+                                              4*distribution(generator)));
+
+    gm._asteroids[i].SetVelocity(SDL2TK::Vector2F(distribution(generator) / 64.0f,
+                                               distribution(generator) / 64.0f));
+
+    distribution = std::uniform_real_distribution<float>(-RotationF::Pi,
+                                                         RotationF::Pi);
+
+    gm._asteroids[i].SetRotation(RotationF::FromRadians(distribution(generator)),
+                              RotationF::FromRadians(distribution(generator)));
+
+    gm._asteroids[i].SetTorque(RotationF::FromRadians(distribution(generator) / 40.0f),
+                            RotationF::FromRadians(distribution(generator) / 40.0f));
+
+    return 0;
 }

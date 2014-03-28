@@ -4,11 +4,10 @@
 #include "SimpleProgram.hpp"
 #include "Asteroid.hpp"
 #include "Entity.hpp"
+#include "LuaState.hpp"
 #include <SDL2TK/Module.hpp>
 #include <SDL2TK/Camera.hpp>
 #include <vector>
-
-const int AsteroidCount = 64;
 
 class GameModule : public SDL2TK::Module
 {
@@ -39,7 +38,13 @@ class GameModule : public SDL2TK::Module
         SDL2TK::RotationF _playerRotation;
         SDL2TK::RotationF _playerTorque;
 
+        LuaState _lua;
+
         void FixPosition(Entity& entity);
+
+        static const int KeyBase;
+        static GameModule& FromLua(lua_State* state);
+        static int AddEntity(lua_State* state);
 };
 
 #endif

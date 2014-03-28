@@ -12,7 +12,11 @@ class LuaState
 
         LuaState& operator=(LuaState&& other);
 
+        void AddFunction(lua_CFunction callback, const char* name);
         void Execute(const char* command);
+        void SetUserData(void* key, void* value);
+
+        static void* GetUserData(lua_State* state, void* key);
 
     protected:
     private:
@@ -24,7 +28,6 @@ class LuaState
 
         lua_State* _state;
 
-        void InternalTest();
         static int Test(lua_State* state);
 };
 
