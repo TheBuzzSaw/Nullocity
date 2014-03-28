@@ -5,9 +5,10 @@
 #include "Asteroid.hpp"
 #include "Entity.hpp"
 #include "LuaState.hpp"
+#include "CollisionHandler.hpp"
 #include <SDL2TK/Module.hpp>
 #include <SDL2TK/Camera.hpp>
-#include <vector>
+#include <unordered_set>
 
 class GameModule : public SDL2TK::Module
 {
@@ -32,7 +33,10 @@ class GameModule : public SDL2TK::Module
         SimpleBufferObject _linesObject;
         SimpleBufferObject _cubeObject;
         SimpleBufferObject _squarePyramidObject;
-        std::vector<Entity> _asteroids;
+
+        CollisionHandler LHC;
+
+        std::unordered_set<Entity*> _asteroids;
         SDL2TK::Camera<GLfloat> _camera;
 
         SDL2TK::RotationF _playerRotation;

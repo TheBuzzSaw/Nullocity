@@ -53,6 +53,8 @@
 		<Unit filename="../source/Asteroid.hpp" />
 		<Unit filename="../source/Builders.cpp" />
 		<Unit filename="../source/Builders.hpp" />
+		<Unit filename="../source/CollisionHandler.cpp" />
+		<Unit filename="../source/CollisionHandler.hpp" />
 		<Unit filename="../source/CollisionRadius.hpp" />
 		<Unit filename="../source/Entity.cpp" />
 		<Unit filename="../source/Entity.hpp" />
