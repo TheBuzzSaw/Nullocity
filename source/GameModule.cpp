@@ -25,6 +25,11 @@ GameModule::GameModule()
 
     _lua.SetUserData((void*)&KeyBase, this);
     _lua.AddFunction(AddEntity, "AddEntity");
+    _lua.AddFunction(SetPosition, "SetPosition");
+    _lua.AddFunction(SetVelocity, "SetVelocity");
+    _lua.AddFunction(SetRotation, "SetRotation");
+    _lua.AddFunction(SetTorque, "SetTorque");
+    _lua.AddFunction(GetRandom, "GetRandom");
 }
 
 GameModule::~GameModule()
@@ -223,26 +228,118 @@ int GameModule::AddEntity(lua_State* state)
 {
     GameModule& gm = GameModule::FromLua(state);
 
-    static std::mt19937_64 generator;
-    std::uniform_real_distribution<float> distribution(-Max, Max);
-
     Entity* entity = new Entity(gm._cubeObject);
     gm._asteroids.insert(entity);
     gm.LHC.AddEntity(*entity);
-    entity->SetPositon(SDL2TK::Vector2F(4*distribution(generator),
-        4*distribution(generator)));
 
-    entity->SetVelocity(SDL2TK::Vector2F(distribution(generator) / 64.0f,
-        distribution(generator) / 64.0f));
+    lua_pushlightuserdata(state, entity);
 
-    distribution = std::uniform_real_distribution<float>(-RotationF::Pi,
-        RotationF::Pi);
+    return 1;
+}
 
-    entity->SetRotation(RotationF::FromRadians(distribution(generator)),
-        RotationF::FromRadians(distribution(generator)));
+int GameModule::SetPosition(lua_State* state)
+{
+    GameModule& gm = GameModule::FromLua(state);
 
-    entity->SetTorque(RotationF::FromRadians(distribution(generator) / 40.0f),
-        RotationF::FromRadians(distribution(generator) / 40.0f));
+    auto argc = lua_gettop(state);
+    if (argc > 2 && lua_isuserdata(state, 1) && lua_isnumber(state, 2)
+        && lua_isnumber(state, 3))
+    {
+        Entity* entity = (Entity*)lua_touserdata(state, 1);
+
+        if (gm._asteroids.count(entity) > 0)
+        {
+            auto x = lua_tonumber(state, 2);
+            auto y = lua_tonumber(state, 3);
+            entity->SetPositon(SDL2TK::Vector2F(x, y));
+        }
+    }
 
     return 0;
+}
+
+int GameModule::SetVelocity(lua_State* state)
+{
+    GameModule& gm = GameModule::FromLua(state);
+
+    auto argc = lua_gettop(state);
+    if (argc > 2 && lua_isuserdata(state, 1) && lua_isnumber(state, 2)
+        && lua_isnumber(state, 3))
+    {
+        Entity* entity = (Entity*)lua_touserdata(state, 1);
+
+        if (gm._asteroids.count(entity) > 0)
+        {
+            auto x = lua_tonumber(state, 2);
+            auto y = lua_tonumber(state, 3);
+            entity->SetVelocity(SDL2TK::Vector2F(x, y));
+        }
+    }
+
+    return 0;
+}
+
+int GameModule::SetRotation(lua_State* state)
+{
+    GameModule& gm = GameModule::FromLua(state);
+
+    auto argc = lua_gettop(state);
+    if (argc > 2 && lua_isuserdata(state, 1) && lua_isnumber(state, 2)
+        && lua_isnumber(state, 3))
+    {
+        Entity* entity = (Entity*)lua_touserdata(state, 1);
+
+        if (gm._asteroids.count(entity) > 0)
+        {
+            auto x = lua_tonumber(state, 2);
+            auto y = lua_tonumber(state, 3);
+            entity->SetRotation(SDL2TK::RotationF::FromDegrees(x),
+                SDL2TK::RotationF::FromDegrees(y));
+        }
+    }
+
+    return 0;
+}
+
+int GameModule::SetTorque(lua_State* state)
+{
+    GameModule& gm = GameModule::FromLua(state);
+
+    auto argc = lua_gettop(state);
+    if (argc > 2 && lua_isuserdata(state, 1) && lua_isnumber(state, 2)
+        && lua_isnumber(state, 3))
+    {
+        Entity* entity = (Entity*)lua_touserdata(state, 1);
+
+        if (gm._asteroids.count(entity) > 0)
+        {
+            auto x = lua_tonumber(state, 2);
+            auto y = lua_tonumber(state, 3);
+            entity->SetTorque(SDL2TK::RotationF::FromDegrees(x),
+                SDL2TK::RotationF::FromDegrees(y));
+        }
+    }
+
+    return 0;
+}
+
+int GameModule::GetRandom(lua_State* state)
+{
+    auto argc = lua_gettop(state);
+    if (argc > 1 && lua_isnumber(state, 1) && lua_isnumber(state, 2))
+    {
+        GameModule& gm = GameModule::FromLua(state);
+        auto low = lua_tonumber(state, 1);
+        auto high = lua_tonumber(state, 2);
+
+        std::uniform_real_distribution<decltype(low)> distribution(low, high);
+        auto result = distribution(gm._generator);
+        lua_pushnumber(state, result);
+    }
+    else
+    {
+        lua_pushnil(state);
+    }
+
+    return 1;
 }

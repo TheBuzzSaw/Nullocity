@@ -9,6 +9,7 @@
 #include <SDL2TK/Module.hpp>
 #include <SDL2TK/Camera.hpp>
 #include <unordered_set>
+#include <random>
 
 class GameModule : public SDL2TK::Module
 {
@@ -43,12 +44,18 @@ class GameModule : public SDL2TK::Module
         SDL2TK::RotationF _playerTorque;
 
         LuaState _lua;
+        std::mt19937_64 _generator;
 
         void FixPosition(Entity& entity);
 
         static const int KeyBase;
         static GameModule& FromLua(lua_State* state);
         static int AddEntity(lua_State* state);
+        static int SetPosition(lua_State* state);
+        static int SetVelocity(lua_State* state);
+        static int SetRotation(lua_State* state);
+        static int SetTorque(lua_State* state);
+        static int GetRandom(lua_State* state);
 };
 
 #endif
