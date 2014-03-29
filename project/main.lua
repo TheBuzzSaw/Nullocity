@@ -72,6 +72,12 @@ function NewBaseEntity(mass)
     return result
 end
 
+Nullocity.Debug = function()
+    for _, v in pairs(allEntities) do
+        print(v.GetPosition())
+    end
+end
+
 gr = Nullocity.GetRandom
 
 for i = 1, 16 do

@@ -155,6 +155,10 @@ void GameModule::OnKeyDown(const SDL_Keysym& keysym)
         case SDLK_a:
             break;
 
+        case SDLK_g:
+            _lua.Execute("Nullocity.Debug()");
+            break;
+
         default:
             break;
     }
