@@ -36,6 +36,7 @@ class GameModule : public SDL2TK::Module
         SimpleBufferObject _squarePyramidObject;
 
         std::unordered_set<Entity*> _asteroids;
+        std::vector<Entity*> _deadEntities;
         SDL2TK::Camera<GLfloat> _camera;
 
         SDL2TK::RotationF _playerRotation;
@@ -50,6 +51,7 @@ class GameModule : public SDL2TK::Module
         static const int KeyBase;
         static GameModule& FromLua(lua_State* state);
         static int AddEntity(lua_State* state);
+        static int RemoveEntity(lua_State* state);
 
         static int SetPosition(lua_State* state);
         static int SetVelocity(lua_State* state);

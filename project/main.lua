@@ -3,11 +3,20 @@ allEntities = {}
 function OnCollision(a, b)
     entityA = allEntities[a]
     entityB = allEntities[b]
-    io.write("Lua Collision " .. entityA.Mass() .. ' ' .. entityB.Mass() .. '\n')
+    
+    entityA.Remove()
+    --entityB.Remove()
+    
+    --io.write("Lua Collision " .. entityA.Mass() .. ' ' .. entityB.Mass() .. '\n')
 end
 
 function NewBaseEntity(mass)
     local self = { entity = Nullocity.AddEntity(), mass = mass }
+    
+    local Remove = function()
+            allEntities[self.entity] = nil
+            Nullocity.RemoveEntity(self.entity)
+        end
     
     local SetPosition = function(x, y)
             Nullocity.SetPosition(self.entity, x, y)
@@ -44,6 +53,7 @@ function NewBaseEntity(mass)
     local Mass = function() return self.mass end
     
     local result = {
+        Remove = Remove,
         SetPosition = SetPosition,
         SetVelocity = SetVelocity,
         SetRotation = SetRotation,
@@ -61,7 +71,7 @@ end
 
 gr = Nullocity.GetRandom
 
-for i = 1, 8 do
+for i = 1, 16 do
     local entity = NewBaseEntity(i)
     entity.SetPosition(gr(-16, 16), gr(-16, 16))
     entity.SetVelocity(gr(-1, 1), gr(-1, 1))

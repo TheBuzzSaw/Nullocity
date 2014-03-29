@@ -27,6 +27,7 @@ GameModule::GameModule()
 
     _lua.SetUserData((void*)&KeyBase, this);
     _lua.AddFunction(AddEntity, "AddEntity");
+    _lua.AddFunction(RemoveEntity, "RemoveEntity");
     _lua.AddFunction(SetPosition, "SetPosition");
     _lua.AddFunction(SetVelocity, "SetVelocity");
     _lua.AddFunction(SetRotation, "SetRotation");
@@ -115,6 +116,17 @@ void GameModule::OnPulse()
     }
 
     LHC.CheckCollisions();
+
+    for (auto entity : _deadEntities)
+    {
+        if (_asteroids.erase(entity) > 0)
+        {
+            LHC.RemoveEntity(*entity);
+            delete entity;
+        }
+    }
+
+    _deadEntities.clear();
 }
 
 void GameModule::OnSecond(int framesPerSecond)
@@ -241,6 +253,19 @@ int GameModule::AddEntity(lua_State* state)
     lua_pushlightuserdata(state, entity);
 
     return 1;
+}
+
+int GameModule::RemoveEntity(lua_State* state)
+{
+    auto argc = lua_gettop(state);
+    if (argc > 0 && lua_isuserdata(state, 1))
+    {
+        GameModule& gm = GameModule::FromLua(state);
+        Entity* entity = (Entity*)lua_touserdata(state, 1);
+        gm._deadEntities.push_back(entity);
+    }
+
+    return 0;
 }
 
 int GameModule::SetPosition(lua_State* state)

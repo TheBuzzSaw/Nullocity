@@ -4,6 +4,7 @@
 #include "Entity.hpp"
 #include "LuaState.hpp"
 #include <vector>
+#include <algorithm>
 
 class CollisionHandler
 {
@@ -12,6 +13,13 @@ class CollisionHandler
         ~CollisionHandler();
 
         void AddEntity(Entity& entity) { Collidables.push_back(&entity); }
+        void RemoveEntity(Entity& entity)
+        {
+            auto i = std::find(Collidables.begin(), Collidables.end(), &entity);
+
+            if (i != Collidables.end())
+                Collidables.erase(i);
+        }
 
         void CheckCollisions();
     protected:
