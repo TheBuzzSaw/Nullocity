@@ -3,14 +3,16 @@ allEntities = {}
 function OnCollision(a, b)
     entityA = allEntities[a]
     entityB = allEntities[b]
+    
+    -- If an entity has been removed,
+    -- it'll come back nil.
+    if entityA and entityB then
+        ax, ay = entityA.GetVelocity()
+        bx, by = entityB.GetVelocity()
 	
-	ax, ay = entityA.GetVelocity();
-	bx, by = entityB.GetVelocity();
-	
-	entityA.SetVelocity(bx,by);
-	entityB.SetVelocity(ax,ay);
-	
-  --  io.write("Lua Collision " .. entityA.Mass() .. ' ' .. entityB.Mass() .. '\n')
+        entityA.SetVelocity(bx, by)
+        entityB.SetVelocity(ax, ay)
+    end
 end
 
 function NewBaseEntity(mass)
@@ -72,7 +74,8 @@ function NewBaseEntity(mass)
     return result
 end
 
-Nullocity.Debug = function()
+function Debug()
+    print("--- Entity Position Dump ---")
     for _, v in pairs(allEntities) do
         print(v.GetPosition())
     end

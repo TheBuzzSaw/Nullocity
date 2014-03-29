@@ -85,7 +85,7 @@ void GameModule::OnLoop()
 
     _program.Draw(_squarePyramidObject, GL_TRIANGLES);
 
-    for (auto& asteroid : _asteroids)
+    for (auto asteroid : _asteroids)
     {
         Vector2F position = asteroid->Position();
         glLoadMatrixf(
@@ -156,7 +156,7 @@ void GameModule::OnKeyDown(const SDL_Keysym& keysym)
             break;
 
         case SDLK_g:
-            _lua.Execute("Nullocity.Debug()");
+            _lua.Execute("Debug()");
             break;
 
         default:
