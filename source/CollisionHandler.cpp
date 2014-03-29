@@ -41,9 +41,13 @@ void CollisionHandler::CheckCollisions()
                     //_lua.PushReference(_luaCollisionCallback);
                     lua_rawgeti(state, LUA_REGISTRYINDEX,
                         _luaCollisionCallback);
+                    SDL2TK::Vector2F aVelocityInitial = Collidables[i]->Velocity();
+                    SDL2TK::Vector2F bVelocityInitial = Collidables[j]->Velocity();
                     lua_pushlightuserdata(state, Collidables[i]);
                     lua_pushlightuserdata(state, Collidables[j]);
                     auto status = lua_pcall(state, 2, 0, 0);
+                    SDL2TK::Vector2F aVelocityFinal = Collidables[i]->Velocity();
+                    SDL2TK::Vector2F bVelocityFinal = Collidables[j]->Velocity();
                     if (status) _lua.ReportErrors();
                 }
             }
