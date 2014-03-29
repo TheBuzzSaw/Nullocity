@@ -3,7 +3,7 @@
 #include <SDL2TK/Matrix4x4.hpp>
 #include <SDL2TK/Rotation.hpp>
 #include <SDL2TK/Vector.hpp>
-#include <random>
+#include <chrono>
 
 using namespace std;
 using namespace SDL2TK;
@@ -14,6 +14,7 @@ static const float Max = 16.0f;
 const int GameModule::KeyBase = 0xBADC0DE;
 
 GameModule::GameModule()
+    : _generator(std::chrono::system_clock::now().time_since_epoch().count())
 {
     //(void)BuildPyramid;
     _cubeObject = BuildCube();
