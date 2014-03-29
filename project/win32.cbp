@@ -60,8 +60,6 @@
 		<Unit filename="../source/Entity.hpp" />
 		<Unit filename="../source/GameModule.cpp" />
 		<Unit filename="../source/GameModule.hpp" />
-		<Unit filename="../source/LuaReference.cpp" />
-		<Unit filename="../source/LuaReference.hpp" />
 		<Unit filename="../source/LuaState.cpp" />
 		<Unit filename="../source/LuaState.hpp" />
 		<Unit filename="../source/SimpleBufferObject.cpp" />

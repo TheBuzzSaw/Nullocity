@@ -35,8 +35,6 @@ class GameModule : public SDL2TK::Module
         SimpleBufferObject _cubeObject;
         SimpleBufferObject _squarePyramidObject;
 
-        CollisionHandler LHC;
-
         std::unordered_set<Entity*> _asteroids;
         SDL2TK::Camera<GLfloat> _camera;
 
@@ -45,6 +43,7 @@ class GameModule : public SDL2TK::Module
 
         LuaState _lua;
         std::mt19937_64 _generator;
+        CollisionHandler LHC;
 
         void FixPosition(Entity& entity);
 

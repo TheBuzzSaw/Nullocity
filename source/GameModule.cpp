@@ -15,6 +15,7 @@ const int GameModule::KeyBase = 0xBADC0DE;
 
 GameModule::GameModule()
     : _generator(std::chrono::system_clock::now().time_since_epoch().count())
+    , LHC(_lua)
 {
     //(void)BuildPyramid;
     _cubeObject = BuildCube();
