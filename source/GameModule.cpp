@@ -30,6 +30,10 @@ GameModule::GameModule()
     _lua.AddFunction(SetVelocity, "SetVelocity");
     _lua.AddFunction(SetRotation, "SetRotation");
     _lua.AddFunction(SetTorque, "SetTorque");
+    _lua.AddFunction(GetPosition, "GetPosition");
+    _lua.AddFunction(GetVelocity, "GetVelocity");
+    _lua.AddFunction(GetRotation, "GetRotation");
+    _lua.AddFunction(GetTorque, "GetTorque");
     _lua.AddFunction(GetRandom, "GetRandom");
 }
 
@@ -318,6 +322,102 @@ int GameModule::SetTorque(lua_State* state)
             auto y = lua_tonumber(state, 3);
             entity->SetTorque(SDL2TK::RotationF::FromDegrees(x),
                 SDL2TK::RotationF::FromDegrees(y));
+        }
+    }
+
+    return 0;
+}
+
+int GameModule::GetPosition(lua_State* state)
+{
+    GameModule& gm = GameModule::FromLua(state);
+
+    auto argc = lua_gettop(state);
+    if (argc > 0 && lua_isuserdata(state, 1))
+    {
+        Entity* entity = (Entity*)lua_touserdata(state, 1);
+
+        if (gm._asteroids.count(entity) > 0)
+        {
+            SDL2TK::Vector2F position = entity->Position();
+
+            auto x = position.X();
+            auto y = position.Y();
+
+            lua_pushnumber(state, x);
+            lua_pushnumber(state, y);
+            return 2;
+        }
+    }
+
+    return 0;
+}
+
+int GameModule::GetVelocity(lua_State* state)
+{
+    GameModule& gm = GameModule::FromLua(state);
+
+    auto argc = lua_gettop(state);
+    if (argc > 0 && lua_isuserdata(state, 1))
+    {
+        Entity* entity = (Entity*)lua_touserdata(state, 1);
+
+        if (gm._asteroids.count(entity) > 0)
+        {
+            SDL2TK::Vector2F velocity = entity->Velocity();
+
+            auto x = velocity.X();
+            auto y = velocity.Y();
+
+            lua_pushnumber(state, x);
+            lua_pushnumber(state, y);
+            return 2;
+        }
+    }
+
+    return 0;
+}
+
+int GameModule::GetRotation(lua_State* state) //"Rotato Express, good for peeling potatoes, bad for peeling cans"
+{
+    GameModule& gm = GameModule::FromLua(state);
+
+    auto argc = lua_gettop(state);
+    if (argc > 0 && lua_isuserdata(state, 1))
+    {
+        Entity* entity = (Entity*)lua_touserdata(state, 1);
+
+        if (gm._asteroids.count(entity) > 0)
+        {
+            auto x = entity->RotationX().ToDegrees();
+            auto y = entity->RotationY().ToDegrees();
+
+            lua_pushnumber(state, x);
+            lua_pushnumber(state, y);
+            return 2;
+        }
+    }
+
+    return 0;
+}
+
+int GameModule::GetTorque(lua_State* state)
+{
+    GameModule& gm = GameModule::FromLua(state);
+
+    auto argc = lua_gettop(state);
+    if (argc > 0 && lua_isuserdata(state, 1))
+    {
+        Entity* entity = (Entity*)lua_touserdata(state, 1);
+
+        if (gm._asteroids.count(entity) > 0)
+        {
+            auto x = entity->TorqueX().ToDegrees();
+            auto y = entity->TorqueY().ToDegrees();
+
+            lua_pushnumber(state, x);
+            lua_pushnumber(state, y);
+            return 2;
         }
     }
 

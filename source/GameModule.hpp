@@ -51,10 +51,17 @@ class GameModule : public SDL2TK::Module
         static const int KeyBase;
         static GameModule& FromLua(lua_State* state);
         static int AddEntity(lua_State* state);
+
         static int SetPosition(lua_State* state);
         static int SetVelocity(lua_State* state);
         static int SetRotation(lua_State* state);
         static int SetTorque(lua_State* state);
+
+        static int GetPosition(lua_State* state);
+        static int GetVelocity(lua_State* state);
+        static int GetRotation(lua_State* state);
+        static int GetTorque(lua_State* state);
+
         static int GetRandom(lua_State* state);
 };
 
