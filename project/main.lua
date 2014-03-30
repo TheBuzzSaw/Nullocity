@@ -98,4 +98,4 @@ end
 
 Nullocity.SetCollisionCallback(OnCollision)
 
-io.write('BLAM\n')
+print('Blam')

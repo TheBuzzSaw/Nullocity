@@ -20,15 +20,15 @@ void CollisionHandler::CheckCollisions()
 {
     if (_luaCollisionCallback != LUA_NOREF)
     {
-        auto size = Collidables.size();
+        auto size = _entities.size();
         for (decltype(size) i = 0; i < size; i++)
         {
             for (decltype(size) j = i + 1; j < size; j++)
             {
-                SDL2TK::Vector2F object1Pos = Collidables[i]->Position();
-                SDL2TK::Vector2F object2Pos = Collidables[j]->Position();
-                float object1Rad = Collidables[i]->Radius();
-                float object2Rad = Collidables[j]->Radius();
+                SDL2TK::Vector2F object1Pos = _entities[i]->Position();
+                SDL2TK::Vector2F object2Pos = _entities[j]->Position();
+                float object1Rad = _entities[i]->Radius();
+                float object2Rad = _entities[j]->Radius();
                 float minimumDistance = object1Rad + object2Rad;
                 minimumDistance *= minimumDistance;
                 float distance = (object1Pos - object2Pos).LengthSquared()
@@ -36,18 +36,11 @@ void CollisionHandler::CheckCollisions()
 
                 if (distance <= 0)
                 {
-                    //std::cout << "Collision! " << i << " " << j << std::endl;
                     auto state = _lua.Raw();
-                    //_lua.PushReference(_luaCollisionCallback);
-                    lua_rawgeti(state, LUA_REGISTRYINDEX,
-                        _luaCollisionCallback);
-                    SDL2TK::Vector2F aVelocityInitial = Collidables[i]->Velocity();
-                    SDL2TK::Vector2F bVelocityInitial = Collidables[j]->Velocity();
-                    lua_pushlightuserdata(state, Collidables[i]);
-                    lua_pushlightuserdata(state, Collidables[j]);
+                    _lua.PushReference(_luaCollisionCallback);
+                    lua_pushlightuserdata(state, _entities[i]);
+                    lua_pushlightuserdata(state, _entities[j]);
                     auto status = lua_pcall(state, 2, 0, 0);
-                    SDL2TK::Vector2F aVelocityFinal = Collidables[i]->Velocity();
-                    SDL2TK::Vector2F bVelocityFinal = Collidables[j]->Velocity();
                     if (status) _lua.ReportErrors();
                 }
             }

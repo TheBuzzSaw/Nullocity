@@ -12,19 +12,19 @@ class CollisionHandler
         CollisionHandler(LuaState& lua);
         ~CollisionHandler();
 
-        void AddEntity(Entity& entity) { Collidables.push_back(&entity); }
+        void AddEntity(Entity& entity) { _entities.push_back(&entity); }
         void RemoveEntity(Entity& entity)
         {
-            auto i = std::find(Collidables.begin(), Collidables.end(), &entity);
+            auto i = std::find(_entities.begin(), _entities.end(), &entity);
 
-            if (i != Collidables.end())
-                Collidables.erase(i);
+            if (i != _entities.end())
+                _entities.erase(i);
         }
 
         void CheckCollisions();
     protected:
     private:
-        std::vector<Entity*> Collidables;
+        std::vector<Entity*> _entities;
         LuaState& _lua;
         int _luaCollisionCallback;
 

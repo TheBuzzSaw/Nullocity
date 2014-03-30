@@ -15,7 +15,7 @@ const int GameModule::KeyBase = 0xBADC0DE;
 
 GameModule::GameModule()
     : _generator(std::chrono::system_clock::now().time_since_epoch().count())
-    , LHC(_lua)
+    , _collisionHandler(_lua)
 {
     //(void)BuildPyramid;
     _cubeObject = BuildCube();
@@ -41,7 +41,7 @@ GameModule::GameModule()
 
 GameModule::~GameModule()
 {
-    for (auto i : _asteroids) delete i;
+    for (auto i : _entities) delete i;
 }
 
 void GameModule::OnOpen()
@@ -85,14 +85,14 @@ void GameModule::OnLoop()
 
     _program.Draw(_squarePyramidObject, GL_TRIANGLES);
 
-    for (auto asteroid : _asteroids)
+    for (auto entity : _entities)
     {
-        Vector2F position = asteroid->Position();
+        Vector2F position = entity->Position();
         glLoadMatrixf(
             Matrix4x4F(matrix)
                 .Translate(position.X(), position.Y(), 0.0f)
-                .RotateX(asteroid->RotationX())
-                .RotateY(asteroid->RotationY())
+                .RotateX(entity->RotationX())
+                .RotateY(entity->RotationY())
                 );
 
         _program.Draw(_cubeObject, GL_TRIANGLES);
@@ -109,19 +109,19 @@ void GameModule::OnPulse()
     _playerRotation += _playerTorque;
     _camera.Horizontal(-_playerRotation);
 
-    for (auto asteroid : _asteroids)
+    for (auto entity : _entities)
     {
-        asteroid->Update();
-        FixPosition(*asteroid);
+        entity->Update();
+        FixPosition(*entity);
     }
 
-    LHC.CheckCollisions();
+    _collisionHandler.CheckCollisions();
 
     for (auto entity : _deadEntities)
     {
-        if (_asteroids.erase(entity) > 0)
+        if (_entities.erase(entity) > 0)
         {
-            LHC.RemoveEntity(*entity);
+            _collisionHandler.RemoveEntity(*entity);
             delete entity;
         }
     }
@@ -251,8 +251,8 @@ int GameModule::AddEntity(lua_State* state)
     GameModule& gm = GameModule::FromLua(state);
 
     Entity* entity = new Entity(gm._cubeObject);
-    gm._asteroids.insert(entity);
-    gm.LHC.AddEntity(*entity);
+    gm._entities.insert(entity);
+    gm._collisionHandler.AddEntity(*entity);
 
     lua_pushlightuserdata(state, entity);
 
@@ -282,7 +282,7 @@ int GameModule::SetPosition(lua_State* state)
     {
         Entity* entity = (Entity*)lua_touserdata(state, 1);
 
-        if (gm._asteroids.count(entity) > 0)
+        if (gm._entities.count(entity) > 0)
         {
             auto x = lua_tonumber(state, 2);
             auto y = lua_tonumber(state, 3);
@@ -303,7 +303,7 @@ int GameModule::SetVelocity(lua_State* state)
     {
         Entity* entity = (Entity*)lua_touserdata(state, 1);
 
-        if (gm._asteroids.count(entity) > 0)
+        if (gm._entities.count(entity) > 0)
         {
             auto x = lua_tonumber(state, 2);
             auto y = lua_tonumber(state, 3);
@@ -324,7 +324,7 @@ int GameModule::SetRotation(lua_State* state)
     {
         Entity* entity = (Entity*)lua_touserdata(state, 1);
 
-        if (gm._asteroids.count(entity) > 0)
+        if (gm._entities.count(entity) > 0)
         {
             auto x = lua_tonumber(state, 2);
             auto y = lua_tonumber(state, 3);
@@ -346,7 +346,7 @@ int GameModule::SetTorque(lua_State* state)
     {
         Entity* entity = (Entity*)lua_touserdata(state, 1);
 
-        if (gm._asteroids.count(entity) > 0)
+        if (gm._entities.count(entity) > 0)
         {
             auto x = lua_tonumber(state, 2);
             auto y = lua_tonumber(state, 3);
@@ -367,7 +367,7 @@ int GameModule::GetPosition(lua_State* state)
     {
         Entity* entity = (Entity*)lua_touserdata(state, 1);
 
-        if (gm._asteroids.count(entity) > 0)
+        if (gm._entities.count(entity) > 0)
         {
             SDL2TK::Vector2F position = entity->Position();
 
@@ -392,7 +392,7 @@ int GameModule::GetVelocity(lua_State* state)
     {
         Entity* entity = (Entity*)lua_touserdata(state, 1);
 
-        if (gm._asteroids.count(entity) > 0)
+        if (gm._entities.count(entity) > 0)
         {
             SDL2TK::Vector2F velocity = entity->Velocity();
 
@@ -417,7 +417,7 @@ int GameModule::GetRotation(lua_State* state) //"Rotato Express, good for peelin
     {
         Entity* entity = (Entity*)lua_touserdata(state, 1);
 
-        if (gm._asteroids.count(entity) > 0)
+        if (gm._entities.count(entity) > 0)
         {
             auto x = entity->RotationX().ToDegrees();
             auto y = entity->RotationY().ToDegrees();
@@ -440,7 +440,7 @@ int GameModule::GetTorque(lua_State* state)
     {
         Entity* entity = (Entity*)lua_touserdata(state, 1);
 
-        if (gm._asteroids.count(entity) > 0)
+        if (gm._entities.count(entity) > 0)
         {
             auto x = entity->TorqueX().ToDegrees();
             auto y = entity->TorqueY().ToDegrees();

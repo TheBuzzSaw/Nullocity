@@ -2,7 +2,6 @@
 #define GAMEMODULE_HPP
 
 #include "SimpleProgram.hpp"
-#include "Asteroid.hpp"
 #include "Entity.hpp"
 #include "LuaState.hpp"
 #include "CollisionHandler.hpp"
@@ -35,7 +34,7 @@ class GameModule : public SDL2TK::Module
         SimpleBufferObject _cubeObject;
         SimpleBufferObject _squarePyramidObject;
 
-        std::unordered_set<Entity*> _asteroids;
+        std::unordered_set<Entity*> _entities;
         std::vector<Entity*> _deadEntities;
         SDL2TK::Camera<GLfloat> _camera;
 
@@ -44,7 +43,7 @@ class GameModule : public SDL2TK::Module
 
         LuaState _lua;
         std::mt19937_64 _generator;
-        CollisionHandler LHC;
+        CollisionHandler _collisionHandler;
 
         void FixPosition(Entity& entity);
 
