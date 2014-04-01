@@ -1,10 +1,10 @@
 #include "Entity.hpp"
 
-Entity::Entity(SimpleBufferObject& mObject)
+Entity::Entity(SimpleBufferObject& object)
     : _radius(1.0f)
     , _scale(1.0f)
+    , _object(&object)
 {
-    _object = &mObject;
 }
 
 Entity::~Entity()
@@ -13,17 +13,12 @@ Entity::~Entity()
 
 void Entity::Update()
 {
-    updatePosition();
+    _position += _velocity;
+    _rotationX += _torqueX;
+    _rotationY += _torqueY;
 }
 
 void Entity::Draw(SimpleProgram& program)
 {
     program.Draw(*_object, GL_TRIANGLES);
-}
-
-void Entity::updatePosition()
-{
-    _position += _velocity;
-    _rotationX += _torqueX;
-    _rotationY += _torqueY;
 }

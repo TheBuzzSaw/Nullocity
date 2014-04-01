@@ -1,16 +1,16 @@
 #ifndef ENTITY_HPP
 #define ENTITY_HPP
 
-#include <SDL2TK/Rotation.hpp>
-#include <SDL2TK/Vector.hpp>
 #include "SimpleProgram.hpp"
 #include "SimpleBufferObject.hpp"
+#include <SDL2TK/Rotation.hpp>
+#include <SDL2TK/Vector.hpp>
 
 class Entity
 {
     public:
-        Entity(SimpleBufferObject& mObject);
-        virtual ~Entity();
+        Entity(SimpleBufferObject& object);
+        ~Entity();
 
         const SDL2TK::Vector2F Position() const { return _position; }
         const SDL2TK::Vector2F Velocity() const { return _velocity; }
@@ -41,6 +41,9 @@ class Entity
 
     protected:
     private:
+        Entity(const Entity&) = delete;
+        Entity& operator=(const Entity&) = delete;
+
         SDL2TK::Vector2F _position;
         SDL2TK::RotationF _rotationX;
         SDL2TK::RotationF _rotationY;
@@ -53,8 +56,6 @@ class Entity
         float _scale;
 
         SimpleBufferObject* _object;
-
-        void updatePosition();
 };
 
 #endif

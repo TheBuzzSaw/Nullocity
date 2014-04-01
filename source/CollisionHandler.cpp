@@ -5,7 +5,6 @@ const int CollisionHandler::LuaKeyBase = 0xF00D;
 
 CollisionHandler::CollisionHandler(LuaState& lua)
     : _lua(lua)
-    , _luaCollisionCallback(LUA_NOREF)
 {
     _lua.SetUserData((void*)LuaKeyBase, this);
     _lua.AddFunction(SetCollisionCallback, "SetCollisionCallback");
@@ -13,12 +12,11 @@ CollisionHandler::CollisionHandler(LuaState& lua)
 
 CollisionHandler::~CollisionHandler()
 {
-    _lua.ClearReference(_luaCollisionCallback);
 }
 
 void CollisionHandler::CheckCollisions()
 {
-    if (_luaCollisionCallback != LUA_NOREF)
+    if (_callback.HasReference())
     {
         auto size = _entities.size();
         for (decltype(size) i = 0; i < size; i++)
@@ -37,7 +35,7 @@ void CollisionHandler::CheckCollisions()
                 if (distance <= 0)
                 {
                     auto state = _lua.Raw();
-                    _lua.PushReference(_luaCollisionCallback);
+                    _callback.Push();
                     lua_pushlightuserdata(state, _entities[i]);
                     lua_pushlightuserdata(state, _entities[j]);
                     auto status = lua_pcall(state, 2, 0, 0);
@@ -61,7 +59,7 @@ int CollisionHandler::SetCollisionCallback(lua_State* state)
     {
         lua_settop(state, 1);
         CollisionHandler& ch = CollisionHandler::FromLua(state);
-        ch._luaCollisionCallback = ch._lua.GetReference();
+        ch._callback = LuaReference(state);
     }
 
     return 0;

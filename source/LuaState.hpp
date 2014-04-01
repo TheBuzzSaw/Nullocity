@@ -21,10 +21,6 @@ class LuaState
         void ExecuteFile(const char* path);
         void SetUserData(void* key, void* value);
 
-        int GetReference();
-        void PushReference(int luaReference);
-        void ClearReference(int& luaReference);
-
         static void* GetUserData(lua_State* state, void* key);
 
     protected:

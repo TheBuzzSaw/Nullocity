@@ -72,23 +72,6 @@ void LuaState::SetUserData(void* key, void* value)
     lua_pushlightuserdata(_state, value);
     lua_settable(_state, LUA_REGISTRYINDEX);
 }
-
-int LuaState::GetReference()
-{
-    return luaL_ref(_state, LUA_REGISTRYINDEX);
-}
-
-void LuaState::PushReference(int luaReference)
-{
-    lua_rawgeti(_state, LUA_REGISTRYINDEX, luaReference);
-}
-
-void LuaState::ClearReference(int& luaReference)
-{
-    luaL_unref(_state, LUA_REGISTRYINDEX, luaReference);
-    luaReference = LUA_NOREF;
-}
-
 void LuaState::Execute()
 {
     auto status = lua_pcall(_state, 0, LUA_MULTRET, 0);

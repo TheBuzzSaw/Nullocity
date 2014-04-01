@@ -3,6 +3,7 @@
 
 #include "Entity.hpp"
 #include "LuaState.hpp"
+#include "LuaReference.hpp"
 #include <vector>
 #include <algorithm>
 
@@ -26,7 +27,7 @@ class CollisionHandler
     private:
         std::vector<Entity*> _entities;
         LuaState& _lua;
-        int _luaCollisionCallback;
+        LuaReference _callback;
 
         static const int LuaKeyBase;
         static CollisionHandler& FromLua(lua_State* state);
