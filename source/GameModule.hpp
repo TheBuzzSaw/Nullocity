@@ -4,6 +4,7 @@
 #include "SimpleProgram.hpp"
 #include "Entity.hpp"
 #include "LuaState.hpp"
+#include "LuaReference.hpp"
 #include "CollisionHandler.hpp"
 #include <SDL2TK/Module.hpp>
 #include <SDL2TK/Camera.hpp>
@@ -42,13 +43,14 @@ class GameModule : public SDL2TK::Module
         SDL2TK::RotationF _playerTorque;
 
         LuaState _lua;
+        LuaReference _updateCallback;
         std::mt19937_64 _generator;
         CollisionHandler _collisionHandler;
 
-        void FixPosition(Entity& entity);
-
         static const int KeyBase;
         static GameModule& FromLua(lua_State* state);
+
+        static int SetUpdateCallback(lua_State* state);
         static int AddEntity(lua_State* state);
         static int RemoveEntity(lua_State* state);
 

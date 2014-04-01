@@ -26,6 +26,7 @@ GameModule::GameModule()
     _camera.Vertical(RotationF::FromDegrees(-45.0f));
 
     _lua.SetUserData((void*)&KeyBase, this);
+    _lua.AddFunction(SetUpdateCallback, "SetUpdateCallback");
     _lua.AddFunction(AddEntity, "AddEntity");
     _lua.AddFunction(RemoveEntity, "RemoveEntity");
     _lua.AddFunction(SetPosition, "SetPosition");
@@ -113,7 +114,12 @@ void GameModule::OnPulse()
     for (auto entity : _entities)
     {
         entity->Update();
-        FixPosition(*entity);
+
+        if (_updateCallback.HasReference())
+        {
+            _updateCallback.Push();
+            _lua.Call(0, 0);
+        }
     }
 
     _collisionHandler.CheckCollisions();
@@ -206,45 +212,23 @@ void GameModule::OnResize(int width, int height)
     glMatrixMode(GL_MODELVIEW);
 }
 
-void GameModule::FixPosition(Entity& entity)
-{
-    SDL2TK::Vector2F position = entity.Position();
-    SDL2TK::Vector2F velocity = entity.Velocity();
-    float x = position.X();
-    bool jumpPosition = false;
-    if (velocity.X() > 0.0f && x > Max)
-    {
-        position.X(x - Max - Max);
-        jumpPosition = true;
-    }
-    else if (velocity.X() < 0.0f && x < -Max)
-    {
-        position.X(x + Max + Max);
-        jumpPosition = true;
-    }
-
-    float y = position.Y();
-    if (velocity.Y() > 0.0f && y > Max)
-    {
-        position.Y(y - Max - Max);
-        jumpPosition = true;
-    }
-    else if (velocity.Y() < 0.0f && y < -Max)
-    {
-        position.X(y + Max + Max);
-        jumpPosition = true;
-    }
-
-    if (jumpPosition)
-    {
-        entity.SetPositon(position);
-    }
-}
-
 GameModule& GameModule::FromLua(lua_State* state)
 {
     void* raw = LuaState::GetUserData(state, (void*)&KeyBase);
     return *reinterpret_cast<GameModule*>(raw);
+}
+
+int GameModule::SetUpdateCallback(lua_State* state)
+{
+    auto argc = lua_gettop(state);
+    if (argc > 0 && lua_isfunction(state, 1))
+    {
+        lua_settop(state, 1);
+        GameModule& gm = GameModule::FromLua(state);
+        gm._updateCallback = LuaReference(state);
+    }
+
+    return 0;
 }
 
 int GameModule::AddEntity(lua_State* state)

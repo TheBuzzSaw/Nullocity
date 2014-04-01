@@ -38,8 +38,7 @@ void CollisionHandler::CheckCollisions()
                     _callback.Push();
                     lua_pushlightuserdata(state, _entities[i]);
                     lua_pushlightuserdata(state, _entities[j]);
-                    auto status = lua_pcall(state, 2, 0, 0);
-                    if (status) _lua.ReportErrors();
+                    _lua.Call(2, 0);
                 }
             }
         }

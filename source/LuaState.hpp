@@ -15,8 +15,7 @@ class LuaState
         lua_State* Raw() const { return _state; }
 
         void AddFunction(lua_CFunction callback, const char* name);
-        void Execute();
-        void ReportErrors();
+        void Call(int nargs, int nresults);
         void Execute(const char* command);
         void ExecuteFile(const char* path);
         void SetUserData(void* key, void* value);
@@ -27,6 +26,9 @@ class LuaState
     private:
         LuaState(const LuaState&) = delete;
         LuaState& operator=(const LuaState&) = delete;
+
+        void Execute();
+        void ReportErrors();
 
         lua_State* _state;
 

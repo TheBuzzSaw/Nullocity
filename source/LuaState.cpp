@@ -50,6 +50,12 @@ void LuaState::AddFunction(lua_CFunction callback, const char* name)
     lua_pop(_state, -1);
 }
 
+void LuaState::Call(int nargs, int nresults)
+{
+    auto status = lua_pcall(_state, nargs, nresults, 0);
+    if (status) ReportErrors();
+}
+
 void LuaState::Execute(const char* command)
 {
     auto status = luaL_loadstring(_state, command);

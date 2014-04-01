@@ -1,5 +1,39 @@
 allEntities = {}
 
+function FixPosition(entity)
+    local px, py = entity.GetPosition()
+    local vx, vy = entity.GetVelocity()
+    
+    local changed = false
+    local n = 16
+    
+    if vx > 0 and px > n then
+        px = px - n - n
+        changed = true
+    elseif vx < 0 and px < -n then
+        px = px + n + n
+        changed = true
+    end
+    
+    if vy > 0 and py > n then
+        py = py - n - n
+        changed = true
+    elseif vy < 0 and py < -n then
+        py = py + n + n
+        changed = true
+    end
+    
+    if changed then
+        entity.SetPosition(px, py)
+    end
+end
+
+function OnUpdate()
+    for _, v in pairs(allEntities) do
+        FixPosition(v)
+    end
+end
+
 function OnCollision(a, b)
     entityA = allEntities[a]
     entityB = allEntities[b]
@@ -97,5 +131,6 @@ for i = 1, 16 do
 end
 
 Nullocity.SetCollisionCallback(OnCollision)
+Nullocity.SetUpdateCallback(OnUpdate)
 
 print('Blam')
