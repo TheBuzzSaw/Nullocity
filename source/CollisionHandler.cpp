@@ -6,8 +6,7 @@ const int CollisionHandler::LuaKeyBase = 0xF00D;
 CollisionHandler::CollisionHandler(LuaState& lua)
     : _lua(lua)
 {
-    _lua.SetUserData((void*)LuaKeyBase, this);
-    _lua.AddFunction(SetCollisionCallback, "SetCollisionCallback");
+    Reset();
 }
 
 CollisionHandler::~CollisionHandler()

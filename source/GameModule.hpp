@@ -30,6 +30,8 @@ class GameModule : public SDL2TK::Module
 
     protected:
     private:
+        void SetupLua();
+
         SimpleProgram _program;
         SimpleBufferObject _linesObject;
         SimpleBufferObject _cubeObject;

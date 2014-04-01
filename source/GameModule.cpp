@@ -25,23 +25,7 @@ GameModule::GameModule()
     _camera.Distance(32.0f);
     _camera.Vertical(RotationF::FromDegrees(-45.0f));
 
-    _lua.SetUserData((void*)&KeyBase, this);
-    _lua.AddFunction(SetUpdateCallback, "SetUpdateCallback");
-    _lua.AddFunction(AddEntity, "AddEntity");
-    _lua.AddFunction(RemoveEntity, "RemoveEntity");
-    _lua.AddFunction(SetPosition, "SetPosition");
-    _lua.AddFunction(SetVelocity, "SetVelocity");
-    _lua.AddFunction(SetRotation, "SetRotation");
-    _lua.AddFunction(SetTorque, "SetTorque");
-    _lua.AddFunction(SetRadius, "SetRadius");
-    _lua.AddFunction(SetScale, "SetScale");
-    _lua.AddFunction(GetPosition, "GetPosition");
-    _lua.AddFunction(GetVelocity, "GetVelocity");
-    _lua.AddFunction(GetRotation, "GetRotation");
-    _lua.AddFunction(GetTorque, "GetTorque");
-    _lua.AddFunction(GetRadius, "GetRadius");
-    _lua.AddFunction(GetScale, "GetScale");
-    _lua.AddFunction(GetRandom, "GetRandom");
+    SetupLua();
 }
 
 GameModule::~GameModule()
@@ -170,6 +154,19 @@ void GameModule::OnKeyDown(const SDL_Keysym& keysym)
             _lua.Execute("Debug()");
             break;
 
+        case SDLK_F5:
+            for (auto i : _entities) delete i;
+            _entities.clear();
+            _deadEntities.clear();
+            _collisionHandler.RemoveAllEntities();
+
+            _updateCallback = LuaReference();
+            _lua = LuaState();
+            SetupLua();
+            _collisionHandler.Reset();
+            _lua.ExecuteFile("main.lua");
+            break;
+
         default:
             break;
     }
@@ -214,6 +211,27 @@ void GameModule::OnResize(int width, int height)
     glMatrixMode(GL_PROJECTION);
     glLoadMatrixf(matrix);
     glMatrixMode(GL_MODELVIEW);
+}
+
+void GameModule::SetupLua()
+{
+    _lua.SetUserData((void*)&KeyBase, this);
+    _lua.AddFunction(SetUpdateCallback, "SetUpdateCallback");
+    _lua.AddFunction(AddEntity, "AddEntity");
+    _lua.AddFunction(RemoveEntity, "RemoveEntity");
+    _lua.AddFunction(SetPosition, "SetPosition");
+    _lua.AddFunction(SetVelocity, "SetVelocity");
+    _lua.AddFunction(SetRotation, "SetRotation");
+    _lua.AddFunction(SetTorque, "SetTorque");
+    _lua.AddFunction(SetRadius, "SetRadius");
+    _lua.AddFunction(SetScale, "SetScale");
+    _lua.AddFunction(GetPosition, "GetPosition");
+    _lua.AddFunction(GetVelocity, "GetVelocity");
+    _lua.AddFunction(GetRotation, "GetRotation");
+    _lua.AddFunction(GetTorque, "GetTorque");
+    _lua.AddFunction(GetRadius, "GetRadius");
+    _lua.AddFunction(GetScale, "GetScale");
+    _lua.AddFunction(GetRandom, "GetRandom");
 }
 
 GameModule& GameModule::FromLua(lua_State* state)

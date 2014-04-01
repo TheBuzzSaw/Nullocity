@@ -22,6 +22,18 @@ class CollisionHandler
                 _entities.erase(i);
         }
 
+        void RemoveAllEntities()
+        {
+            _entities.clear();
+            _callback = LuaReference();
+        }
+
+        void Reset()
+        {
+            _lua.SetUserData((void*)LuaKeyBase, this);
+            _lua.AddFunction(SetCollisionCallback, "SetCollisionCallback");
+        }
+
         void CheckCollisions();
     protected:
     private:
