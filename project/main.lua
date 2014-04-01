@@ -73,6 +73,14 @@ function NewBaseEntity(mass)
             Nullocity.SetTorque(self.entity, x, y)
         end
         
+    local SetRadius = function(radius)
+            Nullocity.SetTorque(self.entity, radius)
+        end
+        
+    local SetScale = function(scale)
+            Nullocity.SetTorque(self.entity, scale)
+        end
+        
     local GetPosition = function()
             return Nullocity.GetPosition(self.entity)
         end
@@ -88,6 +96,14 @@ function NewBaseEntity(mass)
     local GetTorque = function()
             return Nullocity.GetTorque(self.entity)
         end
+        
+    local GetRadius = function()
+            return Nullocity.GetRadius(self.entity)
+        end
+        
+    local GetScale = function()
+            return Nullocity.GetScale(self.entity)
+        end
 
     local Mass = function() return self.mass end
     
@@ -96,11 +112,15 @@ function NewBaseEntity(mass)
         SetPosition = SetPosition,
         SetVelocity = SetVelocity,
         SetRotation = SetRotation,
-        SetTorque = SetTorque, 
+        SetTorque = SetTorque,
+        SetRadius = SetRadius,
+        SetScale = SetScale, 
 		GetPosition = GetPosition,
 		GetVelocity = GetVelocity,
 		GetRotation = GetRotation,
 		GetTorque = GetTorque,
+		GetRadius = GetRadius,
+		GetScale = GetScale,
         Mass = Mass }
     
     allEntities[self.entity] = result
