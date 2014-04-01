@@ -58,11 +58,15 @@ class GameModule : public SDL2TK::Module
         static int SetVelocity(lua_State* state);
         static int SetRotation(lua_State* state);
         static int SetTorque(lua_State* state);
+        static int SetRadius(lua_State* state);
+        static int SetScale(lua_State* state);
 
         static int GetPosition(lua_State* state);
         static int GetVelocity(lua_State* state);
         static int GetRotation(lua_State* state);
         static int GetTorque(lua_State* state);
+        static int GetRadius(lua_State* state);
+        static int GetScale(lua_State* state);
 
         static int GetRandom(lua_State* state);
 };

@@ -41,12 +41,32 @@ function OnCollision(a, b)
     -- If an entity has been removed,
     -- it'll come back nil.
     if entityA and entityB then
-        ax, ay = entityA.GetVelocity()
-        bx, by = entityB.GetVelocity()
+        local avx, avy = entityA.GetVelocity()
+        local bvx, bvy = entityB.GetVelocity()
+		
+        local apx, apy = entityA.GetPosition()
+        local bpx, bpy = entityB.GetPosition()
 	
-        entityA.SetVelocity(bx, by)
-        entityB.SetVelocity(ax, ay)
+		if CheckAxisCollision(avx, bvx, apx, bpx) or CheckAxisCollision(avy, bvy, apy, bpy) then
+			entityA.SetVelocity(bvx, bvy)
+			entityB.SetVelocity(avx, avy)
+		end
     end
+end
+
+function CheckAxisCollision(av, bv, ap, bp)
+
+	if bp < ap then
+		if (bv - av) > 0 then
+			return true
+		end
+		return false
+	else
+		if (bv - av) < 0 then
+			return true
+		end
+		return false
+	end
 end
 
 function NewBaseEntity(mass)
@@ -74,11 +94,11 @@ function NewBaseEntity(mass)
         end
         
     local SetRadius = function(radius)
-            Nullocity.SetTorque(self.entity, radius)
+            Nullocity.SetRadius(self.entity, radius)
         end
         
     local SetScale = function(scale)
-            Nullocity.SetTorque(self.entity, scale)
+            Nullocity.SetScale(self.entity, scale)
         end
         
     local GetPosition = function()
@@ -144,10 +164,19 @@ for i = 1, 16 do
     entity.SetRotation(gr(-135, 135), gr(-135, 135))
     entity.SetTorque(gr(-4, 4), gr(-4, 4))
 	
+	local size = gr(.5,1.5)
+	
+    entity.SetRadius(size)
+    entity.SetScale(size)
+	
+	print("Size is: ", size)
+	
 	print("Position: ", entity.GetPosition())
 	print("Velocity: ", entity.GetVelocity())
 	print("Rotation: ", entity.GetRotation())
 	print("Torque: ", entity.GetTorque())
+	print("Radius: ", entity.GetRadius())
+	print("Scale: ", entity.GetScale())
 end
 
 Nullocity.SetCollisionCallback(OnCollision)

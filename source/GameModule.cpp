@@ -33,10 +33,14 @@ GameModule::GameModule()
     _lua.AddFunction(SetVelocity, "SetVelocity");
     _lua.AddFunction(SetRotation, "SetRotation");
     _lua.AddFunction(SetTorque, "SetTorque");
+    _lua.AddFunction(SetRadius, "SetRadius");
+    _lua.AddFunction(SetScale, "SetScale");
     _lua.AddFunction(GetPosition, "GetPosition");
     _lua.AddFunction(GetVelocity, "GetVelocity");
     _lua.AddFunction(GetRotation, "GetRotation");
     _lua.AddFunction(GetTorque, "GetTorque");
+    _lua.AddFunction(GetRadius, "GetRadius");
+    _lua.AddFunction(GetScale, "GetScale");
     _lua.AddFunction(GetRandom, "GetRandom");
 }
 
@@ -343,6 +347,44 @@ int GameModule::SetTorque(lua_State* state)
     return 0;
 }
 
+int GameModule::SetRadius(lua_State* state)
+{
+    GameModule& gm = GameModule::FromLua(state);
+
+    auto argc = lua_gettop(state);
+    if (argc > 1 && lua_isuserdata(state, 1) && lua_isnumber(state, 2))
+    {
+        Entity* entity = (Entity*)lua_touserdata(state, 1);
+
+        if (gm._entities.count(entity) > 0)
+        {
+            auto radius = lua_tonumber(state, 2);
+            entity->SetRadius(radius);
+        }
+    }
+
+    return 0;
+}
+
+int GameModule::SetScale(lua_State* state)
+{
+    GameModule& gm = GameModule::FromLua(state);
+
+    auto argc = lua_gettop(state);
+    if (argc > 1 && lua_isuserdata(state, 1) && lua_isnumber(state, 2))
+    {
+        Entity* entity = (Entity*)lua_touserdata(state, 1);
+
+        if (gm._entities.count(entity) > 0)
+        {
+            auto scale = lua_tonumber(state, 2);
+            entity->SetScale(scale);
+        }
+    }
+
+    return 0;
+}
+
 int GameModule::GetPosition(lua_State* state)
 {
     GameModule& gm = GameModule::FromLua(state);
@@ -433,6 +475,48 @@ int GameModule::GetTorque(lua_State* state)
             lua_pushnumber(state, x);
             lua_pushnumber(state, y);
             return 2;
+        }
+    }
+
+    return 0;
+}
+
+int GameModule::GetRadius(lua_State* state)
+{
+    GameModule& gm = GameModule::FromLua(state);
+
+    auto argc = lua_gettop(state);
+    if (argc > 0 && lua_isuserdata(state, 1))
+    {
+        Entity* entity = (Entity*)lua_touserdata(state, 1);
+
+        if (gm._entities.count(entity) > 0)
+        {
+            auto radius = entity->Radius();
+
+            lua_pushnumber(state, radius);
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
+int GameModule::GetScale(lua_State* state)
+{
+    GameModule& gm = GameModule::FromLua(state);
+
+    auto argc = lua_gettop(state);
+    if (argc > 0 && lua_isuserdata(state, 1))
+    {
+        Entity* entity = (Entity*)lua_touserdata(state, 1);
+
+        if (gm._entities.count(entity) > 0)
+        {
+            auto scale = entity->Scale();
+
+            lua_pushnumber(state, scale);
+            return 1;
         }
     }
 
