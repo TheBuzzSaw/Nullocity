@@ -1,8 +1,9 @@
 #include "Entity.hpp"
 
 Entity::Entity(SimpleBufferObject& mObject)
+    : _radius(1.0f)
+    , _scale(1.0f)
 {
-    _radius = 1;
     _object = &mObject;
 }
 

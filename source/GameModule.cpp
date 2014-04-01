@@ -93,6 +93,7 @@ void GameModule::OnLoop()
                 .Translate(position.X(), position.Y(), 0.0f)
                 .RotateX(entity->RotationX())
                 .RotateY(entity->RotationY())
+                .Scale(entity->Scale())
                 );
 
         _program.Draw(_cubeObject, GL_TRIANGLES);
