@@ -169,29 +169,39 @@ function Debug()
     end
 end
 
-gr = Nullocity.GetRandom
+function GenerateRandomAsteroids()
+	gr = Nullocity.GetRandom
 
-for i = 1, 16 do
-	local size = gr(.5,1.5)
-    local entity = NewBaseEntity(size)
-    entity.SetPosition(gr(-16, 16), gr(-16, 16))
-    entity.SetVelocity(gr(-.5, .5), gr(-.5, .5))
-    entity.SetRotation(gr(-135, 135), gr(-135, 135))
-    entity.SetTorque(gr(-4, 4), gr(-4, 4))
-	
-    entity.SetRadius(size)
-    entity.SetScale(size)
-	
-	print("Size is: ", size)
-	
-	print("Position: ", entity.GetPosition())
-	print("Velocity: ", entity.GetVelocity())
-	print("Rotation: ", entity.GetRotation())
-	print("Torque: ", entity.GetTorque())
-	print("Radius: ", entity.GetRadius())
-	print("Scale: ", entity.GetScale())
+	for i = 1, 16 do
+		local size = gr(.5,1.5)
+		local entity = NewBaseEntity(size)
+		entity.SetPosition(gr(-16, 16), gr(-16, 16))
+		entity.SetVelocity(gr(-.5, .5), gr(-.5, .5))
+		entity.SetRotation(gr(-135, 135), gr(-135, 135))
+		entity.SetTorque(gr(-4, 4), gr(-4, 4))
+		
+		entity.SetRadius(size * 1.25)
+		entity.SetScale(size)
+		
+		print("Size is: ", size)
+		
+		print("Position: ", entity.GetPosition())
+		print("Velocity: ", entity.GetVelocity())
+		print("Rotation: ", entity.GetRotation())
+		print("Torque: ", entity.GetTorque())
+		print("Radius: ", entity.GetRadius())
+		print("Scale: ", entity.GetScale())
+	end
 end
 
+asteroidA = NewBaseEntity(1)
+asteroidA.SetPosition(2,0)
+asteroidA.SetVelocity(0,0)
+
+asteroidB = NewBaseEntity(1)
+asteroidB.SetPosition(-2,0)
+asteroidB.SetVelocity(.5,0)
+	
 Nullocity.SetCollisionCallback(OnCollision)
 Nullocity.SetUpdateCallback(OnUpdate)
 
