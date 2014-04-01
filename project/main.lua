@@ -45,11 +45,20 @@ function OnCollision(a, b)
         local bvx, bvy = entityB.GetVelocity()
 		
         local apx, apy = entityA.GetPosition()
-        local bpx, bpy = entityB.GetPosition()
+        local bpx, bpy = entityB.GetPosition()		
 	
 		if CheckAxisCollision(avx, bvx, apx, bpx) or CheckAxisCollision(avy, bvy, apy, bpy) then
-			entityA.SetVelocity(bvx, bvy)
-			entityB.SetVelocity(avx, avy)
+			local am = entityA.GetMass()
+			local bm = entityB.GetMass()
+			
+			aMomx = avx * am
+			aMomy = avy * am
+			bMomx = bvx * bm
+			bMomy = bvy * bm
+		
+		
+			entityA.SetVelocity(bMomx / am, bMomy / am)
+			entityB.SetVelocity(aMomx / bm, aMomy / bm)
 		end
     end
 end
@@ -100,6 +109,10 @@ function NewBaseEntity(mass)
     local SetScale = function(scale)
             Nullocity.SetScale(self.entity, scale)
         end
+		
+	local SetMass = function(mass)
+			self.mass = mass;
+		end
         
     local GetPosition = function()
             return Nullocity.GetPosition(self.entity)
@@ -125,7 +138,7 @@ function NewBaseEntity(mass)
             return Nullocity.GetScale(self.entity)
         end
 
-    local Mass = function() return self.mass end
+    local GetMass = function() return self.mass end
     
     local result = {
         Remove = Remove,
@@ -134,14 +147,15 @@ function NewBaseEntity(mass)
         SetRotation = SetRotation,
         SetTorque = SetTorque,
         SetRadius = SetRadius,
-        SetScale = SetScale, 
+        SetScale = SetScale,
+		SetMass = SetMass,
 		GetPosition = GetPosition,
 		GetVelocity = GetVelocity,
 		GetRotation = GetRotation,
 		GetTorque = GetTorque,
 		GetRadius = GetRadius,
 		GetScale = GetScale,
-        Mass = Mass }
+        GetMass = GetMass }
     
     allEntities[self.entity] = result
     
@@ -158,13 +172,12 @@ end
 gr = Nullocity.GetRandom
 
 for i = 1, 16 do
-    local entity = NewBaseEntity(i)
+	local size = gr(.5,1.5)
+    local entity = NewBaseEntity(size)
     entity.SetPosition(gr(-16, 16), gr(-16, 16))
     entity.SetVelocity(gr(-.5, .5), gr(-.5, .5))
     entity.SetRotation(gr(-135, 135), gr(-135, 135))
     entity.SetTorque(gr(-4, 4), gr(-4, 4))
-	
-	local size = gr(.5,1.5)
 	
     entity.SetRadius(size)
     entity.SetScale(size)
