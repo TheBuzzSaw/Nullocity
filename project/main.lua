@@ -53,20 +53,29 @@ function OnCollision(a, b)
 		local xDist = apx - bpx
 		local yDist = apy - bpy
 	
-		dotProduct = xDist*xVel + yDist*yVel
+		local dotProduct = xDist*xVel + yDist*yVel
 	
 		if dotProduct > 0 then
-			collisionScale = dotProduct
+		
 			local am = a.GetMass()
 			local bm = b.GetMass()
+			
+			local combinedMass = am + bm
+			local differenceMass = am - bm
+			
+			
+			local bNewVelX = (bvx * differenceMass + (2 * am * avx)) / combinedMass
+			local bNewVelY = (bvy * differenceMass + (2 * am * avy)) / combinedMass
+			local aNewVelX = (avx * -differenceMass + (2 * bm * bvx)) / combinedMass
+			local aNewVelY = (avy * -differenceMass + (2 * bm * bvy)) / combinedMass
 			
 			local amx = avx * am
 			local amy = avy * am
 			local bmx = bvx * bm
 			local bmy = bvy * bm
 		
-			a.SetVelocity(bmx / am, bmy / am)
-			b.SetVelocity(amx / bm, amy / bm)
+			a.SetVelocity(aNewVelX, aNewVelY)
+			b.SetVelocity(bNewVelX, bNewVelY)
 		end
     end
 end
