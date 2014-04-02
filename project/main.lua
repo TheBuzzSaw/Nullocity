@@ -44,10 +44,19 @@ function OnCollision(a, b)
         local avx, avy = a.GetVelocity()
         local bvx, bvy = b.GetVelocity()
 		
+		local xVel = bvx - avx
+		local yVel = bvy - avy
+		
         local apx, apy = a.GetPosition()
-        local bpx, bpy = b.GetPosition()		
+        local bpx, bpy = b.GetPosition()
+		
+		local xDist = apx - bpx
+		local yDist = apy - bpy
 	
-		if CheckAxisCollision(avx, bvx, apx, bpx) or CheckAxisCollision(avy, bvy, apy, bpy) then
+		dotProduct = xDist*xVel + yDist*yVel
+	
+		if dotProduct > 0 then
+			collisionScale = dotProduct
 			local am = a.GetMass()
 			local bm = b.GetMass()
 			
