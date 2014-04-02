@@ -30,7 +30,8 @@ class GameModule : public SDL2TK::Module
 
     protected:
     private:
-        void SetupLua();
+        void InitializeLua();
+        void DestroyState();
 
         SimpleProgram _program;
         SimpleBufferObject _linesObject;
@@ -49,7 +50,7 @@ class GameModule : public SDL2TK::Module
         std::mt19937_64 _generator;
         CollisionHandler _collisionHandler;
 
-        static const int KeyBase;
+        static const int LuaKeyBase;
         static GameModule& FromLua(lua_State* state);
 
         static int SetUpdateCallback(lua_State* state);

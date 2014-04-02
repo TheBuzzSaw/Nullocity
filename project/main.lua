@@ -35,47 +35,47 @@ function OnUpdate()
 end
 
 function OnCollision(a, b)
-    entityA = allEntities[a]
-    entityB = allEntities[b]
+    a = allEntities[a]
+    b = allEntities[b]
     
     -- If an entity has been removed,
     -- it'll come back nil.
-    if entityA and entityB then
-        local avx, avy = entityA.GetVelocity()
-        local bvx, bvy = entityB.GetVelocity()
+    if a and b then
+        local avx, avy = a.GetVelocity()
+        local bvx, bvy = b.GetVelocity()
 		
-        local apx, apy = entityA.GetPosition()
-        local bpx, bpy = entityB.GetPosition()		
+        local apx, apy = a.GetPosition()
+        local bpx, bpy = b.GetPosition()		
 	
 		if CheckAxisCollision(avx, bvx, apx, bpx) or CheckAxisCollision(avy, bvy, apy, bpy) then
-			local am = entityA.GetMass()
-			local bm = entityB.GetMass()
+			local am = a.GetMass()
+			local bm = b.GetMass()
 			
-			aMomx = avx * am
-			aMomy = avy * am
-			bMomx = bvx * bm
-			bMomy = bvy * bm
+			local amx = avx * am
+			local amy = avy * am
+			local bmx = bvx * bm
+			local bmy = bvy * bm
 		
-		
-			entityA.SetVelocity(bMomx / am, bMomy / am)
-			entityB.SetVelocity(aMomx / bm, aMomy / bm)
+			a.SetVelocity(bmx / am, bmy / am)
+			b.SetVelocity(amx / bm, amy / bm)
 		end
     end
 end
 
 function CheckAxisCollision(av, bv, ap, bp)
-
+    local result = false
+    
 	if bp < ap then
 		if (bv - av) > 0 then
-			return true
+			result = true
 		end
-		return false
 	else
 		if (bv - av) < 0 then
-			return true
+			result = true
 		end
-		return false
 	end
+    
+    return result
 end
 
 function NewBaseEntity(mass)
@@ -169,7 +169,7 @@ function Debug()
     end
 end
 
-gr = Nullocity.GetRandom
+local gr = Nullocity.GetRandom
 
 for i = 1, 16 do
 	local size = gr(.5,1.5)
@@ -179,7 +179,7 @@ for i = 1, 16 do
     entity.SetRotation(gr(-135, 135), gr(-135, 135))
     entity.SetTorque(gr(-4, 4), gr(-4, 4))
 	
-    entity.SetRadius(size)
+    entity.SetRadius(size * 1.5)
     entity.SetScale(size)
 	
 	print("Size is: ", size)

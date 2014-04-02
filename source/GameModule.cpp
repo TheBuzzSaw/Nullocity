@@ -9,23 +9,19 @@ using namespace std;
 using namespace SDL2TK;
 
 static const RotationF TurnSpeed = RotationF::FromDegrees(4.0f);
-static const float Max = 16.0f;
 
-const int GameModule::KeyBase = 0xBADC0DE;
+const int GameModule::LuaKeyBase = 0xBADC0DE;
 
 GameModule::GameModule()
     : _generator(std::chrono::system_clock::now().time_since_epoch().count())
     , _collisionHandler(_lua)
 {
-    //(void)BuildPyramid;
     _cubeObject = BuildCube();
     _squarePyramidObject = BuildSquarePyramid();
     _linesObject = BuildLines();
 
     _camera.Distance(32.0f);
     _camera.Vertical(RotationF::FromDegrees(-45.0f));
-
-    SetupLua();
 }
 
 GameModule::~GameModule()
@@ -48,7 +44,7 @@ void GameModule::OnOpen()
     const float N = 1.0f / 8.0f;
     glClearColor(N, N, N, 1.0f);
 
-    _lua.ExecuteFile("main.lua");
+    InitializeLua();
 }
 
 void GameModule::OnClose()
@@ -155,16 +151,10 @@ void GameModule::OnKeyDown(const SDL_Keysym& keysym)
             break;
 
         case SDLK_F5:
-            for (auto i : _entities) delete i;
-            _entities.clear();
-            _deadEntities.clear();
-            _collisionHandler.RemoveAllEntities();
-
+            DestroyState();
             _updateCallback = LuaReference();
             _lua = LuaState();
-            SetupLua();
-            _collisionHandler.Reset();
-            _lua.ExecuteFile("main.lua");
+            InitializeLua();
             break;
 
         default:
@@ -213,9 +203,9 @@ void GameModule::OnResize(int width, int height)
     glMatrixMode(GL_MODELVIEW);
 }
 
-void GameModule::SetupLua()
+void GameModule::InitializeLua()
 {
-    _lua.SetUserData((void*)&KeyBase, this);
+    _lua.SetUserData((void*)&LuaKeyBase, this);
     _lua.AddFunction(SetUpdateCallback, "SetUpdateCallback");
     _lua.AddFunction(AddEntity, "AddEntity");
     _lua.AddFunction(RemoveEntity, "RemoveEntity");
@@ -232,11 +222,22 @@ void GameModule::SetupLua()
     _lua.AddFunction(GetRadius, "GetRadius");
     _lua.AddFunction(GetScale, "GetScale");
     _lua.AddFunction(GetRandom, "GetRandom");
+
+    _collisionHandler.InitializeLua();
+    _lua.ExecuteFile("main.lua");
+}
+
+void GameModule::DestroyState()
+{
+    for (auto i : _entities) delete i;
+    _entities.clear();
+    _deadEntities.clear();
+    _collisionHandler.DestroyState();
 }
 
 GameModule& GameModule::FromLua(lua_State* state)
 {
-    void* raw = LuaState::GetUserData(state, (void*)&KeyBase);
+    void* raw = LuaState::GetUserData(state, (void*)&LuaKeyBase);
     return *reinterpret_cast<GameModule*>(raw);
 }
 

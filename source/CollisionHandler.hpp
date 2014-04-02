@@ -22,15 +22,15 @@ class CollisionHandler
                 _entities.erase(i);
         }
 
-        void RemoveAllEntities()
+        void DestroyState()
         {
             _entities.clear();
             _callback = LuaReference();
         }
 
-        void Reset()
+        void InitializeLua()
         {
-            _lua.SetUserData((void*)LuaKeyBase, this);
+            _lua.SetUserData((void*)&LuaKeyBase, this);
             _lua.AddFunction(SetCollisionCallback, "SetCollisionCallback");
         }
 

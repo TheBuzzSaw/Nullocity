@@ -6,7 +6,6 @@ const int CollisionHandler::LuaKeyBase = 0xF00D;
 CollisionHandler::CollisionHandler(LuaState& lua)
     : _lua(lua)
 {
-    Reset();
 }
 
 CollisionHandler::~CollisionHandler()
@@ -46,7 +45,7 @@ void CollisionHandler::CheckCollisions()
 
 CollisionHandler& CollisionHandler::FromLua(lua_State* state)
 {
-    auto raw = LuaState::GetUserData(state, (void*)LuaKeyBase);
+    auto raw = LuaState::GetUserData(state, (void*)&LuaKeyBase);
     return *reinterpret_cast<CollisionHandler*>(raw);
 }
 
