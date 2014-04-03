@@ -36,20 +36,30 @@
 			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 			<Add directory="/usr/local/include/SDL2" />
+			<Add directory="/usr/include/lua5.2" />
 			<Add directory="../../SDL2TK/include" />
 		</Compiler>
 		<Linker>
 			<Add library="sdl2tk-ubu64" />
 			<Add library="SDL2main" />
+			<Add library="SDL2_image" />
 			<Add library="SDL2" />
 			<Add library="GL" />
+			<Add library="lua5.2" />
 		</Linker>
-		<Unit filename="../source/Asteroid.cpp" />
-		<Unit filename="../source/Asteroid.hpp" />
 		<Unit filename="../source/Builders.cpp" />
 		<Unit filename="../source/Builders.hpp" />
+		<Unit filename="../source/CollisionHandler.cpp" />
+		<Unit filename="../source/CollisionHandler.hpp" />
+		<Unit filename="../source/CollisionRadius.hpp" />
+		<Unit filename="../source/Entity.cpp" />
+		<Unit filename="../source/Entity.hpp" />
 		<Unit filename="../source/GameModule.cpp" />
 		<Unit filename="../source/GameModule.hpp" />
+		<Unit filename="../source/LuaReference.cpp" />
+		<Unit filename="../source/LuaReference.hpp" />
+		<Unit filename="../source/LuaState.cpp" />
+		<Unit filename="../source/LuaState.hpp" />
 		<Unit filename="../source/SimpleBufferObject.cpp" />
 		<Unit filename="../source/SimpleBufferObject.hpp" />
 		<Unit filename="../source/SimpleBuilder.cpp" />

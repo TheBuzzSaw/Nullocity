@@ -31,11 +31,11 @@ int main(int argc, char** argv)
     TestLua();
 
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
-    IMG_Init(IMG_INIT_PNG);
+    //IMG_Init(IMG_INIT_PNG);
 
     Start();
 
-    IMG_Quit();
+    //IMG_Quit();
     SDL_Quit();
 
     return 0;
