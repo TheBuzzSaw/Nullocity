@@ -46,6 +46,7 @@
 			<Add library="SDL2" />
 			<Add library="GL" />
 			<Add library="lua5.2" />
+			<Add directory="/usr/local/lib" />
 		</Linker>
 		<Unit filename="../source/Builders.cpp" />
 		<Unit filename="../source/Builders.hpp" />
