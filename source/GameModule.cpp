@@ -22,6 +22,8 @@ GameModule::GameModule()
 
     _camera.Distance(32.0f);
     _camera.Vertical(RotationF::FromDegrees(-45.0f));
+
+    InitializeLua();
 }
 
 GameModule::~GameModule()
@@ -43,8 +45,6 @@ void GameModule::OnOpen()
 
     const float N = 1.0f / 8.0f;
     glClearColor(N, N, N, 1.0f);
-
-    InitializeLua();
 }
 
 void GameModule::OnClose()
@@ -454,8 +454,9 @@ int GameModule::GetVelocity(lua_State* state)
     return 0;
 }
 
-int GameModule::GetRotation(lua_State* state) //"Rotato Express, good for peeling potatoes, bad for peeling cans"
+int GameModule::GetRotation(lua_State* state)
 {
+    // Rotato Express: Good for peeling potatoes. Bad for peeling cans.
     GameModule& gm = GameModule::FromLua(state);
 
     auto argc = lua_gettop(state);
@@ -544,6 +545,7 @@ int GameModule::GetScale(lua_State* state)
 
 int GameModule::GetRandom(lua_State* state)
 {
+    int result = 0;
     auto argc = lua_gettop(state);
     if (argc > 1 && lua_isnumber(state, 1) && lua_isnumber(state, 2))
     {
@@ -551,14 +553,29 @@ int GameModule::GetRandom(lua_State* state)
         auto low = lua_tonumber(state, 1);
         auto high = lua_tonumber(state, 2);
 
-        std::uniform_real_distribution<decltype(low)> distribution(low, high);
-        auto result = distribution(gm._generator);
-        lua_pushnumber(state, result);
+        if (low < high)
+        {
+            std::uniform_real_distribution<decltype(low)>
+                distribution(low, high);
+
+            auto value = distribution(gm._generator);
+            lua_pushnumber(state, value);
+            result = 1;
+        }
+        else
+        {
+            lua_pushstring(state,
+                "'GetRandom' requires that the first parameter be lower than"
+                " the second parameter");
+            lua_error(state);
+        }
     }
     else
     {
-        lua_pushnil(state);
+        lua_pushstring(state,
+            "'GetRandom' requires a low number and a high number");
+        lua_error(state);
     }
 
-    return 1;
+    return result;
 }
