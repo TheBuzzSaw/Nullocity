@@ -49,6 +49,8 @@ class GameModule : public SDL2TK::Module
         LuaReference _updateCallback;
         std::mt19937_64 _generator;
         CollisionHandler _collisionHandler;
+        float _distance;
+        float _distanceDelta;
 
         static const int LuaKeyBase;
         static GameModule& FromLua(lua_State* state);
@@ -72,6 +74,11 @@ class GameModule : public SDL2TK::Module
         static int GetScale(lua_State* state);
 
         static int GetRandom(lua_State* state);
+
+        static int SetCameraPosition(lua_State* state);
+        static int SetCameraHorizontal(lua_State* state);
+        static int SetCameraVertical(lua_State* state);
+        static int SetCameraDistance(lua_State* state);
 };
 
 #endif

@@ -149,10 +149,20 @@ SimpleBufferObject BuildLines()
 {
     SimpleBuilder builder;
 
-    builder.Add(Vector3F(-7.0f, 0.0f, 0.0f), Black);
-    builder.Add(Vector3F(7.0f, 0.0f, 0.0f), Black);
-    builder.Add(Vector3F(0.0f, -7.0f, 0.0f), Black);
-    builder.Add(Vector3F(0.0f, 7.0f, 0.0f), Black);
+    const float N = 16.0f;
+    const int LineCount = 5;
+    const int LaneCount = LineCount - 1;
+
+    for (int i = 0; i < LineCount; ++i)
+    {
+        float ratio = float(i) / float(LaneCount);
+        float n = N * (2.0f * ratio - 1.0f);
+
+        builder.Add(Vector3F(-N, n, 0.0f), Black);
+        builder.Add(Vector3F(N, n, 0.0f), Black);
+        builder.Add(Vector3F(n, -N, 0.0f), Black);
+        builder.Add(Vector3F(n, N, 0.0f), Black);
+    }
 
     return SimpleBufferObject(builder);
 }

@@ -15,12 +15,14 @@ const int GameModule::LuaKeyBase = 0xBADC0DE;
 GameModule::GameModule()
     : _generator(std::chrono::system_clock::now().time_since_epoch().count())
     , _collisionHandler(_lua)
+    , _distance(32.0f)
+    , _distanceDelta(0.0f)
 {
     _cubeObject = BuildCube();
     _squarePyramidObject = BuildSquarePyramid();
     _linesObject = BuildLines();
 
-    _camera.Distance(32.0f);
+    _camera.Distance(_distance);
     _camera.Vertical(RotationF::FromDegrees(-45.0f));
 
     InitializeLua();
@@ -92,6 +94,9 @@ void GameModule::OnLoop()
 
 void GameModule::OnPulse()
 {
+    _distance += _distanceDelta;
+    _camera.Distance(_distance);
+
     _playerRotation += _playerTorque;
     _camera.Horizontal(-_playerRotation);
 
@@ -157,6 +162,14 @@ void GameModule::OnKeyDown(const SDL_Keysym& keysym)
             InitializeLua();
             break;
 
+        case SDLK_PAGEDOWN:
+            _distanceDelta = -1.0f;
+            break;
+
+        case SDLK_PAGEUP:
+            _distanceDelta = 1.0f;
+            break;
+
         default:
             break;
     }
@@ -182,6 +195,11 @@ void GameModule::OnKeyUp(const SDL_Keysym& keysym)
         case SDLK_a:
             break;
 
+        case SDLK_PAGEDOWN:
+        case SDLK_PAGEUP:
+            _distanceDelta = 0.0f;
+            break;
+
         default:
             break;
     }
@@ -195,7 +213,7 @@ void GameModule::OnResize(int width, int height)
 
     Matrix4x4F matrix;
     matrix.Perspective(RotationF::FromDegrees(30.0f), aspectRatio, 1.0f,
-        100.0f);
+        1000.0f);
     //matrix.Orthographic(8.0f, aspectRatio);
 
     glMatrixMode(GL_PROJECTION);
@@ -222,6 +240,7 @@ void GameModule::InitializeLua()
     _lua.AddFunction(GetRadius, "GetRadius");
     _lua.AddFunction(GetScale, "GetScale");
     _lua.AddFunction(GetRandom, "GetRandom");
+    _lua.AddFunction(SetCameraPosition, "SetCameraPosition");
 
     _collisionHandler.InitializeLua();
     _lua.ExecuteFile("main.lua");
@@ -578,4 +597,25 @@ int GameModule::GetRandom(lua_State* state)
     }
 
     return result;
+}
+
+int GameModule::SetCameraPosition(lua_State* state)
+{
+    auto argc = lua_gettop(state);
+
+    if (argc > 2
+        && lua_isnumber(state, 1)
+        && lua_isnumber(state, 2)
+        && lua_isnumber(state, 3))
+    {
+        GameModule& gm = GameModule::FromLua(state);
+
+        auto x = lua_tonumber(state, 1);
+        auto y = lua_tonumber(state, 2);
+        auto z = lua_tonumber(state, 3);
+
+        gm._camera.Position(SDL2TK::Vector3F(x, y, z));
+    }
+
+    return 0;
 }
