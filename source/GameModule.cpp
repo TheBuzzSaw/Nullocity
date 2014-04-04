@@ -163,11 +163,11 @@ void GameModule::OnKeyDown(const SDL_Keysym& keysym)
             break;
 
         case SDLK_PAGEDOWN:
-            _distanceDelta = -1.0f;
+            _distanceDelta = 1.0f;
             break;
 
         case SDLK_PAGEUP:
-            _distanceDelta = 1.0f;
+            _distanceDelta = -1.0f;
             break;
 
         default:
