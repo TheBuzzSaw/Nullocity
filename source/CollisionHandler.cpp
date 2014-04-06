@@ -7,7 +7,7 @@ CollisionHandler::CollisionHandler(LuaState& lua)
     : _lua(lua)
     , _quadtree(4)
 {
-    Rectangle area(SDL2TK::Vector2F(0, 0), SDL2TK::Vector2F(16, 16));
+    Rectangle area(SDL2TK::Vector2F(0, 0), SDL2TK::Vector2F(64, 64));
     _quadtree.SetArea(area);
 }
 
@@ -21,19 +21,18 @@ void CollisionHandler::CheckCollisions()
     {
         for (auto i : _entities) _quadtree.Add(*i);
 
-        auto size = _entities.size();
-        for (decltype(size) i = 0; i < size; i++)
+        for (auto i : _entities)
         {
-            for (decltype(size) j = i + 1; j < size; j++)
+            const std::vector<Entity*>& collisions =
+                _quadtree.GetCollisions(*i);
+
+            for (auto j : collisions)
             {
-                if (_entities[i]->Overlaps(*_entities[j]))
-                {
-                    auto state = _lua.Raw();
-                    _callback.Push();
-                    lua_pushlightuserdata(state, _entities[i]);
-                    lua_pushlightuserdata(state, _entities[j]);
-                    _lua.Call(2, 0);
-                }
+                auto state = _lua.Raw();
+                _callback.Push();
+                lua_pushlightuserdata(state, i);
+                lua_pushlightuserdata(state, j);
+                _lua.Call(2, 0);
             }
         }
 

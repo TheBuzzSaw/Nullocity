@@ -1,4 +1,5 @@
 local gr = Nullocity.GetRandom
+local arenaRadius = 64
 
 entitiesByHandle = {}
 cameraEntity = nil
@@ -9,7 +10,7 @@ function FixPosition(entity)
     local radius = entity.GetRadius()
     
     local changed = false
-    local n = 16
+    local n = arenaRadius
     
     local high = px + radius
     local low = px - radius
@@ -208,10 +209,11 @@ function Debug()
     end
 end
 
-for i = 1, 12 do
+for i = 1, 128 do
 	local size = gr(.5,1.5)
     local entity = NewBaseEntity(size)
-    entity.SetPosition(gr(-16, 16), gr(-16, 16))
+    entity.SetPosition(gr(-arenaRadius, arenaRadius),
+        gr(-arenaRadius, arenaRadius))
     entity.SetVelocity(gr(-.5, .5), gr(-.5, .5))
     entity.SetRotation(gr(-135, 135), gr(-135, 135))
     entity.SetTorque(gr(-4, 4), gr(-4, 4))
