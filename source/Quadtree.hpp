@@ -3,6 +3,7 @@
 
 #include "QuadtreeNode.hpp"
 #include <vector>
+#include <iostream>
 
 class Quadtree
 {
@@ -15,6 +16,7 @@ class Quadtree
         void Clear();
         void Add(Entity& entity);
         const std::vector<Entity*>& GetCollisions(Entity& entity);
+        void DebugDump(std::ostream& stream);
 
     protected:
     private:

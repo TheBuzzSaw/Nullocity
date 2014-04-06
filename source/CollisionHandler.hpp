@@ -35,7 +35,8 @@ class CollisionHandler
             _lua.AddFunction(SetCollisionCallback, "SetCollisionCallback");
         }
 
-        void CheckCollisions();
+        void CheckCollisions(bool debugDump);
+
     protected:
     private:
         std::vector<Entity*> _entities;

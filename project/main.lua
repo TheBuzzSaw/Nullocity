@@ -223,14 +223,15 @@ for i = 1, 128 do
     
     if not cameraEntity then cameraEntity = entity end
 	
+	--[[
 	print("Size is: ", size)
-	
 	print("Position: ", entity.GetPosition())
 	print("Velocity: ", entity.GetVelocity())
 	print("Rotation: ", entity.GetRotation())
 	print("Torque: ", entity.GetTorque())
 	print("Radius: ", entity.GetRadius())
 	print("Scale: ", entity.GetScale())
+	]]--
 end
 
 Nullocity.SetCollisionCallback(OnCollision)

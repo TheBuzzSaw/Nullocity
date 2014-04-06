@@ -20,10 +20,10 @@ class Rectangle
 
         bool Contains(const Rectangle& other) const
         {
-            return Top() <= other.Top()
-                && Bottom() >= other.Bottom()
-                && Right() <= other.Right()
-                && Left() >= other.Left();
+            return Top() >= other.Top()
+                && Bottom() <= other.Bottom()
+                && Right() >= other.Right()
+                && Left() <= other.Left();
         }
 
         bool Avoids(const Rectangle& other) const
@@ -36,6 +36,9 @@ class Rectangle
         const Rectangle UpperRight() const;
         const Rectangle LowerLeft() const;
         const Rectangle LowerRight() const;
+
+        const SDL2TK::Vector2F& Center() const { return _center; }
+        const SDL2TK::Vector2F& Radii() const { return _radii; }
 
     protected:
     private:

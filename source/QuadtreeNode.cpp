@@ -1,5 +1,6 @@
 #include "QuadtreeNode.hpp"
 #include "Entity.hpp"
+#include <cstring>
 
 QuadtreeNode::QuadtreeNode()
     : _nodes(nullptr)
@@ -75,5 +76,34 @@ void QuadtreeNode::GetCollisions(Entity& entity,
                     _nodes[j].GetCollisions(entity, entityRectangle, results);
             }
         }
+    }
+}
+
+void QuadtreeNode::DebugDump(std::ostream& stream, int tier)
+{
+    char indent[64];
+    memset(indent, ' ', sizeof(indent));
+    indent[tier * 2] = '\0';
+
+    stream
+        << indent
+        << "QuadtreeNode ("
+        << _entities.size()
+        << " entit"
+        << (_entities.size() == 1 ? "y" : "ies")
+        << ") "
+        << _area.Center().X()
+        << ", "
+        << _area.Center().Y()
+        << " with radii "
+        << _area.Radii().X()
+        << ", "
+        << _area.Radii().Y()
+        << '\n';
+
+    if (_nodes)
+    {
+        for (int i = 0; i < 4; ++i)
+            _nodes[i].DebugDump(stream, tier + 1);
     }
 }

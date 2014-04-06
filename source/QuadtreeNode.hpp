@@ -3,6 +3,7 @@
 
 #include "Rectangle.hpp"
 #include <vector>
+#include <iostream>
 
 class Entity;
 
@@ -24,6 +25,8 @@ class QuadtreeNode
 
         void GetCollisions(Entity& entity, const Rectangle& entityRectangle,
             std::vector<Entity*>& results);
+
+        void DebugDump(std::ostream& stream, int tier);
 
     protected:
     private:

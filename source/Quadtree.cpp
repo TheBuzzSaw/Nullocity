@@ -52,6 +52,14 @@ const std::vector<Entity*>& Quadtree::GetCollisions(Entity& entity)
     return _entityBuffer;
 }
 
+void Quadtree::DebugDump(std::ostream& stream)
+{
+    stream << "--- Quadtree Dump ---\n";
+    stream << "Size of Node Pool: " << _nodePool.size() << '\n';
+    _node.DebugDump(stream, 1);
+    stream.flush();
+}
+
 QuadtreeNode* Quadtree::GetFourNodes()
 {
     QuadtreeNode* result;

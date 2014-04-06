@@ -9,13 +9,14 @@ CollisionHandler::CollisionHandler(LuaState& lua)
 {
     Rectangle area(SDL2TK::Vector2F(0, 0), SDL2TK::Vector2F(64, 64));
     _quadtree.SetArea(area);
+    _quadtree.Clear();
 }
 
 CollisionHandler::~CollisionHandler()
 {
 }
 
-void CollisionHandler::CheckCollisions()
+void CollisionHandler::CheckCollisions(bool debugDump)
 {
     if (_callback.HasReference())
     {
@@ -35,6 +36,9 @@ void CollisionHandler::CheckCollisions()
                 _lua.Call(2, 0);
             }
         }
+
+        if (debugDump)
+            _quadtree.DebugDump(std::cout);
 
         _quadtree.Clear();
     }

@@ -51,6 +51,7 @@ class GameModule : public SDL2TK::Module
         CollisionHandler _collisionHandler;
         float _distance;
         float _distanceDelta;
+        bool _debugQuadtree;
 
         static const int LuaKeyBase;
         static GameModule& FromLua(lua_State* state);

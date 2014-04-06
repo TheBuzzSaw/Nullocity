@@ -17,6 +17,7 @@ GameModule::GameModule()
     , _collisionHandler(_lua)
     , _distance(32.0f)
     , _distanceDelta(0.0f)
+    , _debugQuadtree(false)
 {
     _cubeObject = BuildCube();
     _squarePyramidObject = BuildSquarePyramid();
@@ -111,7 +112,7 @@ void GameModule::OnPulse()
         }
     }
 
-    _collisionHandler.CheckCollisions();
+    _collisionHandler.CheckCollisions(_debugQuadtree);
 
     for (auto entity : _deadEntities)
     {
@@ -123,6 +124,8 @@ void GameModule::OnPulse()
     }
 
     _deadEntities.clear();
+
+    _debugQuadtree = false;
 }
 
 void GameModule::OnSecond(int framesPerSecond)
@@ -149,6 +152,7 @@ void GameModule::OnKeyDown(const SDL_Keysym& keysym)
             break;
 
         case SDLK_a:
+            _debugQuadtree = true;
             break;
 
         case SDLK_g:
@@ -163,11 +167,11 @@ void GameModule::OnKeyDown(const SDL_Keysym& keysym)
             break;
 
         case SDLK_PAGEDOWN:
-            _distanceDelta = 1.0f;
+            _distanceDelta = 3.0f;
             break;
 
         case SDLK_PAGEUP:
-            _distanceDelta = -1.0f;
+            _distanceDelta = -3.0f;
             break;
 
         default:
