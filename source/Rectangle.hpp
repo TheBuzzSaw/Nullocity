@@ -28,8 +28,10 @@ class Rectangle
 
         bool Avoids(const Rectangle& other) const
         {
-            return (Top() < other.Bottom() || Bottom() > other.Top())
-                && (Right() < other.Left() || Left() > other.Right());
+            return Top() < other.Bottom()
+                || Bottom() > other.Top()
+                || Right() < other.Left()
+                || Left() > other.Right();
         }
 
         const Rectangle UpperLeft() const;
