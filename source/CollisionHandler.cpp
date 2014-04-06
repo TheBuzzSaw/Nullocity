@@ -5,7 +5,10 @@ const int CollisionHandler::LuaKeyBase = 0xF00D;
 
 CollisionHandler::CollisionHandler(LuaState& lua)
     : _lua(lua)
+    , _quadtree(4)
 {
+    Rectangle area(SDL2TK::Vector2F(0, 0), SDL2TK::Vector2F(16, 16));
+    _quadtree.SetArea(area);
 }
 
 CollisionHandler::~CollisionHandler()
@@ -16,21 +19,14 @@ void CollisionHandler::CheckCollisions()
 {
     if (_callback.HasReference())
     {
+        for (auto i : _entities) _quadtree.Add(*i);
+
         auto size = _entities.size();
         for (decltype(size) i = 0; i < size; i++)
         {
             for (decltype(size) j = i + 1; j < size; j++)
             {
-                SDL2TK::Vector2F object1Pos = _entities[i]->Position();
-                SDL2TK::Vector2F object2Pos = _entities[j]->Position();
-                float object1Rad = _entities[i]->Radius();
-                float object2Rad = _entities[j]->Radius();
-                float minimumDistance = object1Rad + object2Rad;
-                minimumDistance *= minimumDistance;
-                float distance = (object1Pos - object2Pos).LengthSquared()
-                    - minimumDistance;
-
-                if (distance <= 0)
+                if (_entities[i]->Overlaps(*_entities[j]))
                 {
                     auto state = _lua.Raw();
                     _callback.Push();
@@ -40,6 +36,8 @@ void CollisionHandler::CheckCollisions()
                 }
             }
         }
+
+        _quadtree.Clear();
     }
 }
 

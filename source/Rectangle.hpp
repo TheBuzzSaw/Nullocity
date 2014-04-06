@@ -26,6 +26,12 @@ class Rectangle
                 && Left() >= other.Left();
         }
 
+        bool Avoids(const Rectangle& other) const
+        {
+            return (Top() < other.Bottom() || Bottom() > other.Top())
+                && (Right() < other.Left() || Left() > other.Right());
+        }
+
         const Rectangle UpperLeft() const;
         const Rectangle UpperRight() const;
         const Rectangle LowerLeft() const;

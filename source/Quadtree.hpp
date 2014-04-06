@@ -14,6 +14,7 @@ class Quadtree
 
         void Clear();
         void Add(Entity& entity);
+        const std::vector<Entity*>& GetCollisions(Entity& entity);
 
     protected:
     private:

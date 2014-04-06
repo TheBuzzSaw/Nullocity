@@ -4,6 +4,7 @@
 #include "Entity.hpp"
 #include "LuaState.hpp"
 #include "LuaReference.hpp"
+#include "Quadtree.hpp"
 #include <vector>
 #include <algorithm>
 
@@ -40,6 +41,7 @@ class CollisionHandler
         std::vector<Entity*> _entities;
         LuaState& _lua;
         LuaReference _callback;
+        Quadtree _quadtree;
 
         static const int LuaKeyBase;
         static CollisionHandler& FromLua(lua_State* state);

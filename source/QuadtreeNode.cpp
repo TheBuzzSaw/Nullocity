@@ -58,3 +58,22 @@ void QuadtreeNode::Divide(QuadtreeNode* nodes,
         node->_entities.push_back(i);
     }
 }
+
+void QuadtreeNode::GetCollisions(Entity& entity,
+    const Rectangle& entityRectangle, std::vector<Entity*>& results)
+{
+    for (auto i : _entities)
+    {
+        if (&entity < i && entity.Overlaps(*i))
+            results.push_back(i);
+
+        if (_nodes)
+        {
+            for (int j = 0; j < 4; ++j)
+            {
+                if (!entityRectangle.Avoids(_nodes[j]._area))
+                    _nodes[j].GetCollisions(entity, entityRectangle, results);
+            }
+        }
+    }
+}

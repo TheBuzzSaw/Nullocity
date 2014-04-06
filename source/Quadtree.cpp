@@ -38,6 +38,20 @@ void Quadtree::Add(Entity& entity)
     node->_entities.push_back(&entity);
 }
 
+const std::vector<Entity*>& Quadtree::GetCollisions(Entity& entity)
+{
+    _entityBuffer.clear();
+
+    auto radius = entity.Radius();
+    auto position = entity.Position();
+
+    Rectangle entityRectangle(position, SDL2TK::Vector2F(radius, radius));
+
+    _node.GetCollisions(entity, entityRectangle, _entityBuffer);
+
+    return _entityBuffer;
+}
+
 QuadtreeNode* Quadtree::GetFourNodes()
 {
     QuadtreeNode* result;

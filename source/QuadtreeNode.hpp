@@ -22,6 +22,9 @@ class QuadtreeNode
             return !_nodes && _entities.size() >= maxNodeCapacity;
         }
 
+        void GetCollisions(Entity& entity, const Rectangle& entityRectangle,
+            std::vector<Entity*>& results);
+
     protected:
     private:
         QuadtreeNode(const QuadtreeNode&) = delete;

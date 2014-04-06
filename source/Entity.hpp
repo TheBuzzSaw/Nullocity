@@ -12,8 +12,8 @@ class Entity
         Entity(SimpleBufferObject& object);
         ~Entity();
 
-        const SDL2TK::Vector2F Position() const { return _position; }
-        const SDL2TK::Vector2F Velocity() const { return _velocity; }
+        const SDL2TK::Vector2F& Position() const { return _position; }
+        const SDL2TK::Vector2F& Velocity() const { return _velocity; }
         const SDL2TK::RotationF RotationX() const { return _rotationX; }
         const SDL2TK::RotationF RotationY() const { return _rotationY; }
         const SDL2TK::RotationF TorqueX() const { return _torqueX; }
@@ -27,17 +27,21 @@ class Entity
         void SetVelocity(SDL2TK::Vector2F velocity) { _velocity = velocity; }
         void SetRotation(SDL2TK::RotationF x, SDL2TK::RotationF y)
         {
-            _rotationX = x; _rotationY = y;
+            _rotationX = x;
+            _rotationY = y;
         }
 
         void SetTorque(SDL2TK::RotationF x, SDL2TK::RotationF y)
         {
-            _torqueX = x; _torqueY = y;
+            _torqueX = x;
+            _torqueY = y;
         }
 
         void SetRadius(float radius) { _radius = radius; }
         void SetScale(float scale) { _scale = scale; }
-        void Draw (SimpleProgram& program);
+        void Draw(SimpleProgram& program);
+
+        bool Overlaps(const Entity& other) const;
 
     protected:
     private:
