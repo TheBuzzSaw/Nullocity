@@ -6,7 +6,6 @@ function FixPosition(entity)
     
     local changed = false
     local n = 16
-    
     if vx > 0 and px > n then
         px = px - n - n
         changed = true
@@ -37,7 +36,42 @@ end
 function OnCollision(a, b)
     a = allEntities[a]
     b = allEntities[b]
-    
+    --[[ more realistic physics work zone
+	--normalVector = {x2 - x1, y2 - y1}
+	normalX = x2 - x1
+	normalY = y2 - y1
+	
+	unitNormalVector = NormalVector / sqrt((normalX * normalX) + (normalY * normalY))
+	unitNormalX = normalX * normalX / ((normalX * normalX) + (normalY * nomralY))
+	unitNormalY = normalY * normalY / ((normalX * normalX) + (normalY * nomralY))
+	
+	unitTangetVector = {-unitNormalY, unitNormalX}
+	unitTangentX = -unitNormalY
+	unitTangentY = unitNormalX
+	
+	v1 = {x1,y1}
+	v2 = {x2,y2}
+	
+	velocity1NormalScalar = unitNormalVector . v1
+	velocity2NormalScalar = unitNormalVector . v2
+	
+	velocity1TangentScalar = unitTangentVector . v1
+	velocity2TangentScalar = unitTangentVector . v2
+	
+	finalVelocity1NormalScalar = (velocity1NormalScalar * (mass1 - mass2) + 2 * mass2 * velocity2NormalScalar) / (mass1 + mass2)
+	finalVelocity2NormalScalar = (velocity2NormalScalar * (mass2 - mass1) + 2 * mass1 * velocity1NormalScalar) / (mass1 + mass2)
+	
+	finalVelocity1NormalVector = finalVelocity1NormalScalar * unitNormalVector
+	finalVelocity2NormalVector = finalVelocity2NormalScalar * unitNormalVector
+	finalVelocity1TangentVector = finalVelocity1TangentScalar * unitTangentVector
+	finalVelocity2TangentVector = finalVelocity2TangentScalar * unitTangentVector
+	
+	velocity1Vector = finalVelocity1NormalVector + finalVelocity1TangentVector
+	velocity2Vector = finalVelocity2NormalVector + finalVelocity2TangentVector
+	
+	]]--
+	
+	
     -- If an entity has been removed,
     -- it'll come back nil.
     if a and b then
@@ -56,26 +90,90 @@ function OnCollision(a, b)
 		local dotProduct = xDist*xVel + yDist*yVel
 	
 		if dotProduct > 0 then
-		
+		   
+			--normalVector = {x2 - x1, y2 - y1}
+			local normalX = bpx - apx
+			local normalY = bpy - apy
+			
+			--unitNormalVector = NormalVector / sqrt((normalX * normalX) + (normalY * normalY))
+			local unitNormalX = normalX * normalX / ((normalX * normalX) + (normalY * normalY))
+			local unitNormalY = normalY * normalY / ((normalX * normalX) + (normalY * normalY))
+			
+			--unitTangetVector = {-unitNormalY, unitNormalX}
+			local unitTangentX = -unitNormalY
+			local unitTangentY = unitNormalX
+			
+			--velocityANormalScalar = unitNormalVector . av
+			local velocityANormalScalar = unitNormalX * avx + unitNormalY * avy
+			--velocityBNormalScalar = unitNormalVector . bv
+			local velocityBNormalScalar = unitNormalX * bvx + unitNormalY * bvy
+			
+			--velocityATangentScalar = unitTangentVector . av
+			local velocityATangentScalar = unitTangentX * avx + unitTangentY * avy
+			--velocityBTangentScalar = unitTangentVector . bv
+			local velocityBTangentScalar = unitTangentX * bvx + unitTangentY * bvy
+						
 			local am = a.GetMass()
 			local bm = b.GetMass()
 			
+			local finalVelocityANormalScalar = (velocityANormalScalar * (am - bm) + 2 * bm * velocityBNormalScalar) / (am + bm)
+			local finalVelocityBNormalScalar = (velocityBNormalScalar * (bm - am) + 2 * am * velocityANormalScalar) / (am + bm)
+			
+			--finalVelocity1NormalVector = finalVelocityANormalScalar * unitNormalVector
+			local finalVelocityANormalX = finalVelocityANormalScalar * unitNormalX
+			local finalVelocityANormalY = finalVelocityANormalScalar * unitNormalY
+			--finalVelocity2NormalVector = finalVelocityBNormalScalar * unitNormalVector
+			local finalVelocityBNormalX = finalVelocityBNormalScalar * unitNormalX
+			local finalVelocityBNormalY = finalVelocityBNormalScalar * unitNormalY
+			
+			--finalVelocity1TangentVector = finalVelocityATangentScalar * unitTangentVector
+			local finalVelocityATangentX = velocityATangentScalar * unitTangentX
+			local finalVelocityATangentY = velocityATangentScalar * unitTangentY
+			--finalVelocity2TangentVector = finalVelocityBTangentScalar * unitTangentVector
+			local finalVelocityBTangentX = velocityBTangentScalar * unitTangentX
+			local finalVelocityBTangentY = velocityBTangentScalar * unitTangentY
+			
+			--velocity1Vector = finalVelocity1NormalVector + finalVelocity1TangentVector
+			local finalVelocityAX = finalVelocityANormalX + finalVelocityATangentX
+			local finalVelocityAY = finalVelocityANormalY + finalVelocityATangentY
+			
+			--velocity2Vector = finalVelocity2NormalVector + finalVelocity2TangentVector
+			local finalVelocityBX = finalVelocityBNormalX + finalVelocityBTangentX
+			local finalVelocityBY = finalVelocityBNormalY + finalVelocityBTangentY
+			
+			--[[local am = a.GetMass()
+			local bm = b.GetMass()
+			
+			local x = apx - bpx
+			local y = apy - bpy
+			
+			local d = x * x + y * y
+			
+			local nx = x * x / d
+			local ny = y * y / d
+			
+			local p = 2 * (avx * nx + avy * ny - bvx * nx - bvy * ny) / (am + bm)
+			
+			avx = avx - p * bm * nx
+			avy = avy - p * bm * ny
+			
+			bvx = bvx + p * am * nx
+			bvy = bvy + p * am * ny
+			
+			a.SetVelocity(avx, avy)
+			b.SetVelocity(bvx, bvy) ]]--
+			
+			--[[
 			local combinedMass = am + bm
 			local differenceMass = am - bm
-			
 			
 			local bNewVelX = (bvx * differenceMass + (2 * am * avx)) / combinedMass
 			local bNewVelY = (bvy * differenceMass + (2 * am * avy)) / combinedMass
 			local aNewVelX = (avx * -differenceMass + (2 * bm * bvx)) / combinedMass
 			local aNewVelY = (avy * -differenceMass + (2 * bm * bvy)) / combinedMass
-			
-			local amx = avx * am
-			local amy = avy * am
-			local bmx = bvx * bm
-			local bmy = bvy * bm
-		
-			a.SetVelocity(aNewVelX, aNewVelY)
-			b.SetVelocity(bNewVelX, bNewVelY)
+		    ]]--
+			a.SetVelocity(finalVelocityAX, finalVelocityAY)
+			b.SetVelocity(finalVelocityBX, finalVelocityBY)
 		end
     end
 end
