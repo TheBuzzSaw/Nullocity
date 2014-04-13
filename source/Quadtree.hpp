@@ -14,7 +14,9 @@ class Quadtree
         void SetArea(const Rectangle& area) { _area = area; }
 
         void Clear();
+        void Audit();
         void Add(Entity& entity);
+        void Remove(Entity& entity);
         const std::vector<Entity*>& GetCollisions(Entity& entity);
         void DebugDump(std::ostream& stream);
 

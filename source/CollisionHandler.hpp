@@ -6,7 +6,6 @@
 #include "LuaReference.hpp"
 #include "Quadtree.hpp"
 #include <vector>
-#include <algorithm>
 
 class CollisionHandler
 {
@@ -14,34 +13,24 @@ class CollisionHandler
         CollisionHandler(LuaState& lua);
         ~CollisionHandler();
 
-        void AddEntity(Entity& entity) { _entities.push_back(&entity); }
-        void RemoveEntity(Entity& entity)
-        {
-            auto i = std::find(_entities.begin(), _entities.end(), &entity);
+        void InitializeLua();
 
-            if (i != _entities.end())
-                _entities.erase(i);
-        }
+        void AddEntity(Entity& entity);
+        void RemoveEntity(Entity& entity);
 
         void DestroyState()
         {
-            _entities.clear();
+            _quadtree.Clear();
             _callback = LuaReference();
-        }
-
-        void InitializeLua()
-        {
-            _lua.SetUserData((void*)&LuaKeyBase, this);
-            _lua.AddFunction(SetCollisionCallback, "SetCollisionCallback");
         }
 
         void CheckCollisions(bool debugDump);
 
     protected:
     private:
-        std::vector<Entity*> _entities;
         LuaState& _lua;
         LuaReference _callback;
+        std::vector<Entity*> _entities;
         Quadtree _quadtree;
 
         static const int LuaKeyBase;

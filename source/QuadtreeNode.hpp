@@ -15,8 +15,9 @@ class QuadtreeNode
 
         QuadtreeNode* FindSmallestFit(const Rectangle& area);
 
-        void Reset(const Rectangle& area);
+        void Reset(const Rectangle& area, QuadtreeNode* parentNode);
         void Divide(QuadtreeNode* nodes, std::vector<Entity*>& entityBuffer);
+        void Audit(std::vector<Entity*>& entityBuffer);
 
         bool IsFull(std::size_t maxNodeCapacity) const
         {
@@ -35,6 +36,7 @@ class QuadtreeNode
 
         std::vector<Entity*> _entities;
         QuadtreeNode* _nodes;
+        QuadtreeNode* _parentNode;
         Rectangle _area;
 
         friend class Quadtree;

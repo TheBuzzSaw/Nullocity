@@ -1,6 +1,7 @@
 #include "Quadtree.hpp"
 #include "QuadtreeNode.hpp"
 #include "Entity.hpp"
+#include <algorithm>
 #include <cstring>
 
 Quadtree::Quadtree(std::size_t maxNodeCapacity)
@@ -17,13 +18,26 @@ Quadtree::~Quadtree()
 void Quadtree::Clear()
 {
     _next = 0;
-    _node.Reset(_area);
+    _node.Reset(_area, nullptr);
+}
+
+void Quadtree::Audit()
+{
+    _entityBuffer.clear();
+    _node.Audit(_entityBuffer);
+
+    for (auto i : _entityBuffer) Add(*i);
+
+    _entityBuffer.clear();
 }
 
 void Quadtree::Add(Entity& entity)
 {
     auto radius = entity.Radius();
     auto position = entity.Position();
+
+    std::cerr << "Add -- " << position.X() << ", " << position.Y()
+        << " with radius " << radius << '\n';
 
     Rectangle entityRectangle(position, SDL2TK::Vector2F(radius, radius));
 
@@ -36,6 +50,20 @@ void Quadtree::Add(Entity& entity)
     }
 
     node->_entities.push_back(&entity);
+}
+
+void Quadtree::Remove(Entity& entity)
+{
+    auto radius = entity.Radius();
+    auto position = entity.Position();
+
+    Rectangle entityRectangle(position, SDL2TK::Vector2F(radius, radius));
+
+    QuadtreeNode* node = _node.FindSmallestFit(entityRectangle);
+
+    auto i = std::find(node->_entities.begin(), node->_entities.end(), &entity);
+
+    if (i != node->_entities.end()) node->_entities.erase(i);
 }
 
 const std::vector<Entity*>& Quadtree::GetCollisions(Entity& entity)

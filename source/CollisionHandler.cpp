@@ -1,5 +1,6 @@
 #include "CollisionHandler.hpp"
 #include <iostream>
+#include <algorithm>
 
 const int CollisionHandler::LuaKeyBase = 0xF00D;
 
@@ -9,18 +10,44 @@ CollisionHandler::CollisionHandler(LuaState& lua)
 {
     Rectangle area(SDL2TK::Vector2F(0, 0), SDL2TK::Vector2F(64, 64));
     _quadtree.SetArea(area);
-    _quadtree.Clear();
 }
 
 CollisionHandler::~CollisionHandler()
 {
 }
 
+void CollisionHandler::InitializeLua()
+{
+    _quadtree.Clear();
+
+    _lua.SetUserData((void*)&LuaKeyBase, this);
+    _lua.AddFunction(SetCollisionCallback, "SetCollisionCallback");
+}
+
+void CollisionHandler::AddEntity(Entity& entity)
+{
+    _entities.push_back(&entity);
+    _quadtree.Add(entity);
+}
+
+void CollisionHandler::RemoveEntity(Entity& entity)
+{
+    auto i = std::find(_entities.begin(), _entities.end(), &entity);
+
+    if (i != _entities.end())
+    {
+        _entities.erase(i);
+        _quadtree.Remove(entity);
+    }
+
+    _quadtree.Remove(entity);
+}
+
 void CollisionHandler::CheckCollisions(bool debugDump)
 {
     if (_callback.HasReference())
     {
-        for (auto i : _entities) _quadtree.Add(*i);
+        _quadtree.Audit();
 
         for (auto i : _entities)
         {
@@ -39,8 +66,6 @@ void CollisionHandler::CheckCollisions(bool debugDump)
 
         if (debugDump)
             _quadtree.DebugDump(std::cout);
-
-        _quadtree.Clear();
     }
 }
 

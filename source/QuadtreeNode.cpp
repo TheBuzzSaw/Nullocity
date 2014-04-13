@@ -4,6 +4,7 @@
 
 QuadtreeNode::QuadtreeNode()
     : _nodes(nullptr)
+    , _parentNode(nullptr)
 {
 }
 
@@ -23,10 +24,11 @@ QuadtreeNode* QuadtreeNode::FindSmallestFit(const Rectangle& area)
     return result;
 }
 
-void QuadtreeNode::Reset(const Rectangle& area)
+void QuadtreeNode::Reset(const Rectangle& area, QuadtreeNode* parentNode)
 {
     _entities.clear();
     _nodes = nullptr;
+    _parentNode = parentNode;
     _area = area;
 }
 
@@ -34,29 +36,62 @@ void QuadtreeNode::Divide(QuadtreeNode* nodes,
     std::vector<Entity*>& entityBuffer)
 {
     _nodes = nodes;
-    _nodes[0].Reset(_area.UpperLeft());
-    _nodes[1].Reset(_area.UpperRight());
-    _nodes[2].Reset(_area.LowerLeft());
-    _nodes[3].Reset(_area.LowerRight());
+    _nodes[0].Reset(_area.UpperLeft(), this);
+    _nodes[1].Reset(_area.UpperRight(), this);
+    _nodes[2].Reset(_area.LowerLeft(), this);
+    _nodes[3].Reset(_area.LowerRight(), this);
 
     entityBuffer = _entities;
     _entities.clear();
 
     for (auto i : entityBuffer)
     {
-        Entity& entity = *i;
-        auto radius = entity.Radius();
-        auto position = entity.Position();
+        auto radius = i->Radius();
+        auto position = i->Position();
 
         Rectangle entityRectangle(position, SDL2TK::Vector2F(radius, radius));
         QuadtreeNode* node = this;
 
         for (int j = 0; j < 4; ++j)
         {
-            if (_nodes[j]._area.Contains(entityRectangle)) node = _nodes + j;
+            if (_nodes[j]._area.Contains(entityRectangle))
+            {
+                node = _nodes + j;
+                break;
+            }
         }
 
         node->_entities.push_back(i);
+    }
+}
+
+void QuadtreeNode::Audit(std::vector<Entity*>& entityBuffer)
+{
+    auto i = _entities.begin();
+
+    while (i != _entities.end())
+    {
+        auto entity = *i;
+        auto radius = entity->Radius();
+        auto position = entity->Position();
+
+        Rectangle entityRectangle(position, SDL2TK::Vector2F(radius, radius));
+
+        if (!_area.Contains(entityRectangle))
+        {
+            entityBuffer.push_back(entity);
+            i = _entities.erase(i);
+        }
+        else
+        {
+            ++i;
+        }
+    }
+
+    if (_nodes)
+    {
+        for (int i = 0; i < 4; ++i)
+            _nodes[i].Audit(entityBuffer);
     }
 }
 
@@ -100,6 +135,13 @@ void QuadtreeNode::DebugDump(std::ostream& stream, int tier)
         << ", "
         << _area.Radii().Y()
         << '\n';
+
+    for (auto i : _entities)
+    {
+        auto position = i->Position();
+        stream << indent << "  " << position.X() << ", " << position.Y()
+            << " with radius " << i->Radius() << '\n';
+    }
 
     if (_nodes)
     {
