@@ -18,7 +18,7 @@ GameModule::GameModule()
     , _distance(32.0f)
     , _distanceDelta(0.0f)
 {
-    _cubeObject = BuildCube();
+    _cubeObject = _modelLoader.GetModelLoadFunction(ModelLoader::Cube)();
     _squarePyramidObject = BuildSquarePyramid();
     _linesObject = BuildLines();
 

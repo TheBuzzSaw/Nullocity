@@ -6,6 +6,7 @@
 #include "LuaState.hpp"
 #include "LuaReference.hpp"
 #include "CollisionHandler.hpp"
+#include "ModelLoader.hpp"
 #include <SDL2TK/Module.hpp>
 #include <SDL2TK/Camera.hpp>
 #include <unordered_set>
@@ -49,6 +50,8 @@ class GameModule : public SDL2TK::Module
         LuaReference _updateCallback;
         std::mt19937_64 _generator;
         CollisionHandler _collisionHandler;
+        ModelLoader _modelLoader;
+
         float _distance;
         float _distanceDelta;
 

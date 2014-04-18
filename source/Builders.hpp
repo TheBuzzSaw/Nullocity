@@ -3,6 +3,8 @@
 
 #include "SimpleBufferObject.hpp"
 
+typedef SimpleBufferObject (*ModelLoadFunction)();
+
 SimpleBufferObject BuildCube();
 SimpleBufferObject BuildPyramid();
 SimpleBufferObject BuildSquarePyramid();
