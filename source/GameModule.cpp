@@ -224,23 +224,28 @@ void GameModule::OnResize(int width, int height)
 void GameModule::InitializeLua()
 {
     _lua.SetUserData((void*)&LuaKeyBase, this);
-    _lua.AddFunction(SetUpdateCallback, "SetUpdateCallback");
-    _lua.AddFunction(AddEntity, "AddEntity");
-    _lua.AddFunction(RemoveEntity, "RemoveEntity");
-    _lua.AddFunction(SetPosition, "SetPosition");
-    _lua.AddFunction(SetVelocity, "SetVelocity");
-    _lua.AddFunction(SetRotation, "SetRotation");
-    _lua.AddFunction(SetTorque, "SetTorque");
-    _lua.AddFunction(SetRadius, "SetRadius");
-    _lua.AddFunction(SetScale, "SetScale");
-    _lua.AddFunction(GetPosition, "GetPosition");
-    _lua.AddFunction(GetVelocity, "GetVelocity");
-    _lua.AddFunction(GetRotation, "GetRotation");
-    _lua.AddFunction(GetTorque, "GetTorque");
-    _lua.AddFunction(GetRadius, "GetRadius");
-    _lua.AddFunction(GetScale, "GetScale");
-    _lua.AddFunction(GetRandom, "GetRandom");
-    _lua.AddFunction(SetCameraPosition, "SetCameraPosition");
+
+#define AddToLua(n) _lua.AddFunction(n, #n)
+    AddToLua(SetUpdateCallback);
+    AddToLua(AddEntity);
+    AddToLua(RemoveEntity);
+    AddToLua(SetPosition);
+    AddToLua(SetVelocity);
+    AddToLua(SetRotation);
+    AddToLua(SetTorque);
+    AddToLua(SetRadius);
+    AddToLua(SetScale);
+    AddToLua(GetPosition);
+    AddToLua(GetVelocity);
+    AddToLua(GetRotation);
+    AddToLua(GetTorque);
+    AddToLua(GetRadius);
+    AddToLua(GetTorque);
+    AddToLua(GetRadius);
+    AddToLua(GetScale);
+    AddToLua(GetRandom);
+    AddToLua(SetCameraPosition);
+#undef AddToLua
 
     _collisionHandler.InitializeLua();
     _lua.ExecuteFile("main.lua");
