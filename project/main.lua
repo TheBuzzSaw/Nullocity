@@ -1,5 +1,7 @@
 allEntities = {}
-
+--To fix this, you need to account for the overlap of the objects. it is likely messing up the normal and tangent.
+--Move the objects back along their trajectories and then calculate the distance they would have traveled given their new 
+--velocities after the collision.
 function FixPosition(entity)
     local px, py = entity.GetPosition()
     local vx, vy = entity.GetVelocity()
@@ -86,6 +88,11 @@ function OnCollision(a, b)
 		
 		local xDist = apx - bpx
 		local yDist = apy - bpy
+		
+		local aRadius = a.GetRadius()
+		local bRadius = b.GetRadius()
+		
+		local overlapDistance = 
 	
 		local dotProduct = xDist*xVel + yDist*yVel
 	
