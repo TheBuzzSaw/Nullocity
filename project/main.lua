@@ -118,7 +118,7 @@ function CheckAxisCollision(av, bv, ap, bp)
 end
 
 function NewBaseEntity(mass)
-    local self = { entity = Nullocity.AddEntity(), mass = mass }
+    local self = { entity = Nullocity.AddEntity('Pyramid'), mass = mass }
     
     local Remove = function()
             entitiesByHandle[self.entity] = nil

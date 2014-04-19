@@ -20,16 +20,20 @@ SimpleBufferObject& ModelLoader::GetModel(const std::string& modelName)
 {
     SimpleBufferObject* result = _default;
 
-    const auto modelFunctionIterator = _modelFunctions.find(modelName);
-
-    if (modelFunctionIterator != _modelFunctions.cend())
+    auto i = _models.find(modelName);
+    if (i == _models.end())
     {
-        auto modelIterator = _models.find(modelName);
-        if (modelIterator == _models.cend())
+        auto j = _modelFunctions.find(modelName);
+        if (j != _modelFunctions.end())
         {
-            result = new SimpleBufferObject(_modelFunctions[modelName]());
+            auto modelFunction = j->second;
+            result = new SimpleBufferObject((*modelFunction)());
             _models[modelName] = std::unique_ptr<SimpleBufferObject>(result);
         }
+    }
+    else
+    {
+        result = i->second.get();
     }
 
     return *result;

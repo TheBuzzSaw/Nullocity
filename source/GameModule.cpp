@@ -281,9 +281,15 @@ int GameModule::SetUpdateCallback(lua_State* state)
 
 int GameModule::AddEntity(lua_State* state)
 {
+    const char* modelName = nullptr;
+    auto argc = lua_gettop(state);
+
+    if (argc > 0 && lua_isstring(state, 1))
+        modelName = lua_tostring(state, 1);
+
     GameModule& gm = GameModule::FromLua(state);
 
-    Entity* entity = new Entity(gm._modelLoader.GetModel(""));
+    Entity* entity = new Entity(gm._modelLoader.GetModel(modelName));
     gm._entities.insert(entity);
     gm._collisionHandler.AddEntity(*entity);
 
