@@ -7,9 +7,9 @@ using namespace std;
 void Start()
 {
     SDL2TK::WindowSettings settings;
-    settings.Title("Nullocity 0.1");
-    settings.Width(800);
-    settings.Height(600);
+    settings.Title("Nullocity 0.2");
+    settings.Width(1024);
+    settings.Height(768);
 
     SDL2TK::Window window(std::move(settings));
     GameModule module;

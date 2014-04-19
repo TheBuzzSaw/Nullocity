@@ -184,17 +184,41 @@ static const Vector3F IV[12] = {
     Vector3F(IZ, -IX, 0.0f),
     Vector3F(-IZ, -IX, 0.0)
     };
-static const GLuint II[20][3] =
+
+static const int II[20][3] =
     {{1, 4, 0}, {4, 9, 0}, {4, 5, 9}, {8, 5, 4}, {1, 8, 4},
      {1, 10, 8}, {10, 3, 8}, {8, 3, 5}, {3, 2, 5}, {3, 7, 2},
      {3, 10, 7}, {10, 6, 7}, {6, 11, 7}, {6, 0, 11}, {6, 1, 0},
      {10, 1, 6}, {11, 0, 9}, {2, 11, 9}, {5, 2, 9}, {11, 2, 7}};
 
+void Subdivide(SimpleBuilder& builder, const Vector3F& a, const Vector3F& b,
+    const Vector3F& c, int detail)
+{
+    if (detail-- > 0)
+    {
+        Vector3F ab = ((a + b) / 2.0f).Normalized();
+        Vector3F bc = ((b + c) / 2.0f).Normalized();
+        Vector3F ca = ((c + a) / 2.0f).Normalized();
+
+        Subdivide(builder, a, ab, ca, detail);
+        Subdivide(builder, b, bc, ab, detail);
+        Subdivide(builder, c, ca, bc, detail);
+        Subdivide(builder, ab, bc, ca, detail);
+    }
+    else
+    {
+        builder.Add(a, Red);
+        builder.Add(b, Green);
+        builder.Add(c, Blue);
+    }
+}
+
 SimpleBufferObject BuildSphere()
 {
     SimpleBuilder builder;
 
-
+    for (int i = 0; i < 20; ++i)
+        Subdivide(builder, IV[II[i][2]], IV[II[i][1]], IV[II[i][0]], 0);
 
     return SimpleBufferObject(builder);
 }
