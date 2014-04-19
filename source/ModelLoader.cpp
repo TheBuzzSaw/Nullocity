@@ -1,23 +1,24 @@
 #include "ModelLoader.hpp"
 
+const std::string ModelLoader::Sphere = "Sphere";
 const std::string ModelLoader::Cube = "Cube";
 const std::string ModelLoader::Pyramid = "Pyramid";
 const std::string ModelLoader::SquarePyramid = "SquarePyramid";
 
 ModelLoader::ModelLoader()
 {
+    _modelFunctions[Sphere] = BuildSphere;
     _modelFunctions[Cube] = BuildCube;
     _modelFunctions[Pyramid] = BuildPyramid;
     _modelFunctions[SquarePyramid] = BuildSquarePyramid;
 
-    std::string defaultModelName = Cube;
-    SimpleBufferObject* defaultModel = new SimpleBufferObject(_modelFunctions[defaultModelName]());
-    _models[defaultModelName] = std::unique_ptr<SimpleBufferObject>(defaultModel);
+    _default = new SimpleBufferObject(BuildSphere());
+    _models[Sphere] = std::unique_ptr<SimpleBufferObject>(_default);
 }
 
-SimpleBufferObject& ModelLoader::GetModel(std::string modelName)
+SimpleBufferObject& ModelLoader::GetModel(const std::string& modelName)
 {
-    SimpleBufferObject* result = new SimpleBufferObject(_modelFunctions[Cube]());
+    SimpleBufferObject* result = _default;
 
     const auto modelFunctionIterator = _modelFunctions.find(modelName);
 

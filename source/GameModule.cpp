@@ -130,6 +130,8 @@ void GameModule::OnSecond(int framesPerSecond)
 
 void GameModule::OnKeyDown(const SDL_Keysym& keysym)
 {
+    const float DistanceDelta = 4.0f;
+
     switch (keysym.sym)
     {
         case SDLK_ESCAPE:
@@ -162,11 +164,11 @@ void GameModule::OnKeyDown(const SDL_Keysym& keysym)
             break;
 
         case SDLK_PAGEDOWN:
-            _distanceDelta = 1.0f;
+            _distanceDelta = DistanceDelta;
             break;
 
         case SDLK_PAGEUP:
-            _distanceDelta = -1.0f;
+            _distanceDelta = -DistanceDelta;
             break;
 
         default:

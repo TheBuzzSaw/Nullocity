@@ -61,6 +61,8 @@
 		<Unit filename="../source/LuaReference.hpp" />
 		<Unit filename="../source/LuaState.cpp" />
 		<Unit filename="../source/LuaState.hpp" />
+		<Unit filename="../source/ModelLoader.cpp" />
+		<Unit filename="../source/ModelLoader.hpp" />
 		<Unit filename="../source/SimpleBufferObject.cpp" />
 		<Unit filename="../source/SimpleBufferObject.hpp" />
 		<Unit filename="../source/SimpleBuilder.cpp" />

@@ -9,6 +9,7 @@
 class ModelLoader
 {
     public:
+        static const std::string Sphere;
         static const std::string Cube;
         static const std::string Pyramid;
         static const std::string SquarePyramid;
@@ -16,11 +17,13 @@ class ModelLoader
         ModelLoader();
         ~ModelLoader() = default;
 
-        SimpleBufferObject& GetModel(std::string modelName);
+        SimpleBufferObject& GetModel(const std::string& modelName);
 
     private:
+        SimpleBufferObject* _default;
         std::unordered_map<std::string,ModelLoadFunction> _modelFunctions;
-        std::unordered_map<std::string,std::unique_ptr<SimpleBufferObject>> _models;
+        std::unordered_map<std::string,std::unique_ptr<SimpleBufferObject>>
+            _models;
 
 
 };
