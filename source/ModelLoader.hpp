@@ -3,7 +3,7 @@
 
 #include "SimpleBufferObject.hpp"
 #include "Builders.hpp"
-#include <map>
+#include <unordered_map>
 
 class ModelLoader
 {
@@ -15,10 +15,10 @@ class ModelLoader
         ModelLoader();
         ~ModelLoader() = default;
 
-        ModelLoadFunction GetModelLoadFunction(std::string modelName) {return _models[modelName];}
+        ModelLoadFunction GetModelLoadFunction(std::string modelName);
 
     private:
-        std::map<std::string,ModelLoadFunction> _models;
+        std::unordered_map<std::string,ModelLoadFunction> _models;
 
 
 };
