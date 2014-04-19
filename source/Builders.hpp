@@ -10,5 +10,6 @@ SimpleBufferObject BuildPyramid();
 SimpleBufferObject BuildSquarePyramid();
 SimpleBufferObject BuildLines();
 SimpleBufferObject BuildSphere();
+SimpleBufferObject BuildIcosahedron();
 
 #endif

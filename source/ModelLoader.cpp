@@ -4,6 +4,7 @@ const std::string ModelLoader::Sphere = "Sphere";
 const std::string ModelLoader::Cube = "Cube";
 const std::string ModelLoader::Pyramid = "Pyramid";
 const std::string ModelLoader::SquarePyramid = "SquarePyramid";
+const std::string ModelLoader::Icosahedron = "Icosahedron";
 
 ModelLoader::ModelLoader()
 {
@@ -11,6 +12,7 @@ ModelLoader::ModelLoader()
     _modelFunctions[Cube] = BuildCube;
     _modelFunctions[Pyramid] = BuildPyramid;
     _modelFunctions[SquarePyramid] = BuildSquarePyramid;
+    _modelFunctions[Icosahedron] = BuildIcosahedron;
 
     _default = new SimpleBufferObject(BuildSphere());
     _models[Sphere] = std::unique_ptr<SimpleBufferObject>(_default);

@@ -118,7 +118,20 @@ function CheckAxisCollision(av, bv, ap, bp)
 end
 
 function NewBaseEntity(mass)
-    local self = { entity = Nullocity.AddEntity('Pyramid'), mass = mass }
+    local roll = gr(0, 5)
+    local model = 'Icosahedron'
+    
+    if roll > 4 then
+        model = 'Sphere'
+    elseif roll > 3 then
+        model = 'Cube'
+    elseif roll > 2 then
+        model = 'Pyramid'
+    elseif roll > 1 then
+        model = 'SquarePyramid'
+    end
+
+    local self = { entity = Nullocity.AddEntity(model), mass = mass }
     
     local Remove = function()
             entitiesByHandle[self.entity] = nil
@@ -208,7 +221,7 @@ function Debug()
     end
 end
 
-for i = 1, 12 do
+for i = 1, 16 do
     local size = gr(.5,1.5)
     local entity = NewBaseEntity(size)
     entity.SetPosition(gr(-16, 16), gr(-16, 16))

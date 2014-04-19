@@ -13,6 +13,7 @@ class ModelLoader
         static const std::string Cube;
         static const std::string Pyramid;
         static const std::string SquarePyramid;
+        static const std::string Icosahedron;
 
         ModelLoader();
         ~ModelLoader() = default;

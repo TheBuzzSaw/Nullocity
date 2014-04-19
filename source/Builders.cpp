@@ -213,12 +213,22 @@ void Subdivide(SimpleBuilder& builder, const Vector3F& a, const Vector3F& b,
     }
 }
 
-SimpleBufferObject BuildSphere()
+SimpleBufferObject BuildSphere(int detail)
 {
     SimpleBuilder builder;
 
     for (int i = 0; i < 20; ++i)
-        Subdivide(builder, IV[II[i][2]], IV[II[i][1]], IV[II[i][0]], 0);
+        Subdivide(builder, IV[II[i][2]], IV[II[i][1]], IV[II[i][0]], detail);
 
     return SimpleBufferObject(builder);
+}
+
+SimpleBufferObject BuildSphere()
+{
+    return BuildSphere(2);
+}
+
+SimpleBufferObject BuildIcosahedron()
+{
+    return BuildSphere(0);
 }
