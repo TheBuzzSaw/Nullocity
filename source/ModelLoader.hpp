@@ -4,6 +4,7 @@
 #include "SimpleBufferObject.hpp"
 #include "Builders.hpp"
 #include <unordered_map>
+#include <memory>
 
 class ModelLoader
 {
@@ -19,7 +20,7 @@ class ModelLoader
 
     private:
         std::unordered_map<std::string,ModelLoadFunction> _modelFunctions;
-        std::unordered_map<std::string,SimpleBufferObject*> _models;
+        std::unordered_map<std::string,std::unique_ptr<SimpleBufferObject>> _models;
 
 
 };

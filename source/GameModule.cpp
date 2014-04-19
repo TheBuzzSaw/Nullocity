@@ -281,7 +281,7 @@ int GameModule::AddEntity(lua_State* state)
 {
     GameModule& gm = GameModule::FromLua(state);
 
-    Entity* entity = new Entity(gm._modelLoader.GetModel(ModelLoader::Cube));
+    Entity* entity = new Entity(gm._modelLoader.GetModel(""));
     gm._entities.insert(entity);
     gm._collisionHandler.AddEntity(*entity);
 
