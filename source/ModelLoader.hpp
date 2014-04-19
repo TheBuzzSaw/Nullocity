@@ -15,10 +15,11 @@ class ModelLoader
         ModelLoader();
         ~ModelLoader() = default;
 
-        ModelLoadFunction GetModelLoadFunction(std::string modelName);
+        SimpleBufferObject& GetModel(std::string modelName);
 
     private:
-        std::unordered_map<std::string,ModelLoadFunction> _models;
+        std::unordered_map<std::string,ModelLoadFunction> _modelFunctions;
+        std::unordered_map<std::string,SimpleBufferObject*> _models;
 
 
 };

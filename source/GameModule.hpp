@@ -36,7 +36,6 @@ class GameModule : public SDL2TK::Module
 
         SimpleProgram _program;
         SimpleBufferObject _linesObject;
-        SimpleBufferObject _cubeObject;
         SimpleBufferObject _squarePyramidObject;
 
         std::unordered_set<Entity*> _entities;

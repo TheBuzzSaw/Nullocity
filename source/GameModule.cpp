@@ -18,7 +18,6 @@ GameModule::GameModule()
     , _distance(32.0f)
     , _distanceDelta(0.0f)
 {
-    _cubeObject = _modelLoader.GetModelLoadFunction(ModelLoader::Cube)();
     _squarePyramidObject = BuildSquarePyramid();
     _linesObject = BuildLines();
 
@@ -83,7 +82,7 @@ void GameModule::OnLoop()
                 .Scale(entity->Scale())
                 );
 
-        _program.Draw(_cubeObject, GL_TRIANGLES);
+        _program.Draw(entity->Model(), GL_TRIANGLES);
     }
 
     glLoadMatrixf(matrix);
@@ -282,7 +281,7 @@ int GameModule::AddEntity(lua_State* state)
 {
     GameModule& gm = GameModule::FromLua(state);
 
-    Entity* entity = new Entity(gm._cubeObject);
+    Entity* entity = new Entity(gm._modelLoader.GetModel(ModelLoader::Cube));
     gm._entities.insert(entity);
     gm._collisionHandler.AddEntity(*entity);
 

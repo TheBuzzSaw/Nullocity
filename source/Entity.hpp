@@ -20,6 +20,7 @@ class Entity
         const SDL2TK::RotationF TorqueY() const { return _torqueY; }
         const float Radius() const { return _radius; }
         const float Scale() const { return _scale; }
+        const SimpleBufferObject& Model() const { return *_object; }
 
         void Update();
 
