@@ -213,7 +213,7 @@ void Subdivide(SimpleBuilder& builder, const Vector3F& a, const Vector3F& b,
     }
 }
 
-SimpleBufferObject BuildSphere(int detail)
+SimpleBufferObject GeodesicGrid(int detail)
 {
     SimpleBuilder builder;
 
@@ -225,10 +225,10 @@ SimpleBufferObject BuildSphere(int detail)
 
 SimpleBufferObject BuildSphere()
 {
-    return BuildSphere(2);
+    return GeodesicGrid(2);
 }
 
 SimpleBufferObject BuildIcosahedron()
 {
-    return BuildSphere(0);
+    return GeodesicGrid(0);
 }
