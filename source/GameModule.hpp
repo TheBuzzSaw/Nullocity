@@ -10,6 +10,7 @@
 #include <SDL2TK/Module.hpp>
 #include <SDL2TK/Camera.hpp>
 #include <unordered_set>
+#include <unordered_map>
 #include <random>
 
 class GameModule : public SDL2TK::Module
@@ -51,6 +52,10 @@ class GameModule : public SDL2TK::Module
         CollisionHandler _collisionHandler;
         ModelLoader _modelLoader;
 
+        LuaReference _addActionCallback;
+
+        std::unordered_map<SDL_Keycode, LuaReference> _actionCallbacks;
+
         float _distance;
         float _distanceDelta;
 
@@ -81,6 +86,8 @@ class GameModule : public SDL2TK::Module
         static int SetCameraHorizontal(lua_State* state);
         static int SetCameraVertical(lua_State* state);
         static int SetCameraDistance(lua_State* state);
+
+        static int AddActionCallbacks(lua_State* state);
 };
 
 #endif

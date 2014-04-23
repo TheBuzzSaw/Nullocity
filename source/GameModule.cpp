@@ -132,6 +132,21 @@ void GameModule::OnKeyDown(const SDL_Keysym& keysym)
 {
     const float DistanceDelta = 4.0f;
 
+    auto actionCallback = _actionCallbacks.find(keysym.sym);
+
+    if (actionCallback != _actionCallbacks.end())
+    {
+        LuaReference* callback = &actionCallback->second;
+
+        if (callback->HasReference())
+        {
+            auto state = _lua.Raw();
+            callback->Push();
+            lua_pushnumber(state, 1);
+            _lua.Call(1, 0);
+        }
+    }
+
     switch (keysym.sym)
     {
         case SDLK_ESCAPE:
@@ -246,6 +261,7 @@ void GameModule::InitializeLua()
     AddToLua(GetScale);
     AddToLua(GetRandom);
     AddToLua(SetCameraPosition);
+    AddToLua(AddActionCallbacks);
 #undef AddToLua
 
     _collisionHandler.InitializeLua();
@@ -630,4 +646,26 @@ int GameModule::SetCameraPosition(lua_State* state)
     }
 
     return 0;
+}
+
+int GameModule::AddActionCallbacks(lua_State* state)
+{
+    auto argc = lua_gettop(state);
+
+    if (argc > 2
+        && lua_isstring(state, 1)
+        && lua_isstring(state, 2)
+        && lua_isfunction(state, 3))
+    {
+        GameModule& module = GameModule::FromLua(state);
+        auto actionName = lua_tostring(state, 1);
+        auto defaultKey = lua_tostring(state, 2);
+        if (argc > 3)
+        {
+
+
+        }
+        lua_settop(state, 3);
+        module._actionCallbacks[SDLK_SPACE] = LuaReference(state);
+    }
 }

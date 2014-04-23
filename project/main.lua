@@ -221,6 +221,11 @@ function Debug()
     end
 end
 
+function OnSpaceBar(isKeyDown)
+
+    print("It WORKS!")
+end
+
 for i = 1, 16 do
     local size = gr(.5,1.5)
     local entity = NewBaseEntity(size)
@@ -244,6 +249,7 @@ for i = 1, 16 do
     print("Scale: ", entity.GetScale())
 end
 
+
 Nullocity.SetCollisionCallback(OnCollision)
 Nullocity.SetUpdateCallback(OnUpdate)
-
+Nullocity.AddActionCallbacks("spacebar", "space", OnSpaceBar)
