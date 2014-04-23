@@ -270,6 +270,7 @@ void GameModule::InitializeLua()
 
 void GameModule::DestroyState()
 {
+    _actionCallbacks.clear();
     for (auto i : _entities) delete i;
     _entities.clear();
     _deadEntities.clear();
@@ -668,4 +669,5 @@ int GameModule::AddActionCallbacks(lua_State* state)
         lua_settop(state, 3);
         module._actionCallbacks[SDLK_SPACE] = LuaReference(state);
     }
+    return 0;
 }
