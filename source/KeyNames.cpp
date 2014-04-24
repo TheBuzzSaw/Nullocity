@@ -1,8 +1,4 @@
 #include "KeyNames.hpp"
-#include <fstream>
-#include <sstream>
-#include <cstring>
-using namespace std;
 
 static const KeyName KeyNames[] = {
     {"Return", SDLK_RETURN},
