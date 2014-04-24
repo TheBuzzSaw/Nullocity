@@ -17,6 +17,7 @@ GameModule::GameModule()
     , _collisionHandler(_lua)
     , _distance(32.0f)
     , _distanceDelta(0.0f)
+    , _actions(_lua)
 {
     _squarePyramidObject = BuildSquarePyramid();
     _linesObject = BuildLines();
@@ -132,20 +133,7 @@ void GameModule::OnKeyDown(const SDL_Keysym& keysym)
 {
     const float DistanceDelta = 4.0f;
 
-    auto actionCallback = _actionCallbacks.find(keysym.sym);
-
-    if (actionCallback != _actionCallbacks.end())
-    {
-        LuaReference* callback = &actionCallback->second;
-
-        if (callback->HasReference())
-        {
-            auto state = _lua.Raw();
-            callback->Push();
-            lua_pushnumber(state, 1);
-            _lua.Call(1, 0);
-        }
-    }
+    _actions.FireActionKeyDown(keysym.sym, 1);
 
     switch (keysym.sym)
     {
@@ -261,20 +249,21 @@ void GameModule::InitializeLua()
     AddToLua(GetScale);
     AddToLua(GetRandom);
     AddToLua(SetCameraPosition);
-    AddToLua(AddActionCallbacks);
 #undef AddToLua
 
     _collisionHandler.InitializeLua();
+    _actions.InitializeLua();
     _lua.ExecuteFile("main.lua");
 }
 
 void GameModule::DestroyState()
 {
-    _actionCallbacks.clear();
+//    _actionCallbacks.clear();
     for (auto i : _entities) delete i;
     _entities.clear();
     _deadEntities.clear();
     _collisionHandler.DestroyState();
+    _actions.DestroyState();
 }
 
 GameModule& GameModule::FromLua(lua_State* state)
@@ -646,28 +635,5 @@ int GameModule::SetCameraPosition(lua_State* state)
         gm._camera.Position(SDL2TK::Vector3F(x, y, z));
     }
 
-    return 0;
-}
-
-int GameModule::AddActionCallbacks(lua_State* state)
-{
-    auto argc = lua_gettop(state);
-
-    if (argc > 2
-        && lua_isstring(state, 1)
-        && lua_isstring(state, 2)
-        && lua_isfunction(state, 3))
-    {
-        GameModule& module = GameModule::FromLua(state);
-        auto actionName = lua_tostring(state, 1);
-        auto defaultKey = lua_tostring(state, 2);
-        if (argc > 3)
-        {
-
-
-        }
-        lua_settop(state, 3);
-        module._actionCallbacks[SDLK_SPACE] = LuaReference(state);
-    }
     return 0;
 }
