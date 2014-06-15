@@ -27,8 +27,6 @@ class ActionMappings
 
         void DestroyState()
         {
-//            _entities.clear();
-//            _callback = LuaReference();
             _actionKeys.clear();
             _actionCallbacks.clear();
         }
@@ -53,7 +51,7 @@ class ActionMappings
                 Action(LuaReference keyCallback)
                     : _keyDownCallback(std::move(keyCallback))
                 {
-//                    _keyDownCallback = std::move(keyCallback);
+
                 }
 
                 void FireKeyDown(LuaState& lua, int value)
