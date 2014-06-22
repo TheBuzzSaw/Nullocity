@@ -8,18 +8,19 @@
 #include "LuaReference.hpp"
 #include "LuaState.hpp"
 
-
-
 class ActionMappings
 {
     public:
         ActionMappings(LuaState& lua);
-        virtual ~ActionMappings();
+        ~ActionMappings();
         ActionMappings(const ActionMappings& other) = delete;
         ActionMappings& operator=(const ActionMappings& other) = delete;
 
         bool CreateAction(std::string name, LuaReference keyCallback);
-        bool CreateAction(std::string name, LuaReference keyDownCallback, LuaReference keyUpCallback);
+        bool CreateAction(
+            std::string name,
+            LuaReference keyDownCallback,
+            LuaReference keyUpCallback);
 
         void AddActionKey(std::string actionName, SDL_Keycode key);
 
@@ -34,7 +35,7 @@ class ActionMappings
         void InitializeLua()
         {
             _lua.SetUserData((void*)&LuaKeyBase, this);
-            _lua.AddFunction(AddActionCallbacks, "AddActionCallbacks");
+            _lua.AddFunction(AddActionCallback, "AddActionCallback");
         }
 
     protected:
@@ -43,15 +44,14 @@ class ActionMappings
         {
             public:
                 Action(LuaReference keyDownCallback, LuaReference keyUpCallback)
+                    : _keyDownCallback(std::move(keyDownCallback))
+                    , _keyUpCallback(std::move(keyUpCallback))
                 {
-                    _keyDownCallback = std::move(keyDownCallback);
-                    _keyUpCallback = std::move(keyUpCallback);
                 }
 
                 Action(LuaReference keyCallback)
                     : _keyDownCallback(std::move(keyCallback))
                 {
-
                 }
 
                 void FireKeyDown(LuaState& lua, int value)
@@ -81,7 +81,6 @@ class ActionMappings
                 }
 
             private:
-
                 LuaReference _keyDownCallback;
                 LuaReference _keyUpCallback;
         };
@@ -93,9 +92,9 @@ class ActionMappings
 
         static const int LuaKeyBase;
         static ActionMappings& FromLua(lua_State* state);
-        static int AddActionCallbacks(lua_State* state);
+        static int AddActionCallback(lua_State* state);
 
 
 };
 
-#endif // ACTIONMAPPINGS_HPP
+#endif

@@ -252,4 +252,4 @@ end
 
 Nullocity.SetCollisionCallback(OnCollision)
 Nullocity.SetUpdateCallback(OnUpdate)
-Nullocity.AddActionCallbacks("spacebar", "space", OnSpaceBar)
+Nullocity.AddActionCallback("spacebar", "Space", OnSpaceBar)

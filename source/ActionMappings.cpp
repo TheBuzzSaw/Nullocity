@@ -1,16 +1,16 @@
 #include "ActionMappings.hpp"
+#include "KeyNames.hpp"
+#include <cstring>
 
 const int ActionMappings::LuaKeyBase = 0xAC;
 
 ActionMappings::ActionMappings(LuaState& lua)
     : _lua(lua)
 {
-    //ctor
 }
 
 ActionMappings::~ActionMappings()
 {
-    //dtor
 }
 
 //ActionMappings::ActionMappings(const ActionMappings& other)
@@ -48,18 +48,25 @@ void ActionMappings::FireActionKeyDown(SDL_Keycode key, int value)
 
 bool ActionMappings::CreateAction(std::string name, LuaReference keyCallback)
 {
-    std::pair<std::unordered_map<std::string, Action>::iterator, bool> wasEmplaced =
-        _actionKeys.emplace(name, Action(std::move(keyCallback)));
+    const auto& emplacement =
+        _actionKeys.emplace(
+            name,
+            Action(std::move(keyCallback)));
 
-    return wasEmplaced.second;
+    return emplacement.second;
 }
 
-bool ActionMappings::CreateAction(std::string name, LuaReference keyDownCallback, LuaReference keyUpCallback)
+bool ActionMappings::CreateAction(
+    std::string name,
+    LuaReference keyDownCallback,
+    LuaReference keyUpCallback)
 {
-    std::pair<std::unordered_map<std::string, Action>::iterator, bool> wasEmplaced =
-        _actionKeys.emplace(name, Action(std::move(keyDownCallback), std::move(keyUpCallback)));
+    const auto& emplacement =
+        _actionKeys.emplace(
+            name,
+            Action(std::move(keyDownCallback), std::move(keyUpCallback)));
 
-    return wasEmplaced.second;
+    return emplacement.second;
 }
 
 ActionMappings& ActionMappings::FromLua(lua_State* state)
@@ -68,7 +75,7 @@ ActionMappings& ActionMappings::FromLua(lua_State* state)
     return *reinterpret_cast<ActionMappings*>(raw);
 }
 
-int ActionMappings::AddActionCallbacks(lua_State* state)
+int ActionMappings::AddActionCallback(lua_State* state)
 {
     auto argc = lua_gettop(state);
 
@@ -77,19 +84,35 @@ int ActionMappings::AddActionCallbacks(lua_State* state)
         && lua_isstring(state, 2)
         && lua_isfunction(state, 3))
     {
-        ActionMappings& module = ActionMappings::FromLua(state);
+        ActionMappings& am = ActionMappings::FromLua(state);
         auto actionName = lua_tostring(state, 1);
         auto defaultKey = lua_tostring(state, 2);
+
         if (argc > 3
             && lua_isfunction(state, 4))
         {
             lua_settop(state, 4);
-
         }
+
         lua_settop(state, 3);
-        module.CreateAction(actionName, LuaReference(state));
-        module.AddActionKey(actionName, SDLK_SPACE);
-//        module._actionCallbacks[SDLK_SPACE] = LuaReference(state);
+
+        SDL_Keycode result = SDLK_UNKNOWN;
+
+        // Because arrays are freakin' fast!
+        for (const KeyName* i = GetKeyNames(); i->name; ++i)
+        {
+            if (!strcmp(defaultKey, i->name))
+            {
+                result = i->keycode;
+                break;
+            }
+        }
+
+        if (result != SDLK_UNKNOWN)
+        {
+            am.CreateAction(actionName, LuaReference(state));
+            am.AddActionKey(actionName, result);
+        }
     }
     return 0;
 }
