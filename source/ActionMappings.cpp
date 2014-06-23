@@ -96,22 +96,15 @@ int ActionMappings::AddActionCallback(lua_State* state)
 
         lua_settop(state, 3);
 
-        SDL_Keycode result = SDLK_UNKNOWN;
-
         // Because arrays are freakin' fast!
         for (const KeyName* i = GetKeyNames(); i->name; ++i)
         {
             if (!strcmp(defaultKey, i->name))
             {
-                result = i->keycode;
+                am.CreateAction(actionName, LuaReference(state));
+                am.AddActionKey(actionName, i->keycode);
                 break;
             }
-        }
-
-        if (result != SDLK_UNKNOWN)
-        {
-            am.CreateAction(actionName, LuaReference(state));
-            am.AddActionKey(actionName, result);
         }
     }
     return 0;
