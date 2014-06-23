@@ -6,10 +6,12 @@
 #include "LuaState.hpp"
 #include "LuaReference.hpp"
 #include "CollisionHandler.hpp"
+#include "ActionMappings.hpp"
 #include "ModelLoader.hpp"
 #include <SDL2TK/Module.hpp>
 #include <SDL2TK/Camera.hpp>
 #include <unordered_set>
+#include <unordered_map>
 #include <random>
 
 class GameModule : public SDL2TK::Module
@@ -53,6 +55,8 @@ class GameModule : public SDL2TK::Module
 
         float _distance;
         float _distanceDelta;
+
+        ActionMappings _actions;
 
         static const int LuaKeyBase;
         static GameModule& FromLua(lua_State* state);

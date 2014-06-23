@@ -1,0 +1,270 @@
+void ExtractKeys()
+{
+    ifstream fin("/usr/local/include/SDL2/SDL_keycode.h", ifstream::binary);
+
+    if (fin)
+    {
+        ofstream fout("result.txt");
+
+        if (fout)
+        {
+            const char* const Prefix = "SDLK_";
+            const auto PrefixLength = strlen(Prefix);
+            string word;
+
+            while (fin >> word)
+            {
+                if (word.length() > PrefixLength
+                    && !memcmp(word.data(), Prefix, PrefixLength))
+                {
+                    fout << "fout << \"{\\\"\" << SDL_GetKeyName("
+                        << word
+                        << ") << \"\\\", "
+                        << word
+                        << "},\\n\";\n";
+                }
+            }
+
+            fout << "{\"" << SDL_GetKeyName(SDLK_UNKNOWN) << "\", SDLK_UNKNOWN},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_RETURN) << "\", SDLK_RETURN},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_ESCAPE) << "\", SDLK_ESCAPE},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_BACKSPACE) << "\", SDLK_BACKSPACE},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_TAB) << "\", SDLK_TAB},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_SPACE) << "\", SDLK_SPACE},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_EXCLAIM) << "\", SDLK_EXCLAIM},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_QUOTEDBL) << "\", SDLK_QUOTEDBL},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_HASH) << "\", SDLK_HASH},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_PERCENT) << "\", SDLK_PERCENT},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_DOLLAR) << "\", SDLK_DOLLAR},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_AMPERSAND) << "\", SDLK_AMPERSAND},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_QUOTE) << "\", SDLK_QUOTE},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_LEFTPAREN) << "\", SDLK_LEFTPAREN},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_RIGHTPAREN) << "\", SDLK_RIGHTPAREN},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_ASTERISK) << "\", SDLK_ASTERISK},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_PLUS) << "\", SDLK_PLUS},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_COMMA) << "\", SDLK_COMMA},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_MINUS) << "\", SDLK_MINUS},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_PERIOD) << "\", SDLK_PERIOD},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_SLASH) << "\", SDLK_SLASH},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_0) << "\", SDLK_0},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_1) << "\", SDLK_1},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_2) << "\", SDLK_2},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_3) << "\", SDLK_3},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_4) << "\", SDLK_4},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_5) << "\", SDLK_5},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_6) << "\", SDLK_6},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_7) << "\", SDLK_7},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_8) << "\", SDLK_8},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_9) << "\", SDLK_9},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_COLON) << "\", SDLK_COLON},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_SEMICOLON) << "\", SDLK_SEMICOLON},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_LESS) << "\", SDLK_LESS},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_EQUALS) << "\", SDLK_EQUALS},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_GREATER) << "\", SDLK_GREATER},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_QUESTION) << "\", SDLK_QUESTION},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_AT) << "\", SDLK_AT},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_LEFTBRACKET) << "\", SDLK_LEFTBRACKET},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_BACKSLASH) << "\", SDLK_BACKSLASH},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_RIGHTBRACKET) << "\", SDLK_RIGHTBRACKET},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_CARET) << "\", SDLK_CARET},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_UNDERSCORE) << "\", SDLK_UNDERSCORE},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_BACKQUOTE) << "\", SDLK_BACKQUOTE},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_a) << "\", SDLK_a},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_b) << "\", SDLK_b},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_c) << "\", SDLK_c},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_d) << "\", SDLK_d},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_e) << "\", SDLK_e},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_f) << "\", SDLK_f},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_g) << "\", SDLK_g},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_h) << "\", SDLK_h},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_i) << "\", SDLK_i},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_j) << "\", SDLK_j},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_k) << "\", SDLK_k},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_l) << "\", SDLK_l},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_m) << "\", SDLK_m},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_n) << "\", SDLK_n},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_o) << "\", SDLK_o},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_p) << "\", SDLK_p},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_q) << "\", SDLK_q},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_r) << "\", SDLK_r},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_s) << "\", SDLK_s},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_t) << "\", SDLK_t},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_u) << "\", SDLK_u},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_v) << "\", SDLK_v},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_w) << "\", SDLK_w},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_x) << "\", SDLK_x},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_y) << "\", SDLK_y},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_z) << "\", SDLK_z},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_CAPSLOCK) << "\", SDLK_CAPSLOCK},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_F1) << "\", SDLK_F1},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_F2) << "\", SDLK_F2},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_F3) << "\", SDLK_F3},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_F4) << "\", SDLK_F4},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_F5) << "\", SDLK_F5},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_F6) << "\", SDLK_F6},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_F7) << "\", SDLK_F7},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_F8) << "\", SDLK_F8},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_F9) << "\", SDLK_F9},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_F10) << "\", SDLK_F10},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_F11) << "\", SDLK_F11},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_F12) << "\", SDLK_F12},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_PRINTSCREEN) << "\", SDLK_PRINTSCREEN},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_SCROLLLOCK) << "\", SDLK_SCROLLLOCK},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_PAUSE) << "\", SDLK_PAUSE},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_INSERT) << "\", SDLK_INSERT},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_HOME) << "\", SDLK_HOME},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_PAGEUP) << "\", SDLK_PAGEUP},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_DELETE) << "\", SDLK_DELETE},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_END) << "\", SDLK_END},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_PAGEDOWN) << "\", SDLK_PAGEDOWN},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_RIGHT) << "\", SDLK_RIGHT},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_LEFT) << "\", SDLK_LEFT},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_DOWN) << "\", SDLK_DOWN},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_UP) << "\", SDLK_UP},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_NUMLOCKCLEAR) << "\", SDLK_NUMLOCKCLEAR},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_DIVIDE) << "\", SDLK_KP_DIVIDE},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_MULTIPLY) << "\", SDLK_KP_MULTIPLY},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_MINUS) << "\", SDLK_KP_MINUS},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_PLUS) << "\", SDLK_KP_PLUS},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_ENTER) << "\", SDLK_KP_ENTER},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_1) << "\", SDLK_KP_1},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_2) << "\", SDLK_KP_2},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_3) << "\", SDLK_KP_3},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_4) << "\", SDLK_KP_4},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_5) << "\", SDLK_KP_5},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_6) << "\", SDLK_KP_6},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_7) << "\", SDLK_KP_7},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_8) << "\", SDLK_KP_8},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_9) << "\", SDLK_KP_9},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_0) << "\", SDLK_KP_0},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_PERIOD) << "\", SDLK_KP_PERIOD},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_APPLICATION) << "\", SDLK_APPLICATION},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_POWER) << "\", SDLK_POWER},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_EQUALS) << "\", SDLK_KP_EQUALS},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_F13) << "\", SDLK_F13},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_F14) << "\", SDLK_F14},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_F15) << "\", SDLK_F15},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_F16) << "\", SDLK_F16},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_F17) << "\", SDLK_F17},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_F18) << "\", SDLK_F18},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_F19) << "\", SDLK_F19},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_F20) << "\", SDLK_F20},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_F21) << "\", SDLK_F21},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_F22) << "\", SDLK_F22},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_F23) << "\", SDLK_F23},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_F24) << "\", SDLK_F24},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_EXECUTE) << "\", SDLK_EXECUTE},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_HELP) << "\", SDLK_HELP},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_MENU) << "\", SDLK_MENU},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_SELECT) << "\", SDLK_SELECT},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_STOP) << "\", SDLK_STOP},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_AGAIN) << "\", SDLK_AGAIN},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_UNDO) << "\", SDLK_UNDO},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_CUT) << "\", SDLK_CUT},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_COPY) << "\", SDLK_COPY},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_PASTE) << "\", SDLK_PASTE},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_FIND) << "\", SDLK_FIND},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_MUTE) << "\", SDLK_MUTE},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_VOLUMEUP) << "\", SDLK_VOLUMEUP},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_VOLUMEDOWN) << "\", SDLK_VOLUMEDOWN},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_COMMA) << "\", SDLK_KP_COMMA},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_EQUALSAS400) << "\", SDLK_KP_EQUALSAS400},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_ALTERASE) << "\", SDLK_ALTERASE},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_SYSREQ) << "\", SDLK_SYSREQ},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_CANCEL) << "\", SDLK_CANCEL},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_CLEAR) << "\", SDLK_CLEAR},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_PRIOR) << "\", SDLK_PRIOR},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_RETURN2) << "\", SDLK_RETURN2},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_SEPARATOR) << "\", SDLK_SEPARATOR},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_OUT) << "\", SDLK_OUT},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_OPER) << "\", SDLK_OPER},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_CLEARAGAIN) << "\", SDLK_CLEARAGAIN},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_CRSEL) << "\", SDLK_CRSEL},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_EXSEL) << "\", SDLK_EXSEL},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_00) << "\", SDLK_KP_00},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_000) << "\", SDLK_KP_000},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_THOUSANDSSEPARATOR) << "\", SDLK_THOUSANDSSEPARATOR},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_DECIMALSEPARATOR) << "\", SDLK_DECIMALSEPARATOR},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_CURRENCYUNIT) << "\", SDLK_CURRENCYUNIT},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_CURRENCYSUBUNIT) << "\", SDLK_CURRENCYSUBUNIT},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_LEFTPAREN) << "\", SDLK_KP_LEFTPAREN},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_RIGHTPAREN) << "\", SDLK_KP_RIGHTPAREN},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_LEFTBRACE) << "\", SDLK_KP_LEFTBRACE},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_RIGHTBRACE) << "\", SDLK_KP_RIGHTBRACE},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_TAB) << "\", SDLK_KP_TAB},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_BACKSPACE) << "\", SDLK_KP_BACKSPACE},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_A) << "\", SDLK_KP_A},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_B) << "\", SDLK_KP_B},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_C) << "\", SDLK_KP_C},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_D) << "\", SDLK_KP_D},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_E) << "\", SDLK_KP_E},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_F) << "\", SDLK_KP_F},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_XOR) << "\", SDLK_KP_XOR},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_POWER) << "\", SDLK_KP_POWER},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_PERCENT) << "\", SDLK_KP_PERCENT},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_LESS) << "\", SDLK_KP_LESS},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_GREATER) << "\", SDLK_KP_GREATER},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_AMPERSAND) << "\", SDLK_KP_AMPERSAND},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_DBLAMPERSAND) << "\", SDLK_KP_DBLAMPERSAND},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_VERTICALBAR) << "\", SDLK_KP_VERTICALBAR},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_DBLVERTICALBAR) << "\", SDLK_KP_DBLVERTICALBAR},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_COLON) << "\", SDLK_KP_COLON},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_HASH) << "\", SDLK_KP_HASH},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_SPACE) << "\", SDLK_KP_SPACE},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_AT) << "\", SDLK_KP_AT},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_EXCLAM) << "\", SDLK_KP_EXCLAM},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_MEMSTORE) << "\", SDLK_KP_MEMSTORE},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_MEMRECALL) << "\", SDLK_KP_MEMRECALL},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_MEMCLEAR) << "\", SDLK_KP_MEMCLEAR},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_MEMADD) << "\", SDLK_KP_MEMADD},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_MEMSUBTRACT) << "\", SDLK_KP_MEMSUBTRACT},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_MEMMULTIPLY) << "\", SDLK_KP_MEMMULTIPLY},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_MEMDIVIDE) << "\", SDLK_KP_MEMDIVIDE},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_PLUSMINUS) << "\", SDLK_KP_PLUSMINUS},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_CLEAR) << "\", SDLK_KP_CLEAR},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_CLEARENTRY) << "\", SDLK_KP_CLEARENTRY},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_BINARY) << "\", SDLK_KP_BINARY},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_OCTAL) << "\", SDLK_KP_OCTAL},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_DECIMAL) << "\", SDLK_KP_DECIMAL},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KP_HEXADECIMAL) << "\", SDLK_KP_HEXADECIMAL},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_LCTRL) << "\", SDLK_LCTRL},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_LSHIFT) << "\", SDLK_LSHIFT},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_LALT) << "\", SDLK_LALT},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_LGUI) << "\", SDLK_LGUI},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_RCTRL) << "\", SDLK_RCTRL},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_RSHIFT) << "\", SDLK_RSHIFT},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_RALT) << "\", SDLK_RALT},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_RGUI) << "\", SDLK_RGUI},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_MODE) << "\", SDLK_MODE},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_AUDIONEXT) << "\", SDLK_AUDIONEXT},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_AUDIOPREV) << "\", SDLK_AUDIOPREV},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_AUDIOSTOP) << "\", SDLK_AUDIOSTOP},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_AUDIOPLAY) << "\", SDLK_AUDIOPLAY},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_AUDIOMUTE) << "\", SDLK_AUDIOMUTE},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_MEDIASELECT) << "\", SDLK_MEDIASELECT},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_WWW) << "\", SDLK_WWW},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_MAIL) << "\", SDLK_MAIL},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_CALCULATOR) << "\", SDLK_CALCULATOR},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_COMPUTER) << "\", SDLK_COMPUTER},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_AC_SEARCH) << "\", SDLK_AC_SEARCH},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_AC_HOME) << "\", SDLK_AC_HOME},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_AC_BACK) << "\", SDLK_AC_BACK},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_AC_FORWARD) << "\", SDLK_AC_FORWARD},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_AC_STOP) << "\", SDLK_AC_STOP},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_AC_REFRESH) << "\", SDLK_AC_REFRESH},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_AC_BOOKMARKS) << "\", SDLK_AC_BOOKMARKS},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_BRIGHTNESSDOWN) << "\", SDLK_BRIGHTNESSDOWN},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_BRIGHTNESSUP) << "\", SDLK_BRIGHTNESSUP},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_DISPLAYSWITCH) << "\", SDLK_DISPLAYSWITCH},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KBDILLUMTOGGLE) << "\", SDLK_KBDILLUMTOGGLE},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KBDILLUMDOWN) << "\", SDLK_KBDILLUMDOWN},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_KBDILLUMUP) << "\", SDLK_KBDILLUMUP},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_EJECT) << "\", SDLK_EJECT},\n";
+            fout << "{\"" << SDL_GetKeyName(SDLK_SLEEP) << "\", SDLK_SLEEP},\n";
+
+            fout.close();
+        }
+
+        fin.close();
+    }
+}

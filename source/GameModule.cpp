@@ -17,6 +17,7 @@ GameModule::GameModule()
     , _collisionHandler(_lua)
     , _distance(32.0f)
     , _distanceDelta(0.0f)
+    , _actions(_lua)
 {
     _squarePyramidObject = BuildSquarePyramid();
     _linesObject = BuildLines();
@@ -131,6 +132,8 @@ void GameModule::OnSecond(int framesPerSecond)
 void GameModule::OnKeyDown(const SDL_Keysym& keysym)
 {
     const float DistanceDelta = 4.0f;
+
+    _actions.FireActionKeyDown(keysym.sym, 1);
 
     switch (keysym.sym)
     {
@@ -249,15 +252,18 @@ void GameModule::InitializeLua()
 #undef AddToLua
 
     _collisionHandler.InitializeLua();
+    _actions.InitializeLua();
     _lua.ExecuteFile("main.lua");
 }
 
 void GameModule::DestroyState()
 {
+//    _actionCallbacks.clear();
     for (auto i : _entities) delete i;
     _entities.clear();
     _deadEntities.clear();
     _collisionHandler.DestroyState();
+    _actions.DestroyState();
 }
 
 GameModule& GameModule::FromLua(lua_State* state)

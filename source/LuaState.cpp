@@ -47,7 +47,7 @@ void LuaState::AddFunction(lua_CFunction callback, const char* name)
     lua_getglobal(_state, PackageName);
     lua_pushcfunction(_state, callback);
     lua_setfield(_state, -2, name);
-    lua_pop(_state, -1);
+    lua_pop(_state, 1);
 }
 
 void LuaState::Call(int nargs, int nresults)
