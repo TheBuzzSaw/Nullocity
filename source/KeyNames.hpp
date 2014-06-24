@@ -1,7 +1,7 @@
 #ifndef KEYNAMES_HPP
 #define KEYNAMES_HPP
 
-#include <SDL.h>
+#include <SDL_keycode.h>
 
 struct KeyName
 {

@@ -48,6 +48,8 @@
 			<Add library="lua5.2" />
 			<Add directory="/usr/local/lib" />
 		</Linker>
+		<Unit filename="../source/ActionMappings.cpp" />
+		<Unit filename="../source/ActionMappings.hpp" />
 		<Unit filename="../source/Builders.cpp" />
 		<Unit filename="../source/Builders.hpp" />
 		<Unit filename="../source/CollisionHandler.cpp" />
