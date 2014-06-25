@@ -10,6 +10,7 @@
 #include "ModelLoader.hpp"
 #include <SDL2TK/Module.hpp>
 #include <SDL2TK/Camera.hpp>
+#include <SDL2TK/OpenAL/AudioSource.hpp>
 #include <unordered_set>
 #include <unordered_map>
 #include <random>
@@ -57,6 +58,9 @@ class GameModule : public SDL2TK::Module
         float _distanceDelta;
 
         ActionMappings _actions;
+
+        SDL2TK::AudioBuffer _sound;
+        SDL2TK::AudioSource _source;
 
         static const int LuaKeyBase;
         static GameModule& FromLua(lua_State* state);

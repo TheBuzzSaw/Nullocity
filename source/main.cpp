@@ -1,4 +1,5 @@
 #include <SDL2TK/Window.hpp>
+#include <SDL2TK/OpenAL/AudioContext.hpp>
 #include "GameModule.hpp"
 #include <iostream>
 using namespace std;
@@ -17,11 +18,26 @@ void Start()
 
 int main(int argc, char** argv)
 {
-    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
+    SDL2TK::AudioDevice device;
+    if (device.IsOpen())
+    {
+        SDL2TK::AudioContext context(device);
 
-    Start();
+        if (context.IsOpen())
+        {
+            cerr << "OpenAL context is open.\n";
+        }
 
-    SDL_Quit();
+        SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
+
+        Start();
+
+        SDL_Quit();
+    }
+    else
+    {
+        cerr << "Failed to open audio device.\n";
+    }
 
     return 0;
 }

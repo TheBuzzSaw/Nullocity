@@ -45,6 +45,7 @@
 			<Add library="SDL2_image" />
 			<Add library="SDL2" />
 			<Add library="GL" />
+			<Add library="openal" />
 			<Add library="lua5.2" />
 			<Add directory="/usr/local/lib" />
 		</Linker>

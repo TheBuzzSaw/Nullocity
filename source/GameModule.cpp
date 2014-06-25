@@ -19,6 +19,9 @@ GameModule::GameModule()
     , _distanceDelta(0.0f)
     , _actions(_lua)
 {
+    _sound = SDL2TK::AudioBuffer::FromWavFile("Nullocity.wav");
+    _source.Bind(_sound);
+
     _squarePyramidObject = BuildSquarePyramid();
     _linesObject = BuildLines();
 
@@ -137,6 +140,10 @@ void GameModule::OnKeyDown(const SDL_Keysym& keysym)
 
     switch (keysym.sym)
     {
+        case SDLK_BACKSLASH:
+            _source.Play();
+            break;
+
         case SDLK_ESCAPE:
             Stop();
             break;
