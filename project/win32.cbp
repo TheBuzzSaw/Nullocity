@@ -37,6 +37,7 @@
 			<Add option="-Wall" />
 			<Add option="-m64" />
 			<Add directory="../../SDL2TK/include" />
+			<Add directory="C:/Program Files (x86)/OpenAL 1.1 SDK/include" />
 		</Compiler>
 		<Linker>
 			<Add option="-m64" />
@@ -48,8 +49,10 @@
 			<Add library="SDL2_image" />
 			<Add library="SDL2" />
 			<Add library="opengl32" />
+			<Add library="openal32" />
 			<Add library="lua" />
 			<Add directory="../../SDL2TK/project/win32" />
+			<Add directory="C:/Program Files (x86)/OpenAL 1.1 SDK/libs/Win64" />
 		</Linker>
 		<Unit filename="../source/ActionMappings.cpp" />
 		<Unit filename="../source/ActionMappings.hpp" />
