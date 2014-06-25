@@ -60,7 +60,8 @@ class GameModule : public SDL2TK::Module
         ActionMappings _actions;
 
         SDL2TK::AudioBuffer _sound;
-        SDL2TK::AudioSource _source;
+        SDL2TK::AudioSource _source[4];
+        int _nextSource;
 
         static const int LuaKeyBase;
         static GameModule& FromLua(lua_State* state);
