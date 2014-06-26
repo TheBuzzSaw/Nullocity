@@ -32,3 +32,6 @@ stderr.txt
 # SCons nonsense
 .sconsign.dblite
 
+# Builds
+*.bin
+
