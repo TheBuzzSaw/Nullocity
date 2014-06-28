@@ -18,7 +18,7 @@ GameModule::GameModule()
     , _distance(32.0f)
     , _distanceDelta(0.0f)
     , _actions(_lua)
-    , _audioManager(64)
+    , _audioManager(64, _lua)
     , _sound(nullptr)
 {
     _sound = _audioManager.GetBuffer("Nullocity.wav");
@@ -142,7 +142,7 @@ void GameModule::OnKeyDown(const SDL_Keysym& keysym)
     switch (keysym.sym)
     {
         case SDLK_BACKSLASH:
-            _audioManager.Play(_sound);
+            //_audioManager.Play(_sound);
             break;
 
         case SDLK_ESCAPE:
@@ -261,6 +261,7 @@ void GameModule::InitializeLua()
 
     _collisionHandler.InitializeLua();
     _actions.InitializeLua();
+    _audioManager.InitializeLua();
     _lua.ExecuteFile("main.lua");
 }
 

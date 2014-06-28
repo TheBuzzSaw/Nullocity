@@ -249,7 +249,13 @@ for i = 1, 16 do
     print("Scale: ", entity.GetScale())
 end
 
+sound = Nullocity.GetAudioBuffer('Nullocity.wav')
+
+function PlaySound()
+    Nullocity.PlayAudioBuffer(sound)
+end
 
 Nullocity.SetCollisionCallback(OnCollision)
 Nullocity.SetUpdateCallback(OnUpdate)
 Nullocity.AddActionCallback("spacebar", "Space", OnSpaceBar)
+Nullocity.AddActionCallback("PlaySound", "A", PlaySound)
