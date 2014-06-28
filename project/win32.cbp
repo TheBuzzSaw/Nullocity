@@ -56,6 +56,8 @@
 		</Linker>
 		<Unit filename="../source/ActionMappings.cpp" />
 		<Unit filename="../source/ActionMappings.hpp" />
+		<Unit filename="../source/AudioManager.cpp" />
+		<Unit filename="../source/AudioManager.hpp" />
 		<Unit filename="../source/Builders.cpp" />
 		<Unit filename="../source/Builders.hpp" />
 		<Unit filename="../source/CollisionHandler.cpp" />
