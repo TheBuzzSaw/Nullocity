@@ -8,9 +8,9 @@
 #include "CollisionHandler.hpp"
 #include "ActionMappings.hpp"
 #include "ModelLoader.hpp"
+#include "AudioManager.hpp"
 #include <SDL2TK/Module.hpp>
 #include <SDL2TK/Camera.hpp>
-#include <SDL2TK/OpenAL/AudioSource.hpp>
 #include <unordered_set>
 #include <unordered_map>
 #include <random>
@@ -59,9 +59,8 @@ class GameModule : public SDL2TK::Module
 
         ActionMappings _actions;
 
-        SDL2TK::AudioBuffer _sound;
-        SDL2TK::AudioSource _source[4];
-        int _nextSource;
+        AudioManager _audioManager;
+        const SDL2TK::AudioBuffer* _sound;
 
         static const int LuaKeyBase;
         static GameModule& FromLua(lua_State* state);
