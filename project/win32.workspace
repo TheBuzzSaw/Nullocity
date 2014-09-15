@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
-<CodeBlocks_workspace_file>
-	<Workspace title="Workspace">
-		<Project filename="../../SDL2TK/project/win32/win32.cbp" />
-		<Project filename="win32.cbp">
-			<Depends filename="../../SDL2TK/project/win32/win32.cbp" />
-		</Project>
-	</Workspace>
-</CodeBlocks_workspace_file>
