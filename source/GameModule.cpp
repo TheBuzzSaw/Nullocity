@@ -281,6 +281,9 @@ void GameModule::InitializeLua()
     AddToLua(GetScale);
     AddToLua(GetRandom);
     AddToLua(SetCameraPosition);
+    AddToLua(SetCameraHorizontal);
+    AddToLua(SetCameraVertical);
+    AddToLua(SetCameraDistance);
     AddToLua(LoadLuaFile);
 #undef AddToLua
 
@@ -365,7 +368,7 @@ int GameModule::SetPosition(lua_State* state)
         {
             auto x = lua_tonumber(state, 2);
             auto y = lua_tonumber(state, 3);
-            entity->SetPositon(SDL2TK::Vector2F(x, y));
+            entity->SetPositon(Vector2F(x, y));
         }
     }
 
@@ -386,7 +389,7 @@ int GameModule::SetVelocity(lua_State* state)
         {
             auto x = lua_tonumber(state, 2);
             auto y = lua_tonumber(state, 3);
-            entity->SetVelocity(SDL2TK::Vector2F(x, y));
+            entity->SetVelocity(Vector2F(x, y));
         }
     }
 
@@ -407,8 +410,8 @@ int GameModule::SetRotation(lua_State* state)
         {
             auto x = lua_tonumber(state, 2);
             auto y = lua_tonumber(state, 3);
-            entity->SetRotation(SDL2TK::RotationF::FromDegrees(x),
-                SDL2TK::RotationF::FromDegrees(y));
+            entity->SetRotation(RotationF::FromDegrees(x),
+                RotationF::FromDegrees(y));
         }
     }
 
@@ -429,8 +432,8 @@ int GameModule::SetTorque(lua_State* state)
         {
             auto x = lua_tonumber(state, 2);
             auto y = lua_tonumber(state, 3);
-            entity->SetTorque(SDL2TK::RotationF::FromDegrees(x),
-                SDL2TK::RotationF::FromDegrees(y));
+            entity->SetTorque(RotationF::FromDegrees(x),
+                RotationF::FromDegrees(y));
         }
     }
 
@@ -486,7 +489,7 @@ int GameModule::GetPosition(lua_State* state)
 
         if (gm._entities.count(entity) > 0)
         {
-            SDL2TK::Vector2F position = entity->Position();
+            Vector2F position = entity->Position();
 
             auto x = position.X();
             auto y = position.Y();
@@ -511,7 +514,7 @@ int GameModule::GetVelocity(lua_State* state)
 
         if (gm._entities.count(entity) > 0)
         {
-            SDL2TK::Vector2F velocity = entity->Velocity();
+            Vector2F velocity = entity->Velocity();
 
             auto x = velocity.X();
             auto y = velocity.Y();
@@ -666,7 +669,55 @@ int GameModule::SetCameraPosition(lua_State* state)
         auto y = lua_tonumber(state, 2);
         auto z = lua_tonumber(state, 3);
 
-        gm._camera.Position(SDL2TK::Vector3F(x, y, z));
+        gm._camera.Position(Vector3F(x, y, z));
+    }
+
+    return 0;
+}
+
+int GameModule::SetCameraHorizontal(lua_State* state)
+{
+    auto argc = lua_gettop(state);
+
+    if (argc > 0 && lua_isnumber(state, 1))
+    {
+        GameModule& gm = GameModule::FromLua(state);
+
+        auto degrees = lua_tonumber(state, 1);
+
+        gm._camera.Horizontal(RotationF::FromDegrees(degrees));
+    }
+
+    return 0;
+}
+
+int GameModule::SetCameraVertical(lua_State* state)
+{
+    auto argc = lua_gettop(state);
+
+    if (argc > 0 && lua_isnumber(state, 1))
+    {
+        GameModule& gm = GameModule::FromLua(state);
+
+        auto degrees = lua_tonumber(state, 1);
+
+        gm._camera.Vertical(RotationF::FromDegrees(degrees));
+    }
+
+    return 0;
+}
+
+int GameModule::SetCameraDistance(lua_State* state)
+{
+    auto argc = lua_gettop(state);
+
+    if (argc > 0 && lua_isnumber(state, 1))
+    {
+        GameModule& gm = GameModule::FromLua(state);
+
+        auto distance = lua_tonumber(state, 1);
+
+        gm._camera.Distance(distance);
     }
 
     return 0;
