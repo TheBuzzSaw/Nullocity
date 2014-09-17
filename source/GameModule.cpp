@@ -287,7 +287,7 @@ void GameModule::InitializeLua()
     _collisionHandler.InitializeLua();
     _actions.InitializeLua();
     _audioManager.InitializeLua();
-    _lua.ExecuteFile("manifest.lua");
+    _lua.ExecuteFile("Lua/manifest.lua");
 }
 
 void GameModule::DestroyState()
@@ -678,10 +678,11 @@ int GameModule::LoadLuaFile(lua_State* state)
 
     if (argc > 0 && lua_isstring(state, 1))
     {
-        auto filename = lua_tostring(state, 1);
+        string filename = lua_tostring(state, 1);
+        string path = "Lua/" + filename;
 
         GameModule& gm = GameModule::FromLua(state);
-        gm._lua.ExecuteFile(filename);
+        gm._lua.ExecuteFile(path.c_str());
     }
 
     return 0;
