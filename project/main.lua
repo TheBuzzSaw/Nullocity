@@ -223,7 +223,9 @@ end
 
 function OnSpaceBar(isKeyDown)
 
-    print("It WORKS!")
+    if isKeyDown == 1 then
+        print("It WORKS!")
+    end
 end
 
 for i = 1, 16 do
@@ -257,5 +259,3 @@ end
 
 Nullocity.SetCollisionCallback(OnCollision)
 Nullocity.SetUpdateCallback(OnUpdate)
-Nullocity.AddActionCallback("spacebar", "Space", OnSpaceBar)
-Nullocity.AddActionCallback("PlaySound", "A", PlaySound)
