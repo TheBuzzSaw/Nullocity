@@ -48,7 +48,7 @@ class GameModule : public SDL2TK::Module
         SDL2TK::RotationF _playerRotation;
         SDL2TK::RotationF _playerTorque;
 
-        LuaState _lua;
+        static LuaState _lua;
         LuaReference _updateCallback;
         std::mt19937_64 _generator;
         CollisionHandler _collisionHandler;
@@ -89,6 +89,8 @@ class GameModule : public SDL2TK::Module
         static int SetCameraHorizontal(lua_State* state);
         static int SetCameraVertical(lua_State* state);
         static int SetCameraDistance(lua_State* state);
+
+        static int AddLuaFile(lua_State* state);
 };
 
 #endif
