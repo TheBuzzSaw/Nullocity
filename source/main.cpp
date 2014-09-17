@@ -1,5 +1,7 @@
 #include <SDL2TK/Window.hpp>
 #include <SDL2TK/OpenAL/AudioContext.hpp>
+#include <SDL2TK/Network/Port.hpp>
+#include <SDL2TK/Network/Address32.hpp>
 #include "GameModule.hpp"
 #include <iostream>
 using namespace std;
@@ -16,8 +18,19 @@ void Start()
     window.Run(module);
 }
 
+void TestNetwork()
+{
+    SDL2TK::Address32 home(127, 0, 0, 1);
+    SDL2TK::Port a = SDL2TK::Port::FromHostValue(555);
+    cout << home << endl;
+    cout << a.HostValue() << endl;
+    cout << a.NetworkValue() << endl;
+}
+
 int main(int argc, char** argv)
 {
+    TestNetwork();
+
     SDL2TK::AudioDevice device;
     if (device.IsOpen())
     {

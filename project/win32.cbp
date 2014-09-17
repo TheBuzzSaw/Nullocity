@@ -36,14 +36,13 @@
 			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 			<Add option="-m64" />
-			<Add directory="../../SDL2TK/include" />
+			<Add directory="../SDL2TK/include" />
 			<Add directory="C:/Program Files (x86)/OpenAL 1.1 SDK/include" />
 		</Compiler>
 		<Linker>
 			<Add option="-m64" />
 			<Add option="-static-libgcc" />
 			<Add option="-static-libstdc++" />
-			<Add library="sdl2tk-win32" />
 			<Add library="mingw32" />
 			<Add library="SDL2main" />
 			<Add library="SDL2_image" />
@@ -51,9 +50,50 @@
 			<Add library="opengl32" />
 			<Add library="openal32" />
 			<Add library="lua" />
-			<Add directory="../../SDL2TK/project/win32" />
+			<Add library="ws2_32" />
 			<Add directory="C:/Program Files (x86)/OpenAL 1.1 SDK/libs/Win64" />
 		</Linker>
+		<Unit filename="../SDL2TK/include/SDL2TK/Camera.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/Matrix4x4.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/Module.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/Network/Address32.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/Network/Port.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/OpenAL/AudioBuffer.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/OpenAL/AudioContext.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/OpenAL/AudioDevice.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/OpenAL/AudioSource.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/OpenGL/Program.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/OpenGL/ProgramBuilder.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/OpenGL/Shader.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/OpenGL/glew.h" />
+		<Unit filename="../SDL2TK/include/SDL2TK/OpenGL/wglew.h" />
+		<Unit filename="../SDL2TK/include/SDL2TK/Rotation.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/Surface.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/TimeSpan.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/Tools.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/Vector.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/Vector3.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/Vector4.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/Window.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/WindowSettings.hpp" />
+		<Unit filename="../SDL2TK/source/Address32.cpp" />
+		<Unit filename="../SDL2TK/source/AudioBuffer.cpp" />
+		<Unit filename="../SDL2TK/source/AudioContext.cpp" />
+		<Unit filename="../SDL2TK/source/AudioDevice.cpp" />
+		<Unit filename="../SDL2TK/source/AudioSource.cpp" />
+		<Unit filename="../SDL2TK/source/Module.cpp" />
+		<Unit filename="../SDL2TK/source/Port.cpp" />
+		<Unit filename="../SDL2TK/source/Program.cpp" />
+		<Unit filename="../SDL2TK/source/ProgramBuilder.cpp" />
+		<Unit filename="../SDL2TK/source/Shader.cpp" />
+		<Unit filename="../SDL2TK/source/Surface.cpp" />
+		<Unit filename="../SDL2TK/source/TimeSpan.cpp" />
+		<Unit filename="../SDL2TK/source/Tools.cpp" />
+		<Unit filename="../SDL2TK/source/Window.cpp" />
+		<Unit filename="../SDL2TK/source/WindowSettings.cpp" />
+		<Unit filename="../SDL2TK/source/glew.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="../source/ActionMappings.cpp" />
 		<Unit filename="../source/ActionMappings.hpp" />
 		<Unit filename="../source/AudioManager.cpp" />
