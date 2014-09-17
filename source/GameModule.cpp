@@ -21,6 +21,7 @@ GameModule::GameModule()
     , _audioManager(64, _lua)
     , _sound(nullptr)
 {
+    _lua = LuaState();
     _sound = _audioManager.GetBuffer("Nullocity.wav");
 
     _squarePyramidObject = BuildSquarePyramid();
@@ -280,12 +281,13 @@ void GameModule::InitializeLua()
     AddToLua(GetScale);
     AddToLua(GetRandom);
     AddToLua(SetCameraPosition);
+    AddToLua(LoadLuaFile);
 #undef AddToLua
 
     _collisionHandler.InitializeLua();
     _actions.InitializeLua();
     _audioManager.InitializeLua();
-    _lua.ExecuteFile("main.lua");
+    _lua.ExecuteFile("manifest.lua");
 }
 
 void GameModule::DestroyState()
@@ -665,6 +667,21 @@ int GameModule::SetCameraPosition(lua_State* state)
         auto z = lua_tonumber(state, 3);
 
         gm._camera.Position(SDL2TK::Vector3F(x, y, z));
+    }
+
+    return 0;
+}
+
+int GameModule::LoadLuaFile(lua_State* state)
+{
+    auto argc = lua_gettop(state);
+
+    if (argc > 0 && lua_isstring(state, 1))
+    {
+        auto filename = lua_tostring(state, 1);
+
+        GameModule& gm = GameModule::FromLua(state);
+        gm._lua.ExecuteFile(filename);
     }
 
     return 0;
