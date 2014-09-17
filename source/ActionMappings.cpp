@@ -45,6 +45,16 @@ void ActionMappings::FireActionKeyDown(SDL_Keycode key, int value)
     }
 }
 
+void ActionMappings::FireActionKeyUp(SDL_Keycode key, int value)
+{
+    auto actionIt = _actionCallbacks.find(key);
+
+    if (actionIt != _actionCallbacks.end())
+    {
+        actionIt->second->FireKeyUp(_lua, value);
+    }
+}
+
 
 bool ActionMappings::CreateAction(std::string name, LuaReference keyCallback)
 {

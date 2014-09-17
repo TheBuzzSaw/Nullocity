@@ -189,6 +189,7 @@ void GameModule::OnKeyDown(const SDL_Keysym& keysym)
 
 void GameModule::OnKeyUp(const SDL_Keysym& keysym)
 {
+    _actions.FireActionKeyUp(keysym.sym, 0);
     switch (keysym.sym)
     {
         case SDLK_LEFT:
@@ -216,6 +217,28 @@ void GameModule::OnKeyUp(const SDL_Keysym& keysym)
             break;
     }
 }
+
+void GameModule::OnMouseMove(const SDL_MouseMotionEvent& event)
+{
+
+
+}
+
+void GameModule::OnMouseWheel(const SDL_MouseWheelEvent& event)
+{
+
+}
+
+void GameModule::OnMouseButtonDown(const SDL_MouseButtonEvent& event)
+{
+
+}
+
+void GameModule::OnMouseButtonUp(const SDL_MouseButtonEvent& event)
+{
+
+}
+
 
 void GameModule::OnResize(int width, int height)
 {

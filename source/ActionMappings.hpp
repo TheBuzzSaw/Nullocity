@@ -25,6 +25,7 @@ class ActionMappings
         void AddActionKey(std::string actionName, SDL_Keycode key);
 
         void FireActionKeyDown(SDL_Keycode key, int value);
+        void FireActionKeyUp(SDL_Keycode key, int value);
 
         void DestroyState()
         {

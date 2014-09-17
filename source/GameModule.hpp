@@ -29,6 +29,11 @@ class GameModule : public SDL2TK::Module
 
         virtual void OnKeyDown(const SDL_Keysym& keysym);
         virtual void OnKeyUp(const SDL_Keysym& keysym);
+        virtual void OnMouseMove(const SDL_MouseMotionEvent& event);
+        virtual void OnMouseWheel(const SDL_MouseWheelEvent& event);
+        virtual void OnMouseButtonDown(const SDL_MouseButtonEvent& event);
+        virtual void OnMouseButtonUp(const SDL_MouseButtonEvent& event);
+
 
         virtual void OnResize(int width, int height);
 
