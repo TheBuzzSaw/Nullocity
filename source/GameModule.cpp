@@ -258,7 +258,7 @@ void GameModule::InitializeLua()
     AddToLua(GetScale);
     AddToLua(GetRandom);
     AddToLua(SetCameraPosition);
-    AddToLua(AddLuaFile);
+    AddToLua(LoadLuaFile);
 #undef AddToLua
 
     _collisionHandler.InitializeLua();
@@ -649,7 +649,7 @@ int GameModule::SetCameraPosition(lua_State* state)
     return 0;
 }
 
-int GameModule::AddLuaFile(lua_State* state)
+int GameModule::LoadLuaFile(lua_State* state)
 {
     auto argc = lua_gettop(state);
 

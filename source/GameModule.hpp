@@ -90,7 +90,7 @@ class GameModule : public SDL2TK::Module
         static int SetCameraVertical(lua_State* state);
         static int SetCameraDistance(lua_State* state);
 
-        static int AddLuaFile(lua_State* state);
+        static int LoadLuaFile(lua_State* state);
 };
 
 #endif

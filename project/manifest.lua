@@ -1,1 +1,1 @@
-Nullocity.AddLuaFile("main.lua")
+Nullocity.LoadLuaFile("main.lua")
