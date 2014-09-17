@@ -48,7 +48,7 @@ class GameModule : public SDL2TK::Module
         SDL2TK::RotationF _playerRotation;
         SDL2TK::RotationF _playerTorque;
 
-        static LuaState _lua;
+        LuaState _lua;
         LuaReference _updateCallback;
         std::mt19937_64 _generator;
         CollisionHandler _collisionHandler;

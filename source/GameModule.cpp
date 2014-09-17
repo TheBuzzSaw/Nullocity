@@ -9,7 +9,6 @@ using namespace std;
 using namespace SDL2TK;
 
 static const RotationF TurnSpeed = RotationF::FromDegrees(4.0f);
-LuaState GameModule::_lua = LuaState();
 
 const int GameModule::LuaKeyBase = 0xBADC0DE;
 
@@ -22,6 +21,7 @@ GameModule::GameModule()
     , _audioManager(64, _lua)
     , _sound(nullptr)
 {
+    _lua = LuaState();
     _sound = _audioManager.GetBuffer("Nullocity.wav");
 
     _squarePyramidObject = BuildSquarePyramid();
@@ -653,11 +653,12 @@ int GameModule::AddLuaFile(lua_State* state)
 {
     auto argc = lua_gettop(state);
 
-    if (argc > 1 && lua_isstring(state, 1))
+    if (argc > 0 && lua_isstring(state, 1))
     {
         auto filename = lua_tostring(state, 1);
 
-        _lua.ExecuteFile(filename);
+        GameModule& gm = GameModule::FromLua(state);
+        gm._lua.ExecuteFile(filename);
     }
 
     return 0;
