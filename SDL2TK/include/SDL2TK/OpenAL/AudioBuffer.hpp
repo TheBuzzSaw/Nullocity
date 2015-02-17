@@ -2,7 +2,8 @@
 #define AUDIOBUFFER_HPP
 
 #ifdef __WIN32__
-#   include <al.h>
+#   include <AL/al.h>
+//#   include <al.h>
 #elif defined(__APPLE__)
 #   include <OpenAL/al.h>
 #else

@@ -2,7 +2,8 @@
 #define AUDIODEVICE_HPP
 
 #ifdef __WIN32__
-#   include <alc.h>
+//#   include <alc.h>
+#   include <AL/alc.h>
 #elif defined(__APPLE__)
 #   include <OpenAL/alc.h>
 #else
