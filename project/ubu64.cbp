@@ -2,53 +2,91 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="Nullocity (ubu64)" />
+		<Option title="Nullocity (Linux)" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/ubu64" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Debug/Nullocity" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="source/" />
+					<Add directory="source" />
 				</Compiler>
-				<Linker>
-					<Add directory="../../SDL2TK/project/ubu64/bin/Debug/" />
-				</Linker>
 			</Target>
 			<Target title="Release">
-				<Option output="bin/Release/ubu64" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release/Nullocity" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add directory="source/" />
+					<Add directory="source" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add directory="../../SDL2TK/project/ubu64/bin/Release/" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-std=c++11" />
 			<Add option="-Wall" />
-			<Add directory="/usr/local/include/SDL2" />
-			<Add directory="/usr/include/lua5.2" />
-			<Add directory="../../SDL2TK/include" />
+			<Add option="-m64" />
+			<Add directory="/usr/include/SDL2" />
+			<Add directory="../SDL2TK/include" />
 		</Compiler>
 		<Linker>
-			<Add library="sdl2tk-ubu64" />
-			<Add library="SDL2main" />
 			<Add library="SDL2_image" />
 			<Add library="SDL2" />
 			<Add library="GL" />
 			<Add library="openal" />
-			<Add library="lua5.2" />
-			<Add directory="/usr/local/lib" />
+			<Add library="lua" />
 		</Linker>
+		<Unit filename="../SDL2TK/include/SDL2TK/Camera.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/Matrix4x4.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/Module.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/Network/Address32.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/Network/Port.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/OpenAL/AudioBuffer.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/OpenAL/AudioContext.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/OpenAL/AudioDevice.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/OpenAL/AudioSource.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/OpenGL/Program.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/OpenGL/ProgramBuilder.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/OpenGL/Shader.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/OpenGL/glew.h" />
+		<Unit filename="../SDL2TK/include/SDL2TK/OpenGL/wglew.h" />
+		<Unit filename="../SDL2TK/include/SDL2TK/Rotation.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/Surface.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/TimeSpan.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/Tools.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/Vector.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/Vector3.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/Vector4.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/Window.hpp" />
+		<Unit filename="../SDL2TK/include/SDL2TK/WindowSettings.hpp" />
+		<Unit filename="../SDL2TK/source/Address32.cpp" />
+		<Unit filename="../SDL2TK/source/AudioBuffer.cpp" />
+		<Unit filename="../SDL2TK/source/AudioContext.cpp" />
+		<Unit filename="../SDL2TK/source/AudioDevice.cpp" />
+		<Unit filename="../SDL2TK/source/AudioSource.cpp" />
+		<Unit filename="../SDL2TK/source/Module.cpp" />
+		<Unit filename="../SDL2TK/source/Port.cpp" />
+		<Unit filename="../SDL2TK/source/Program.cpp" />
+		<Unit filename="../SDL2TK/source/ProgramBuilder.cpp" />
+		<Unit filename="../SDL2TK/source/Shader.cpp" />
+		<Unit filename="../SDL2TK/source/Surface.cpp" />
+		<Unit filename="../SDL2TK/source/TimeSpan.cpp" />
+		<Unit filename="../SDL2TK/source/Tools.cpp" />
+		<Unit filename="../SDL2TK/source/Window.cpp" />
+		<Unit filename="../SDL2TK/source/WindowSettings.cpp" />
+		<Unit filename="../SDL2TK/source/glew.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="../source/ActionMappings.cpp" />
 		<Unit filename="../source/ActionMappings.hpp" />
 		<Unit filename="../source/AudioManager.cpp" />
@@ -79,7 +117,9 @@
 		<Unit filename="../source/main.cpp" />
 		<Extensions>
 			<code_completion />
+			<envvars />
 			<debugger />
+			<lib_finder disable_auto="1" />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

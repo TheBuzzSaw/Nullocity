@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
-<CodeBlocks_workspace_file>
-	<Workspace title="Nullocity">
-		<Project filename="ubu64.cbp">
-			<Depends filename="../../SDL2TK/project/ubu64/ubu64.cbp" />
-		</Project>
-		<Project filename="../../SDL2TK/project/ubu64/ubu64.cbp" />
-	</Workspace>
-</CodeBlocks_workspace_file>
