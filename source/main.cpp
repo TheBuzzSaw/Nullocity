@@ -29,6 +29,7 @@ void TestNetwork()
 
 int main(int argc, char** argv)
 {
+    cout << "yo yo" << endl;
     TestNetwork();
 
     SDL2TK::AudioDevice device;
